@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gamesfield — AI Game Dev Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0f1113;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100%}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;outline:none;font-family:inherit}
+ul{list-style:none}
+img,video{display:block}
+
+/* ── DESIGN TOKENS (mirrored from Higgsfield CSS vars) ── */
+:root{
+  --surface-primary:#1c1e20;
+  --surface-secondary:#23252a;
+  --surface-tertiary:#0f1113;
+  --page-primary:#0f1113;
+  --separator-card:rgba(255,255,255,0.08);
+  --font-primary:#ffffff;
+  --font-secondary:rgba(255,255,255,0.45);
+  --font-brand:#FE9E17;
+  --btn-accent-bg:#d1fe17;
+  --btn-accent-text:#131517;
+  --neutral-reverted-5:rgba(255,255,255,0.05);
+  --neutral-reverted-15:rgba(255,255,255,0.15);
+}
+
+/* ── LAYOUT ── */
+.container{max-width:1600px;margin:0 auto;padding:0 16px}
+.hide-scrollbar{scrollbar-width:none}
+.hide-scrollbar::-webkit-scrollbar{display:none}
+
+/* ── TOP BANNER ── */
+.top-banner{
+  background:#0e1a0a;padding:9px 16px;text-align:center;font-size:13px;
+  color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.top-banner .pulse{
+  width:7px;height:7px;border-radius:50%;background:#4dff6e;flex-shrink:0;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── HEADER / NAV ── */
+#header{
+  height:64px;width:100%;position:sticky;top:0;z-index:100;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  background:rgba(15,17,19,.9);
+  box-shadow:inset 0 1rem 1rem rgba(0,0,0,1);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+#header nav{
+  display:grid;grid-template-columns:auto 1fr auto;
+  padding-right:16px;height:100%;align-items:center;
+  max-width:1600px;margin:0 auto;padding-left:16px;
+}
+.nav-brand{display:flex;align-items:center;gap:8px;margin-right:8px;flex-shrink:0;color:#fff;transition:opacity .15s}
+.nav-brand:hover{opacity:.8}
+.nav-brand-logo{width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0}
+.nav-brand-logo svg{width:32px;height:32px;display:block}
+.nav-brand-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.04em}
+.nav-brand-name span{color:#FE9E17}
+
+#header__menu_list{
+  display:flex;align-items:center;height:100%;overflow-x:auto;gap:2px;
+  scrollbar-width:none;
+}
+#header__menu_list::-webkit-scrollbar{display:none}
+.nav-item{
+  padding:4px 12px;border-radius:10px;font-size:13px;font-weight:500;
+  color:var(--font-secondary);white-space:nowrap;cursor:pointer;
+  transition:color .12s,background .12s;background:transparent;
+  font-family:'DM Sans',sans-serif;text-decoration:none;
+  display:inline-flex;align-items:center;gap:5px;border:none;
+}
+.nav-item:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.05)}
+.nav-item[data-active="true"]{color:#fff}
+.nav-badge{
+  border-radius:4px;font-size:10px;font-weight:600;padding:1px 5px;
+  background:rgba(209,254,23,.12);color:#d1fe17;
+  font-family:'JetBrains Mono',monospace;
+}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.glass-pill{
+  border-radius:10px;background:var(--neutral-reverted-5);
+  box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px rgba(255,255,255,.03);
+  backdrop-filter:blur(12px);color:#fff;cursor:pointer;
+  height:32px;padding:0 12px 0 8px;display:flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:500;border:none;font-family:'DM Sans',sans-serif;
+  transition:opacity .15s;
+}
+.glass-pill:hover{opacity:.75}
+.glass-icon{
+  border-radius:10px;background:var(--neutral-reverted-5);
+  box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px rgba(255,255,255,.03);
+  backdrop-filter:blur(12px);width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  border:none;cursor:pointer;color:#fff;transition:opacity .15s;
+}
+.glass-icon:hover{opacity:.75}
+.assets-btn{
+  border-radius:8px;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px rgba(255,255,255,.03);
+  backdrop-filter:blur(12px);height:32px;padding:0 12px 0 8px;
+  display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;
+  color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;
+  text-decoration:none;transition:opacity .15s;
+}
+.assets-btn:hover{opacity:.8}
+.nav-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 2px}
+.nav-avatar-wrap{position:relative;width:32px;height:32px;cursor:pointer}
+.nav-avatar-img{
+  position:absolute;width:24px;height:24px;top:4px;left:4px;
+  border-radius:50%;background:#FE9E17;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#0d0d0d;
+}
+.nav-avatar-ring{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+
+/* ── FEATURED CAROUSEL (top video strip) ── */
+.featured-strip{
+  overflow-x:scroll;display:grid;padding:12px 16px;
+  scrollbar-width:none;
+}
+.featured-strip::-webkit-scrollbar{display:none}
+.featured-list{
+  display:flex;gap:20px;
+  /* each card ~312px wide on desktop */
+}
+.featured-card{
+  flex:0 0 312px;display:grid;grid-template-rows:auto auto;
+  gap:10px;border-radius:10px;cursor:pointer;
+  transition:opacity .15s;
+}
+.featured-card:hover{opacity:.85}
+.featured-thumb{
+  aspect-ratio:16/9;border-radius:10px;overflow:hidden;
+  background:var(--surface-primary);position:relative;
+}
+.featured-thumb-inner{
+  position:absolute;inset:0;background:linear-gradient(135deg,#1a1a2e,#0f1a10);
+  display:flex;align-items:center;justify-content:center;font-size:48px;
+}
+.featured-inset-shadow{
+  position:absolute;inset:0;border-radius:10px;pointer-events:none;
+  box-shadow:-0.5px -0.5px 1px 0 rgba(255,255,255,.12) inset,0.8px 0.5px 0.5px 0 rgba(27,27,27,.17) inset;
+}
+.featured-title{
+  font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.08em;
+  text-transform:uppercase;color:#fff;truncate:ellipsis;white-space:nowrap;overflow:hidden;
+}
+.featured-sub{font-size:12px;color:var(--font-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── GENERATE BLOCK + TOOL GRID ── */
+.gen-section{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+@media(min-width:1024px){.gen-section{flex-direction:row;align-items:stretch}}
+
+.gen-card{
+  position:relative;overflow:hidden;border-radius:16px;
+  height:184px;padding:16px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;flex-direction:column;justify-content:space-between;
+  flex-shrink:0;
+}
+@media(min-width:1024px){.gen-card{width:588px;height:auto}}
+.gen-glow{
+  position:absolute;left:-12px;top:-116px;width:776px;height:776px;
+  background:radial-gradient(circle,rgba(255,158,23,.15),transparent 60%);
+  pointer-events:none;transform:rotate(-120deg);
+}
+.gen-floating-img{
+  position:absolute;right:-2px;top:20px;width:127px;height:170px;
+  border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#2a1a3e,#1a2a3e);
+  transform:rotate(2deg);display:flex;align-items:center;justify-content:center;font-size:52px;
+}
+@media(min-width:1024px){
+  .gen-floating-img{width:227px;height:304px;right:7px;top:15px;transform:rotate(4.23deg)}
+}
+.gen-content{position:relative;z-index:1;max-width:200px}
+.gen-title{font-size:18px;font-weight:600;line-height:1.4;color:#fff;margin-bottom:6px}
+.gen-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:16px}
+.gen-btn{
+  position:relative;z-index:1;overflow:hidden;height:44px;padding:0 24px;
+  border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--btn-accent-bg);
+  box-shadow:0 2px 0 #8caa1f;
+  color:var(--btn-accent-text);font-size:14px;font-weight:600;cursor:pointer;
+  font-family:'DM Sans',sans-serif;border:none;transition:opacity .15s;
+  text-decoration:none;
+}
+.gen-btn:hover{opacity:.9}
+
+.tool-grid{display:grid;flex:1;min-width:0;grid-template-columns:1fr 1fr;gap:8px}
+@media(min-width:1024px){.tool-grid{grid-template-columns:repeat(3,1fr)}}
+.tool-card{
+  position:relative;overflow:hidden;border-radius:16px;padding:16px 20px;gap:12px;
+  background:var(--surface-primary);border:1px solid rgba(255,255,255,.05);
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  cursor:pointer;transition:background .15s;text-decoration:none;color:#fff;
+}
+.tool-card:hover{background:var(--surface-secondary)}
+.tool-icon{width:28px;height:28px;flex-shrink:0;font-size:20px;display:flex;align-items:center}
+.tool-name{font-size:16px;font-weight:600;line-height:1.5;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.tool-desc{font-size:12px;color:#898a8b;line-height:1.4;width:100%}
+.tool-badge{
+  position:absolute;top:12px;right:12px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+  text-transform:uppercase;padding:2px 6px;border-radius:4px;transform:skewX(-12deg);
+}
+.badge-new{background:#d1fe17;color:#131517;box-shadow:0 2px 0 rgba(209,254,23,.4)}
+.badge-hot{background:rgba(255,0,91,.8);color:#fff;box-shadow:0 2px 0 rgba(255,0,91,.4)}
+.badge-unlim{background:rgba(255,0,91,.8);color:#fff}
+
+/* ── PROMO BANNER ── */
+.promo-banner{
+  position:relative;overflow:hidden;border-radius:20px;
+  height:300px;cursor:pointer;display:flex;align-items:flex-start;
+  padding:32px 36px;margin-bottom:24px;
+}
+@media(min-width:1024px){.promo-banner{border-radius:24px}}
+.promo-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.promo-content{position:relative;z-index:10;display:flex;flex-direction:column;gap:16px;max-width:420px}
+.promo-eyebrow{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#fff}
+.promo-title{
+  font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:.95;
+  letter-spacing:-.02em;color:#fff;
+}
+.promo-sub{font-size:14px;color:rgba(255,255,255,.5);font-weight:500}
+.btn-primary-reverted{
+  height:40px;padding:0 20px;border-radius:12px;background:#fff;color:#131517;
+  font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;
+  border:none;display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);transition:opacity .15s;text-decoration:none;
+}
+.btn-primary-reverted:hover{opacity:.9}
+
+/* ── "WHAT WILL YOU BUILD" SECTION ── */
+.create-section{
+  position:relative;border-radius:24px;overflow:hidden;
+  margin-bottom:24px;
+  background:linear-gradient(135deg,#1a1a2e,#0f1a10);
+  border:1px solid rgba(255,255,255,.06);
+}
+.create-header{
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:20px 16px 12px;
+}
+@media(min-width:768px){
+  .create-header{
+    flex-direction:row;align-items:flex-start;padding:32px 36px 24px;
+  }
+}
+.create-title{
+  font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1.1;
+  text-transform:uppercase;letter-spacing:.02em;margin-bottom:6px;
+}
+.create-title span{color:var(--font-brand)}
+.create-sub{font-size:14px;color:rgba(255,255,255,.6)}
+.btn-accent-lg{
+  display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 24px;
+  border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:opacity .15s;
+  background:radial-gradient(circle at 42% 100%,rgba(255,255,255,.5) 0%,transparent 100%),
+             linear-gradient(90deg,#FE9E17 0%,#ffb830 100%);
+  color:#131517;box-shadow:inset 0 -3px rgba(0,0,0,.43);
+  text-decoration:none;
+}
+.btn-accent-lg:hover{opacity:.85}
+
+/* tool pills scroll */
+.tool-pills-wrap{position:relative}
+.tool-pills{
+  display:flex;gap:8px;overflow-x:auto;padding:0 16px 16px;
+  scrollbar-width:none;
+}
+.tool-pills::-webkit-scrollbar{display:none}
+.tool-pill{
+  height:32px;padding:0 14px;border-radius:8px;
+  background:var(--surface-primary);border:1px solid rgba(255,255,255,.06);
+  color:var(--font-secondary);font-size:13px;font-weight:500;white-space:nowrap;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;
+  display:inline-flex;align-items:center;gap:6px;text-decoration:none;
+}
+.tool-pill:hover{background:var(--surface-secondary);color:#fff}
+.tool-pill.active{background:var(--font-brand);color:#131517;border-color:var(--font-brand);font-weight:700}
+
+/* ── SECTION HEADERS ── */
+.section-header{padding:0 16px;margin-bottom:16px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.section-title-link{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--font-brand);display:inline-flex;align-items:center;gap:8px;
+  text-decoration:none;
+}
+.section-title-link:hover{opacity:.8}
+.section-sub-text{font-size:13px;color:var(--font-secondary);margin-top:2px}
+.btn-see-all{
+  height:32px;padding:0 14px;border-radius:8px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  color:var(--font-secondary);font-size:13px;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:4px;
+  transition:all .12s;text-decoration:none;flex-shrink:0;
+}
+.btn-see-all:hover{color:#fff;border-color:rgba(255,255,255,.2)}
+
+/* ── TOP CHOICE GRID ── */
+.top-choice-list{
+  display:flex;gap:16px;overflow-x:auto;padding:0 16px 20px;
+  scrollbar-width:none;
+}
+.top-choice-list::-webkit-scrollbar{display:none}
+.tc-card{
+  flex:0 0 200px;border:1px solid var(--separator-card);padding:4px;
+  border-radius:16px;cursor:pointer;background:var(--page-primary);
+  transition:background .15s;text-decoration:none;color:#fff;display:grid;
+  grid-template-rows:auto 1fr;
+}
+.tc-card:hover{background:var(--surface-secondary)}
+.tc-thumb{aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--surface-primary);
+  position:relative;display:flex;align-items:center;justify-content:center;font-size:56px}
+.tc-info{padding:10px 12px;display:grid;gap:4px}
+.tc-name{font-size:15px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc-desc{font-size:12px;color:var(--font-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc-pro-badge{
+  position:absolute;top:12px;left:12px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+  text-transform:uppercase;padding:2px 6px;border-radius:4px;
+  background:#9D4EDD;color:#fff;transform:skewX(-12deg);
+}
+
+/* ── MASONRY GALLERY ── */
+.gallery-section{margin-bottom:40px}
+.gallery-wrap{height:56rem;overflow:hidden;position:relative;padding:0 16px}
+.masonry-cols{display:flex;gap:8px;height:100%}
+.masonry-col{display:flex;flex-direction:column;gap:8px;flex:1}
+.masonry-cell{
+  border-radius:12px;background:var(--surface-primary);flex-shrink:0;
+  position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  font-size:28px;
+}
+.gallery-fade{
+  position:absolute;bottom:-4px;left:0;width:100%;height:224px;
+  background:linear-gradient(to top,var(--surface-tertiary),transparent);
+  display:grid;justify-content:center;align-items:flex-end;padding-bottom:36px;z-index:10;
+}
+.btn-view-all{
+  height:40px;padding:0 20px;border-radius:10px;
+  background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.1);color:#fff;
+  font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;
+  display:inline-flex;align-items:center;gap:8px;transition:all .15s;text-decoration:none;
+}
+.btn-view-all:hover{background:rgba(255,255,255,.14)}
+
+/* ── CHIP ROWS ── */
+.chip-section{margin-bottom:32px}
+.chip-row{
+  display:flex;gap:8px;overflow-x:auto;padding:0 16px 16px;
+  scrollbar-width:none;
+}
+.chip-row::-webkit-scrollbar{display:none}
+.chip{
+  height:32px;padding:0 14px;border-radius:8px;
+  background:var(--surface-primary);border:1px solid rgba(255,255,255,.06);
+  color:var(--font-secondary);font-size:12px;font-weight:500;white-space:nowrap;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;
+  display:inline-flex;align-items:center;text-decoration:none;
+}
+.chip:hover{background:var(--surface-secondary);color:#fff}
+
+/* ── EXPLORE MORE ── */
+.explore-more{padding:40px 16px 60px;text-align:center}
+.explore-more-title{
+  font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:.04em;
+  text-transform:uppercase;margin-bottom:24px;
+}
+.explore-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.explore-tag{
+  height:32px;padding:0 14px;border-radius:8px;
+  background:var(--surface-primary);color:var(--font-secondary);
+  font-size:13px;font-weight:500;display:inline-flex;align-items:center;
+  cursor:pointer;transition:all .12s;text-decoration:none;
+}
+.explore-tag:hover{background:var(--surface-secondary);color:#fff}
+
+/* ── FOOTER ── */
+footer{
+  background:#060707;border-top:1px solid rgba(255,255,255,.06);
+  padding:36px 16px 20px;
+}
+.footer-inner{max-width:1600px;margin:0 auto}
+.footer-headline{
+  font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.02em;
+  text-transform:uppercase;color:#fff;margin-bottom:32px;max-width:500px;
+  line-height:1.1;
+}
+.footer-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-bottom:32px}
+@media(min-width:768px){.footer-cols{grid-template-columns:repeat(4,1fr)}}
+.footer-col h4{font-size:11px;color:rgba(46,48,49,.6);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.footer-col a{display:block;font-size:13px;color:rgba(46,48,49,.8);margin-bottom:8px;transition:color .1s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)}
+.footer-brand{display:flex;align-items:center;gap:8px}
+.footer-logo-mark{width:24px;height:24px;border-radius:6px;overflow:hidden}
+.footer-logo-mark svg{width:24px;height:24px;display:block}
+.footer-wordmark{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.04em;color:rgba(255,255,255,.5)}
+.footer-wordmark span{color:#FE9E17}
+.footer-addr{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-socials{display:flex;gap:20px}
+.footer-socials a{font-size:13px;color:rgba(255,255,255,.4);font-weight:500;transition:color .1s}
+.footer-socials a:hover{color:#fff}
+
+/* utility */
+.mb-6{margin-bottom:24px}
+.mb-8{margin-bottom:32px}
+.mb-10{margin-bottom:40px}
+.px-4{padding-left:16px;padding-right:16px}
+</style>
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<div class="top-banner">
+  <div class="pulse"></div>
+  <strong>Beta is live.</strong>&nbsp; 2,400+ indie devs building with AI.&nbsp;
+  <a href="#" style="color:#FE9E17;text-decoration:underline">Claim early access →</a>
+</div>
+
+<!-- HEADER -->
+<header id="header">
+  <nav>
+    <!-- Logo -->
+    <a class="nav-brand" href="#">
+      <div class="nav-brand-logo">
+        <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#hcn)">
+            <path d="M0 0H1200V1200H0V0Z" fill="#FE9E17"/>
+            <path d="M0 0H138.534C127.116 2.23825 117.439 3.0593 105.855 5.87918C69.2136 14.9917 38.2311 33.7011 18.6367 58.548C6.31766 74.2225 7.79364 78.4904 0 93.4061V0Z" fill="#FEFEFE"/>
+            <path d="M0 1107.12C3.77494 1115.02 5.67412 1121.69 10.2967 1129.62C25.8521 1155.69 53.3621 1176.76 87.8739 1189.03C111.391 1197.33 115.827 1195.38 136.868 1200H0V1107.12Z" fill="#FEFEFE"/>
+            <path d="M1061.76 1200C1081.56 1196.09 1087.82 1197.09 1108.72 1190.21C1144.47 1178.51 1173.12 1157.32 1189.14 1130.75C1193.92 1122.7 1195.92 1115.61 1200 1107.76V1200H1061.76Z" fill="#FEFEFE"/>
+            <path d="M1061.74 0H1200V91.0658C1199.03 89.3496 1198.31 87.3369 1197.57 85.5334C1193.42 75.3779 1188.3 65.891 1180.9 56.7834C1160.7 32.2772 1129.4 13.996 1092.67 5.2643C1082.76 2.92089 1071.99 1.8798 1061.74 0Z" fill="#FEFEFE"/>
+            <path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/>
+            <path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/>
+            <path d="M815.498 200.074C839.914 199.676 864.267 202.033 887.741 207.066C917.69 213.657 946.171 226.808 960.989 247.762C985.075 281.82 976.073 329.854 926.543 348.107C875.49 366.92 814.116 357.909 762.66 345.922C712.004 333.498 665.022 315.618 617.556 297.741C605.983 293.382 594.496 289.247 583.222 284.439C584.657 283.133 586.145 281.86 587.685 280.622C650.576 230.055 722.933 202.679 815.498 200.074Z" fill="#FE9E17"/>
+            <path d="M407.882 318.402C417.061 317.344 432.831 318.367 442.039 319.061C375.943 407.657 335.885 516.179 313.46 615.809C306.921 644.865 299.879 687.006 298.797 716.549C288.889 709.898 282.362 704.156 274.173 696.404C239.942 662.408 222.033 625.377 216.434 583.093C203.646 486.527 250.36 330.539 407.882 318.402Z" fill="#FE9E17"/>
+          </g>
+          <defs><clipPath id="hcn"><rect width="1200" height="1200" fill="white"/></clipPath></defs>
+        </svg>
+      </div>
+      <span class="nav-brand-name">Games<span>field</span></span>
+    </a>
+    <!-- Nav links -->
+    <div id="header__menu_list">
+      <a href="#" class="nav-item" data-active="true">Explore</a>
+      <button class="nav-item">Image</button>
+      <button class="nav-item">3D Assets</button>
+      <button class="nav-item">Audio</button>
+      <a href="#" class="nav-item">Collab</a>
+      <a href="#" class="nav-item">Canvas <span class="nav-badge">New</span></a>
+      <button class="nav-item">Edit</button>
+      <button class="nav-item">Character</button>
+      <a href="#" class="nav-item">World Builder <span class="nav-badge">New</span></a>
+      <a href="#" class="nav-item">MCP &amp; CLI <span class="nav-badge">New</span></a>
+      <a href="#" class="nav-item">Trailers</a>
+      <a href="#" class="nav-item">Originals</a>
+      <button class="nav-item">Community</button>
+    </div>
+    <!-- Right controls -->
+    <div class="nav-right">
+      <button class="glass-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.562 3.523A2.75 2.75 0 017.81 3h8.376c.47 0 .92.189 1.249.523l5.154 5.244c.673.685.668 1.785-.011 2.464l-9.342 9.342a1.75 1.75 0 01-2.474 0L1.419 11.23a1.75 1.75 0 01-.01-2.464L6.562 3.523z" fill="currentColor"/></svg>
+        480 credits
+      </button>
+      <div class="nav-sep"></div>
+      <button class="glass-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C8.165 2 4.999 4.988 4.807 8.8l-.202 3.97a1.25 1.25 0 01-.131.481L3.153 15.822A1.5 1.5 0 003 16.482V16.5A1.5 1.5 0 004.5 18H7.527c.249 2.25 2.156 4 4.473 4s4.224-1.75 4.473-4H19.5A1.5 1.5 0 0021 16.5v-.018a1.5 1.5 0 00-.153-.66l-1.401-2.772a1.25 1.25 0 01-.131-.481l-.202-3.97C18.92 4.988 15.835 2 12 2z" fill="currentColor"/></svg>
+      </button>
+      <a href="#" class="assets-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 6a3 3 0 013-3h2.25a3 3 0 012.122.879l.628.628A3 3 0 0013.122 5H18a3 3 0 013 3v10a3 3 0 01-3 3H6a3 3 0 01-3-3V6z" fill="currentColor" opacity=".5"/><path d="M3 10h18v8a3 3 0 01-3 3H6a3 3 0 01-3-3v-8z" fill="currentColor"/></svg>
+        My Assets
+      </a>
+      <button style="background:transparent;border:none;cursor:pointer;padding:0">
+        <div class="nav-avatar-wrap">
+          <div class="nav-avatar-img">T</div>
+          <svg class="nav-avatar-ring" width="32" height="32">
+            <circle r="15" cx="16" cy="16" stroke="rgba(255,255,255,.1)" fill="transparent" stroke-width="2"/>
+            <circle r="15" cx="16" cy="16" fill="transparent" stroke="#FE9E17" stroke-linecap="round" stroke-width="2" stroke-dashoffset="4.7" stroke-dasharray="94.2"/>
+          </svg>
+        </div>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+<!-- ── FEATURED VIDEO CAROUSEL (Higgsfield top strip) ── -->
+<div style="position:relative;padding-top:12px;margin-bottom:24px">
+  <div class="featured-strip hide-scrollbar">
+    <ul class="featured-list">
+      <li><a class="featured-card" href="#" style="text-decoration:none;color:#fff">
+        <div class="featured-thumb"><div class="featured-thumb-inner">🏆</div><div class="featured-inset-shadow"></div></div>
+        <div><div class="featured-title">Character Generator</div><div class="featured-sub">Describe your hero, villain, or NPC — generate in seconds</div></div>
+      </a></li>
+      <li><a class="featured-card" href="#" style="text-decoration:none;color:#fff">
+        <div class="featured-thumb" style="background:linear-gradient(135deg,#0a1a10,#0f2018)"><div class="featured-thumb-inner" style="font-size:52px">◈</div><div class="featured-inset-shadow"></div></div>
+        <div><div class="featured-title">3D Asset Studio</div><div class="featured-sub">Text to rigged 3D mesh, export to Unity or Unreal</div></div>
+      </a></li>
+      <li><a class="featured-card" href="#" style="text-decoration:none;color:#fff">
+        <div class="featured-thumb" style="background:#050505"><div class="featured-thumb-inner" style="flex-direction:column;gap:8px"><span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#FE9E17">GAME AUDIO</span><div style="display:flex;align-items:flex-end;gap:3px;height:30px" id="wavebars"></div></div><div class="featured-inset-shadow"></div></div>
+        <div><div class="featured-title">Audio Studio</div><div class="featured-sub">OST, SFX, and voice acting — all from one prompt</div></div>
+      </a></li>
+      <li><a class="featured-card" href="#" style="text-decoration:none;color:#fff">
+        <div class="featured-thumb" style="background:linear-gradient(135deg,#08141e,#0e1a10)"><div class="featured-thumb-inner">🌍</div><div class="featured-inset-shadow"></div></div>
+        <div><div class="featured-title">World Builder</div><div class="featured-sub">Procedural biomes, dungeons, and cities from text</div></div>
+      </a></li>
+      <li><a class="featured-card" href="#" style="text-decoration:none;color:#fff">
+        <div class="featured-thumb" style="background:linear-gradient(135deg,#180814,#20081a)"><div class="featured-thumb-inner">🎬</div><div class="featured-inset-shadow"></div></div>
+        <div><div class="featured-title">Trailer Studio</div><div class="featured-sub">Cinematic game trailers generated from gameplay footage</div></div>
+      </a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ── GENERATE BLOCK + TOOL GRID ── -->
+<div class="container mb-6">
+  <div class="gen-section">
+    <!-- Generate Art Card -->
+    <div class="gen-card">
+      <div class="gen-glow"></div>
+      <div class="gen-floating-img">🧝‍♀️</div>
+      <div class="gen-content">
+        <div class="gen-title">Generate Game Art</div>
+        <div class="gen-sub">Describe your scene, character, or asset and generate production-ready art in your game's style</div>
+        <a href="#" class="gen-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.766 3.581c-.677-.576-1.714-.048-1.645.838l.29 3.751-3.205 1.97c-.758.466-.58 1.615.285 1.824l2.803.677-7.078 7.077a.75.75 0 001.06 1.06l7.077-7.077.678 2.803c.209.865 1.358 1.043 1.824.285l1.97-3.205 3.751.29c.886.069 1.414-.968.838-1.645L16.79 9.63l1.435-3.473a.75.75 0 00-1.108-.898l-3.02 2.06z"/></svg>
+          Start Creating
+        </a>
+      </div>
+    </div>
+    <!-- Tool grid -->
+    <div class="tool-grid">
+      <a href="#" class="tool-card">
+        <div class="tool-icon">🎬</div>
+        <div><div class="tool-name">Generate Video</div><div class="tool-desc">Cinematic game clips in seconds</div></div>
+      </a>
+      <a href="#" class="tool-card">
+        <div class="tool-icon">◈</div>
+        <div><div class="tool-name">3D Asset Gen</div><div class="tool-desc">Text to rigged mesh, PBR ready</div></div>
+      </a>
+      <a href="#" class="tool-card">
+        <div class="tool-icon">🎵</div>
+        <div>
+          <div class="tool-name">OST Composer</div><div class="tool-desc">Adaptive game music, any genre</div>
+        </div>
+        <div class="tool-badge badge-unlim">Unlimited</div>
+      </a>
+      <a href="#" class="tool-card">
+        <div class="tool-icon">🤖</div>
+        <div><div class="tool-name">NPC Brain</div><div class="tool-desc">Inworld AI — reactive characters</div></div>
+        <div class="tool-badge badge-new">New</div>
+      </a>
+      <a href="#" class="tool-card">
+        <div class="tool-icon">🌍</div>
+        <div><div class="tool-name">World Builder</div><div class="tool-desc">Procedural levels and environments</div></div>
+      </a>
+      <a href="#" class="tool-card">
+        <div class="tool-icon">🎙️</div>
+        <div><div class="tool-name">Voice Director</div><div class="tool-desc">Multi-character voices from script</div></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROJECT MEMORY PROMO BANNER ── -->
+<div class="container mb-8">
+  <div class="promo-banner" style="background:linear-gradient(135deg,#08141e 0%,#0e1a10 100%);border:1px solid rgba(255,255,255,.06)">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 15% 18%,rgba(255,255,255,.05) 0%,transparent 40%)"></div>
+    <div class="promo-content">
+      <div>
+        <div class="promo-eyebrow" style="color:#00d4aa;font-size:12px;letter-spacing:.2em;font-family:'JetBrains Mono',monospace">New Feature</div>
+        <div class="promo-title">ONE PROJECT.<br>ALL YOUR TOOLS.</div>
+        <div class="promo-sub">Lock your art style, characters, and world lore once. Every tool reads from the same project memory — automatically.</div>
+      </div>
+      <a href="#" class="btn-primary-reverted" style="background:#FE9E17;color:#0d0d0d;box-shadow:0 2px 0 #c07800">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.745 4.666c-.043-.38-.363-.666-.744-.666s-.701.286-.745.664c-.284 2.463-1.02 4.195-2.208 5.383-1.188 1.188-2.92 1.924-5.383 2.208-.379.044-.668.366-.668.747s.287.703.666.745c2.422.274 4.191 1.01 5.407 2.196 1.212 1.19 1.964 2.921 2.181 5.367.034.39.359.69.748.686.389 0 .714-.297.748-.685.208-2.405.959-4.173 2.177-5.39 1.217-1.218 2.985-1.969 5.39-2.177.389-.033.686-.359.686-.748s-.297-.703-.684-.747c-2.456-.217-4.187-.965-5.377-2.155-1.19-1.19-1.926-2.958-2.2-5.42z"/></svg>
+        Try Project Memory
+      </a>
+    </div>
+    <!-- Memory nodes visual -->
+    <div style="position:absolute;right:40px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;width:300px">
+      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.7)"><span style="width:8px;height:8px;border-radius:50%;background:#FE9E17;flex-shrink:0"></span> Game Style · Fantasy RPG · Painterly</div>
+      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.7)"><span style="width:8px;height:8px;border-radius:50%;background:#9b6dff;flex-shrink:0"></span> Character: Kira — Rogue, Dark Elf</div>
+      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.7)"><span style="width:8px;height:8px;border-radius:50%;background:#00d4ff;flex-shrink:0"></span> World: Aetheris · Post-apocalyptic</div>
+      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.7)"><span style="width:8px;height:8px;border-radius:50%;background:#3ecf8e;flex-shrink:0"></span> Audio: Orchestral + Dark Synth</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── "WHAT WILL YOU BUILD TODAY?" ── -->
+<div class="container mb-8">
+  <div class="create-section">
+    <div class="create-header">
+      <div>
+        <div class="create-title">What will you <br><span>build today?</span></div>
+        <div class="create-sub">Every AI tool a game dev needs — in one workspace</div>
+      </div>
+      <a href="#" class="btn-accent-lg" style="margin-top:16px;align-self:flex-start">
+        Explore all tools
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M11.853 4.217l-.13-.979A.75.75 0 0011 2.826a.75.75 0 00-.745.664l-.13.978C9.857 7.085 7.6 9.34 4.732 9.724l-.978.131a.75.75 0 000 1.49l.978.13c2.868.384 5.124 2.64 5.508 5.508l.13.978a.75.75 0 001.49 0l.13-.978c.384-2.868 2.64-5.124 5.508-5.508l.978-.13a.75.75 0 000-1.49l-.978-.13C14.49 9.34 12.235 7.085 11.853 4.217z"/></svg>
+      </a>
+    </div>
+    <div class="tool-pills-wrap">
+      <div class="tool-pills">
+        <a href="#" class="tool-pill active">Generate Art</a>
+        <a href="#" class="tool-pill">Create 3D</a>
+        <a href="#" class="tool-pill">Compose Audio <span class="nav-badge">New</span></a>
+        <a href="#" class="tool-pill">Build NPC</a>
+        <a href="#" class="tool-pill">Write Lore</a>
+        <a href="#" class="tool-pill">Make Trailer</a>
+        <a href="#" class="tool-pill">Design UI</a>
+        <a href="#" class="tool-pill">Generate Code</a>
+        <a href="#" class="tool-pill">Export Assets</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOP CHOICE ── -->
+<section class="mb-10">
+  <div class="section-header">
+    <div>
+      <a href="#" class="section-title-link">Top Choice</a>
+      <div class="section-sub-text">Dev-recommended tools, tuned for your game</div>
+    </div>
+    <a href="#" class="btn-see-all">See all <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 16l3.646-3.646a.5.5 0 000-.708L10 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+  </div>
+  <ul class="top-choice-list">
+    <li><a href="#" class="tc-card">
+      <div class="tc-thumb" style="background:linear-gradient(135deg,#1a0f2e,#2e1a3e)">🎨</div>
+      <div class="tc-info"><div class="tc-name">Style Lock</div><div class="tc-desc">Lock your art style across all gens</div></div>
+    </a></li>
+    <li><a href="#" class="tc-card" style="position:relative">
+      <div class="tc-thumb" style="background:linear-gradient(135deg,#0f2010,#1a3020)">◈</div>
+      <div class="tc-pro-badge">Pro</div>
+      <div class="tc-info"><div class="tc-name">Meshy 3D Pro</div><div class="tc-desc">Rigged characters with blendshapes</div></div>
+    </a></li>
+    <li><a href="#" class="tc-card" style="position:relative">
+      <div class="tc-thumb" style="background:linear-gradient(135deg,#200818,#301228)">🤖</div>
+      <div class="tc-pro-badge">Pro</div>
+      <div class="tc-info"><div class="tc-name">NPC Brain 2.0</div><div class="tc-desc">Persistent memory, reactive dialogue</div></div>
+    </a></li>
+    <li><a href="#" class="tc-card">
+      <div class="tc-thumb" style="background:linear-gradient(135deg,#08082a,#10103a)">🎵</div>
+      <div class="tc-info"><div class="tc-name">AIVA Composer</div><div class="tc-desc">Adaptive OST that reacts to gameplay</div></div>
+    </a></li>
+    <li><a href="#" class="tc-card" style="position:relative">
+      <div class="tc-thumb" style="background:linear-gradient(135deg,#1a1a08,#2a2a10)">🌍</div>
+      <div class="tc-pro-badge">Pro</div>
+      <div class="tc-info"><div class="tc-name">World Builder</div><div class="tc-desc">Procedural biomes, dungeons, cities</div></div>
+    </a></li>
+    <li><a href="#" class="tc-card">
+      <div class="tc-thumb" style="background:linear-gradient(135deg,#0a1a10,#102010)">🎬</div>
+      <div class="tc-info"><div class="tc-name">Trailer Cut AI</div><div class="tc-desc">Auto-edit gameplay into cinematic reels</div></div>
+    </a></li>
+    <li><a href="#" class="tc-card">
+      <div class="tc-thumb" style="background:linear-gradient(135deg,#1a0a08,#2a1010)">🗺️</div>
+      <div class="tc-info"><div class="tc-name">Lore Writer</div><div class="tc-desc">Lore bibles, quest text, item desc</div></div>
+    </a></li>
+    <li><a href="#" class="tc-card">
+      <div class="tc-thumb" style="background:linear-gradient(135deg,#0a0a1a,#14142a)">🎙️</div>
+      <div class="tc-info"><div class="tc-name">Voice Director</div><div class="tc-desc">Multi-character voices from one script</div></div>
+    </a></li>
+  </ul>
+</section>
+
+<!-- ── CHARACTER ART COMMUNITY GALLERY ── -->
+<section class="gallery-section">
+  <div class="section-header">
+    <div>
+      <a href="#" class="section-title-link">Character Art</a>
+      <div class="section-sub-text">Community creations — characters, heroes, and NPCs</div>
+    </div>
+  </div>
+  <div class="gallery-wrap">
+    <div class="masonry-cols">
+      <div class="masonry-col">
+        <div class="masonry-cell" style="aspect-ratio:9/16;background:linear-gradient(135deg,#1a0f2e,#2e1a3e)">🧝‍♀️</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0f2010,#1a3020)">🧙‍♂️</div>
+        <div class="masonry-cell" style="aspect-ratio:3/4;background:linear-gradient(135deg,#200818,#301228)">🤺</div>
+      </div>
+      <div class="masonry-col">
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#08082a,#10103a)">🤖</div>
+        <div class="masonry-cell" style="aspect-ratio:3/4;background:linear-gradient(135deg,#1a0810,#2a1020)">🧜‍♀️</div>
+        <div class="masonry-cell" style="aspect-ratio:3/4;background:linear-gradient(135deg,#0a1a10,#102a18)">🪖</div>
+      </div>
+      <div class="masonry-col" style="display:none"><!-- shown on md+ -->
+        <div class="masonry-cell" style="aspect-ratio:3/4;background:linear-gradient(135deg,#1e0808,#2a0f0f)">😈</div>
+        <div class="masonry-cell" style="aspect-ratio:3/4;background:linear-gradient(135deg,#081a1e,#0f2530)">🐉</div>
+        <div class="masonry-cell" style="aspect-ratio:9/16;background:linear-gradient(135deg,#1a0f2e,#2e1a40)">🧚‍♀️</div>
+      </div>
+      <div class="masonry-col" style="display:none">
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0a0f1a,#1015 2e)">⚔️</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0f1a0a,#182010)">🌲</div>
+        <div class="masonry-cell" style="aspect-ratio:3/4;background:linear-gradient(135deg,#1a1a08,#2a2a10)">🏹</div>
+      </div>
+      <div class="masonry-col" style="display:none">
+        <div class="masonry-cell" style="aspect-ratio:3/4;background:linear-gradient(135deg,#08081a,#10102a)">🔮</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#1a0810,#280f1a)">🦹</div>
+        <div class="masonry-cell" style="aspect-ratio:4/3;background:linear-gradient(135deg,#0a1a08,#10250e)">🐺</div>
+      </div>
+    </div>
+    <div class="gallery-fade">
+      <a href="#" class="btn-view-all">View all Character Art <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18.25 15.25V5.75M18.25 5.75H8.75M18.25 5.75L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 3D ASSETS COMMUNITY GALLERY ── -->
+<section class="gallery-section">
+  <div class="section-header">
+    <div>
+      <a href="#" class="section-title-link">3D Asset Library</a>
+      <div class="section-sub-text">Game-ready meshes created by the community — export to Unity, Unreal, Godot</div>
+    </div>
+  </div>
+  <!-- Chip filter row -->
+  <div style="margin-bottom:20px">
+    <div class="chip-row">
+      <a href="#" class="chip">Weapons</a><a href="#" class="chip">Characters</a><a href="#" class="chip">Environments</a><a href="#" class="chip">Props</a><a href="#" class="chip">Vehicles</a><a href="#" class="chip">Architecture</a><a href="#" class="chip">Creatures</a><a href="#" class="chip">Fantasy</a><a href="#" class="chip">Sci-Fi</a><a href="#" class="chip">Modern</a>
+    </div>
+  </div>
+  <div class="gallery-wrap">
+    <div class="masonry-cols">
+      <div class="masonry-col">
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0a1510,#0f2018)">⚔️</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0f1a10,#182a18)">🏰</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0a1015,#10182a)">🚀</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#1a0808,#2a1010)">🐉</div>
+      </div>
+      <div class="masonry-col">
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#080818,#101028)">🛡️</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0a1a08,#10280e)">🌲</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#1a1008,#2a1a10)">🧪</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#081518,#0f2228)">🚗</div>
+      </div>
+      <div class="masonry-col">
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0f0a14,#180f24)">💎</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#0a1510,#0f2018)">🏺</div>
+        <div class="masonry-cell" style="aspect-ratio:16/9;background:linear-gradient(135deg,#08081a,#10102e)">⚡</div>
+      </div>
+    </div>
+    <div class="gallery-fade">
+      <a href="#" class="btn-view-all">View all 3D Assets <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18.25 15.25V5.75M18.25 5.75H8.75M18.25 5.75L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── GAME VFX CHIP SECTION ── -->
+<section class="chip-section">
+  <div class="section-header">
+    <div>
+      <a href="#" class="section-title-link">Game VFX</a>
+      <div class="section-sub-text">Cinematic effects, explosions, magic — drag and drop into your engine.</div>
+    </div>
+  </div>
+  <div class="chip-row">
+    <a href="#" class="chip">Spell Explosion</a><a href="#" class="chip">Lightning Strike</a><a href="#" class="chip">Lava Flow</a><a href="#" class="chip">Shadow Mist</a><a href="#" class="chip">Portal Rift</a><a href="#" class="chip">Dragon Fire</a><a href="#" class="chip">Water Splash</a><a href="#" class="chip">Blood Moon</a><a href="#" class="chip">Freeze Ray</a><a href="#" class="chip">Shockwave</a><a href="#" class="chip">Soul Drain</a><a href="#" class="chip">Meteor Fall</a><a href="#" class="chip">Teleport Burst</a><a href="#" class="chip">Void Collapse</a><a href="#" class="chip">Holy Light</a><a href="#" class="chip">Poison Cloud</a><a href="#" class="chip">Time Warp</a><a href="#" class="chip">Earthquake</a><a href="#" class="chip">Blizzard</a><a href="#" class="chip">Acid Splash</a><a href="#" class="chip">Mind Blast</a><a href="#" class="chip">Wind Slash</a><a href="#" class="chip">Sand Storm</a><a href="#" class="chip">Necro Summon</a>
+  </div>
+</section>
+
+<!-- ── GAMESFIELD TOOLS CHIP SECTION ── -->
+<section class="chip-section">
+  <div class="section-header">
+    <div>
+      <a href="#" class="section-title-link">Gamesfield Tools</a>
+      <div class="section-sub-text">Everything your game needs — generated, not googled.</div>
+    </div>
+  </div>
+  <div class="chip-row">
+    <a href="#" class="chip">Style Lock</a><a href="#" class="chip">NPC Brain</a><a href="#" class="chip">Lore Bible</a><a href="#" class="chip">World Builder</a><a href="#" class="chip">Trailer Cut</a><a href="#" class="chip">Asset Variants</a><a href="#" class="chip">Skin Pack</a><a href="#" class="chip">Item Forge</a><a href="#" class="chip">Quest Generator</a><a href="#" class="chip">Dialogue Tree</a><a href="#" class="chip">Voice Director</a><a href="#" class="chip">Sound FX Kit</a><a href="#" class="chip">UI Theme Gen</a><a href="#" class="chip">Icon Factory</a><a href="#" class="chip">Map Maker</a><a href="#" class="chip">Enemy Designer</a><a href="#" class="chip">Boss Template</a><a href="#" class="chip">Skill Tree Gen</a><a href="#" class="chip">Economy Balancer</a><a href="#" class="chip">Cutscene Builder</a>
+  </div>
+</section>
+
+<!-- ── EXPLORE MORE ── -->
+<div class="explore-more">
+  <div class="explore-more-title">Explore More AI Features</div>
+  <div class="explore-tags">
+    <a href="#" class="explore-tag">Meshy 3D</a><a href="#" class="explore-tag">Inworld NPC</a><a href="#" class="explore-tag">ElevenLabs Voice</a><a href="#" class="explore-tag">AIVA Music</a><a href="#" class="explore-tag">Ludo Research</a><a href="#" class="explore-tag">Scenario Art</a><a href="#" class="explore-tag">Kling Trailer</a><a href="#" class="explore-tag">Midjourney</a><a href="#" class="explore-tag">Cursor Code</a><a href="#" class="explore-tag">Convai Agents</a><a href="#" class="explore-tag">Promethean AI</a><a href="#" class="explore-tag">Unity Export</a><a href="#" class="explore-tag">Unreal Export</a><a href="#" class="explore-tag">Godot Export</a><a href="#" class="explore-tag">Steam Page Gen</a><a href="#" class="explore-tag">App Store Kit</a><a href="#" class="explore-tag">Itch.io Pack</a><a href="#" class="explore-tag">Discord Bot</a><a href="#" class="explore-tag">Press Kit</a><a href="#" class="explore-tag">Speedrun Clip</a><a href="#" class="explore-tag">Pixel Art Gen</a><a href="#" class="explore-tag">Tilemap Builder</a><a href="#" class="explore-tag">Shader Gen</a><a href="#" class="explore-tag">Animation Rig</a>
+  </div>
+</div>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-headline">The AI infrastructure for game developers &amp; indie creators</div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Gamesfield</h4>
+        <a href="#">About</a><a href="#">Roadmap</a><a href="#">Pricing</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Contact</a><a href="#">Discord</a><a href="#">Enterprise</a>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="#">Project Memory</a><a href="#">Tool Hub</a><a href="#">Canvas</a><a href="#">Collab</a><a href="#">MCP &amp; CLI</a><a href="#">API Access</a><a href="#">Team Plans</a>
+      </div>
+      <div class="footer-col">
+        <h4>Art &amp; 3D</h4>
+        <a href="#">Game Art Gen</a><a href="#">Style Lock</a><a href="#">Meshy 3D</a><a href="#">Scenario</a><a href="#">Midjourney</a><a href="#">UI Theme</a><a href="#">Icon Factory</a><a href="#">Splash Screen</a>
+      </div>
+      <div class="footer-col">
+        <h4>Game Dev</h4>
+        <a href="#">NPC Brain</a><a href="#">Voice Acting</a><a href="#">OST Composer</a><a href="#">World Builder</a><a href="#">Lore Writer</a><a href="#">Trailer Studio</a><a href="#">Unity Export</a><a href="#">Godot Export</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-brand">
+        <div class="footer-logo-mark">
+          <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1200" height="1200" fill="#FE9E17"/>
+            <path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/>
+            <path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/>
+          </svg>
+        </div>
+        <div class="footer-wordmark">Games<span>field</span></div>
+      </div>
+      <div class="footer-addr">Built for indie devs · Powered by Claude AI</div>
+      <div class="footer-socials">
+        <a href="#">X</a><a href="#">YouTube</a><a href="#">Instagram</a><a href="#">Discord</a><a href="#">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Animated audio bars
+const bars = document.getElementById('wavebars');
+if(bars){
+  const heights = [12,28,20,34,18,38,22,30,16,24];
+  heights.forEach((h,i)=>{
+    const b = document.createElement('div');
+    b.style.cssText = `width:3px;border-radius:2px;background:#FE9E17;animation:wave ${0.4+i*0.07}s ease-in-out infinite alternate`;
+    b.style.height = h+'px';
+    bars.appendChild(b);
+  });
+}
+const style = document.createElement('style');
+style.textContent = `@keyframes wave{from{height:4px;opacity:.3}to{opacity:1}}`;
+document.head.appendChild(style);
+
+// Show masonry cols on larger screens
+function updateCols(){
+  const w = window.innerWidth;
+  document.querySelectorAll('.masonry-col').forEach((col,i)=>{
+    if(i<2) col.style.display='flex';
+    else if(i===2) col.style.display = w>=768?'flex':'none';
+    else col.style.display = w>=1024?'flex':'none';
+  });
+}
+updateCols();
+window.addEventListener('resize',updateCols);
+</script>
+</body>
+</html>

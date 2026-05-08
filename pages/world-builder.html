@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>World Builder — Gamesfield</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#080a0c;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;user-select:none}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;outline:none;font-family:inherit}
+
+:root{
+  --surface:#13151a;
+  --surface2:#1a1d24;
+  --surface3:#21242d;
+  --sep:rgba(255,255,255,0.07);
+  --sep2:rgba(255,255,255,0.12);
+  --muted:rgba(255,255,255,0.35);
+  --brand:#FE9E17;
+  --accent:#d1fe17;
+  --purple:#9b6dff;
+  --cyan:#00d4ff;
+  --green:#3ecf8e;
+  --pink:#ff4d8b;
+  --header-h:52px;
+}
+
+/* ── SHELL ── */
+.app{display:grid;grid-template-rows:var(--header-h) 1fr;height:100vh;overflow:hidden}
+
+/* ── HEADER ── */
+.header{
+  height:var(--header-h);display:flex;align-items:center;gap:8px;padding:0 14px;
+  background:rgba(8,10,12,.95);border-bottom:1px solid var(--sep);
+  backdrop-filter:blur(16px);z-index:100;position:relative;
+}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-right:6px}
+.logo-mark{width:28px;height:28px;border-radius:6px;overflow:hidden;flex-shrink:0}
+.logo-mark svg{width:28px;height:28px;display:block}
+.logo-name{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.04em}
+.logo-name span{color:var(--brand)}
+.h-sep{width:1px;height:20px;background:var(--sep);margin:0 4px;flex-shrink:0}
+.h-breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.h-breadcrumb a{transition:color .12s}.h-breadcrumb a:hover{color:#fff}
+.h-breadcrumb .cur{color:#fff;font-weight:500}
+.h-project-pill{
+  display:flex;align-items:center;gap:6px;padding:4px 12px 4px 8px;
+  background:var(--surface);border:1px solid var(--sep2);border-radius:8px;
+  font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;
+}
+.h-project-pill:hover{border-color:rgba(255,255,255,.2)}
+.h-project-dot{width:8px;height:8px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.h-right{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.h-btn{height:30px;padding:0 12px;border-radius:7px;background:rgba(255,255,255,.05);border:1px solid var(--sep);color:rgba(255,255,255,.7);font-size:12px;font-weight:500;display:flex;align-items:center;gap:5px;cursor:pointer;transition:all .12s}
+.h-btn:hover{background:rgba(255,255,255,.09);color:#fff;border-color:var(--sep2)}
+.h-btn.primary{background:var(--brand);color:#0d0d0d;border-color:transparent;font-weight:700}
+.h-btn.primary:hover{background:#ffb040}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0d0d0d;cursor:pointer}
+
+/* ── BODY ── */
+.body{display:grid;grid-template-columns:260px 1fr 300px;height:calc(100vh - var(--header-h));overflow:hidden}
+
+/* ── LEFT PANEL ── */
+.left-panel{background:var(--surface);border-right:1px solid var(--sep);display:flex;flex-direction:column;overflow:hidden}
+.panel-tabs{display:flex;border-bottom:1px solid var(--sep);padding:0 4px}
+.ptab{flex:1;padding:10px 4px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);cursor:pointer;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s;font-family:'DM Sans',sans-serif}
+.ptab:hover{color:#fff}
+.ptab.active{color:var(--brand);border-bottom-color:var(--brand)}
+.panel-scroll{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.07) transparent}
+.panel-scroll::-webkit-scrollbar{width:3px}
+.panel-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:2px}
+.panel-section{padding:12px;border-bottom:1px solid var(--sep)}
+.p-label{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:8px}
+
+/* Node type palette */
+.node-palette{display:flex;flex-direction:column;gap:5px}
+.palette-item{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;
+  background:var(--surface2);border:1px solid var(--sep);cursor:grab;
+  transition:all .15s;
+}
+.palette-item:hover{border-color:var(--sep2);background:var(--surface3);transform:translateX(2px)}
+.palette-item:active{cursor:grabbing;transform:scale(.98)}
+.pi-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.pi-name{font-size:12px;font-weight:600;color:#ddd}
+.pi-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.pi-badge{margin-left:auto;font-size:9px;font-family:'JetBrains Mono',monospace;padding:2px 6px;border-radius:4px;font-weight:700;flex-shrink:0}
+
+/* World stats */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.stat-card{background:var(--surface2);border:1px solid var(--sep);border-radius:10px;padding:10px 12px}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.02em}
+.stat-label{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ── CANVAS ── */
+.canvas-wrap{position:relative;overflow:hidden;background:#080a0c;cursor:default}
+
+/* Dot grid background */
+.canvas-wrap::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+
+/* Mini-map */
+.minimap{
+  position:absolute;bottom:16px;left:16px;width:180px;height:110px;
+  background:rgba(8,10,12,.85);border:1px solid var(--sep2);border-radius:10px;
+  backdrop-filter:blur(8px);overflow:hidden;z-index:20;
+}
+.minimap-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.minimap-label{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--muted);position:absolute;bottom:6px;left:8px}
+
+/* Canvas controls */
+.canvas-controls{
+  position:absolute;bottom:16px;right:16px;display:flex;flex-direction:column;gap:6px;z-index:20;
+}
+.cc-btn{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(8,10,12,.85);border:1px solid var(--sep2);
+  backdrop-filter:blur(8px);color:rgba(255,255,255,.7);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:14px;transition:all .12s;
+}
+.cc-btn:hover{background:var(--surface2);color:#fff;border-color:rgba(255,255,255,.2)}
+
+/* Canvas toolbar */
+.canvas-toolbar{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:4px;z-index:20;
+  background:rgba(8,10,12,.9);border:1px solid var(--sep2);border-radius:12px;
+  backdrop-filter:blur(12px);padding:5px;
+}
+.ct-btn{
+  height:28px;padding:0 10px;border-radius:8px;font-size:12px;font-weight:500;
+  color:var(--muted);background:transparent;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:5px;transition:all .12s;white-space:nowrap;
+}
+.ct-btn:hover{background:var(--surface2);color:#fff}
+.ct-btn.active{background:var(--surface2);color:#fff;border:1px solid var(--sep2)}
+.ct-sep{width:1px;height:16px;background:var(--sep);margin:0 2px}
+
+/* ── SVG CONNECTIONS ── */
+#connections{position:absolute;inset:0;pointer-events:none;z-index:1}
+
+/* ── NODES ── */
+.node{
+  position:absolute;border-radius:14px;border:1px solid var(--sep2);
+  background:var(--surface);cursor:move;z-index:10;
+  transition:box-shadow .2s,border-color .2s;min-width:200px;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+.node:hover{box-shadow:0 8px 32px rgba(0,0,0,.6);border-color:rgba(255,255,255,.18)}
+.node.selected{border-color:var(--brand);box-shadow:0 0 0 2px rgba(254,158,23,.2),0 8px 32px rgba(0,0,0,.6)}
+.node-header{display:flex;align-items:center;gap:8px;padding:11px 12px 10px;border-bottom:1px solid var(--sep);cursor:move}
+.node-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.node-title{font-size:13px;font-weight:600;color:#fff;flex:1}
+.node-type{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;color:var(--muted);margin-top:1px}
+.node-menu{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);cursor:pointer;transition:all .12s;background:none;border:none;margin-left:auto}
+.node-menu:hover{background:var(--surface3);color:#fff}
+.node-body{padding:10px 12px}
+.node-prop{display:flex;align-items:center;justify-content:space-between;padding:4px 0;font-size:11px}
+.node-prop-label{color:var(--muted)}
+.node-prop-val{color:#ddd;font-weight:500;font-family:'JetBrains Mono',monospace;font-size:10px}
+.node-thumb{margin:8px 12px 10px;border-radius:8px;height:72px;display:flex;align-items:center;justify-content:center;font-size:32px;border:1px solid var(--sep)}
+.node-actions{display:flex;gap:5px;padding:8px 12px;border-top:1px solid var(--sep)}
+.node-action{flex:1;height:26px;border-radius:6px;border:1px solid var(--sep);background:transparent;color:var(--muted);font-size:10px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;letter-spacing:.02em}
+.node-action:hover{background:var(--surface2);color:#fff;border-color:var(--sep2)}
+.node-action.primary{background:rgba(254,158,23,.1);color:var(--brand);border-color:rgba(254,158,23,.25)}
+.node-action.primary:hover{background:rgba(254,158,23,.2)}
+
+/* Port dots */
+.port{
+  position:absolute;width:12px;height:12px;border-radius:50%;border:2px solid var(--surface);
+  cursor:crosshair;z-index:15;transition:transform .15s;
+}
+.port:hover{transform:scale(1.4)}
+.port-out{right:-6px;top:50%;transform:translateY(-50%)}
+.port-out:hover{transform:translateY(-50%) scale(1.4)}
+.port-in{left:-6px;top:50%;transform:translateY(-50%)}
+.port-in:hover{transform:translateY(-50%) scale(1.4)}
+
+/* Status badge on node */
+.node-status{display:flex;align-items:center;gap:5px;padding:5px 12px;font-size:10px;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--sep)}
+.ns-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ns-dot.ready{background:#3ecf8e;box-shadow:0 0 6px rgba(62,207,142,.5)}
+.ns-dot.pending{background:var(--brand);box-shadow:0 0 6px rgba(254,158,23,.5);animation:pulse 1.5s infinite}
+.ns-dot.empty{background:rgba(255,255,255,.2)}
+
+/* ── RIGHT PANEL ── */
+.right-panel{background:var(--surface);border-left:1px solid var(--sep);display:flex;flex-direction:column;overflow:hidden}
+.rp-header{padding:14px;border-bottom:1px solid var(--sep);flex-shrink:0}
+.rp-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px}
+.rp-sub{font-size:11px;color:var(--muted)}
+.rp-scroll{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.07) transparent}
+.rp-scroll::-webkit-scrollbar{width:3px}
+.rp-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:2px}
+.rp-section{padding:14px;border-bottom:1px solid var(--sep)}
+.rp-label{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:10px}
+
+/* Editable fields */
+.rp-field{margin-bottom:10px}
+.rp-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
+.rp-input{width:100%;background:var(--surface2);border:1px solid var(--sep);border-radius:8px;padding:8px 10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:border-color .15s}
+.rp-input:focus{border-color:rgba(254,158,23,.4)}
+.rp-input::placeholder{color:rgba(255,255,255,.2)}
+.rp-textarea{width:100%;background:var(--surface2);border:1px solid var(--sep);border-radius:8px;padding:8px 10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;outline:none;resize:none;height:72px;transition:border-color .15s;line-height:1.5}
+.rp-textarea:focus{border-color:rgba(254,158,23,.4)}
+.rp-select{width:100%;background:var(--surface2);border:1px solid var(--sep);border-radius:8px;padding:8px 10px;color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;outline:none;appearance:none;cursor:pointer}
+
+/* Output preview in right panel */
+.rp-preview{border-radius:10px;overflow:hidden;border:1px solid var(--sep);margin-bottom:10px}
+.rp-preview-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:48px}
+.rp-preview-meta{padding:8px 10px;background:var(--surface2);font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+
+/* Connections list in right panel */
+.conn-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--sep)}
+.conn-item:last-child{border-bottom:none}
+.conn-arrow{color:var(--muted);font-size:12px}
+.conn-name{font-size:12px;color:#ddd}
+.conn-type{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 6px;border-radius:4px}
+
+/* Generate from world btn */
+.gen-world-btn{
+  width:100%;height:42px;border-radius:10px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  background:radial-gradient(circle at 42% 100%,rgba(255,255,255,.5) 0%,transparent 100%),
+             linear-gradient(90deg,#FE9E17 0%,#ffb830 100%);
+  color:#131517;box-shadow:inset 0 -3px rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:opacity .15s;
+}
+.gen-world-btn:hover{opacity:.9}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<header class="header">
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 1200 1200" fill="none"><rect width="1200" height="1200" fill="#FE9E17"/><path d="M813 133C859 132 902 138 944 151C1045 183 1090 271 1047 345C1029 376 989 402 946 414C838 444 719 409 621 373C590 362 561 350 529 339C510 361 487 399 474 423C421 526 385 651 387 761C412 771 450 779 478 783C544 793 616 787 678 767C726 750 774 722 800 687C725 704 602 715 547 662C502 619 529 563 582 533C657 491 760 480 851 487C916 492 976 514 1017 553C1055 590 1072 646 1076 691C1086 796 1053 914 960 995C893 1055 795 1092 690 1098C600 1103 509 1085 440 1040C346 979 309 892 299 803C254 781 215 753 186 719C120 643 114 545 139 458C159 389 206 320 288 281C337 257 396 247 454 253C468 254 481 257 496 259C502 254 514 243 521 237C601 173 695 137 813 133Z" fill="#151515"/><path d="M790 552C824 551 861 553 893 563C927 574 953 596 966 622C1004 698 990 809 948 883C914 942 853 993 774 1016C705 1035 623 1039 555 1016C484 993 443 949 416 897C407 879 399 855 395 836C458 851 512 857 578 853C681 847 777 814 845 755C874 729 911 686 909 650C907 637 897 619 883 610C857 595 834 603 807 613C776 624 739 631 703 633C678 634 643 636 621 624C608 616 617 600 626 593C667 562 735 554 790 552Z" fill="#FE9E17"/></svg>
+    </div>
+    <span class="logo-name">Games<span>field</span></span>
+  </div>
+  </a>
+  <div class="h-sep"></div>
+  <div class="h-breadcrumb">
+    <a href="index.html">Explore</a>
+    <span>›</span>
+    <span class="cur">World Builder</span>
+  </div>
+  <div class="h-sep"></div>
+  <!-- Active project pill -->
+  <div class="h-project-pill">
+    <div class="h-project-dot"></div>
+    <span>Project: Aetheris</span>
+    <span style="color:var(--muted);margin-left:4px">▾</span>
+  </div>
+  <div class="h-right">
+    <a href="index.html" class="h-btn" style="text-decoration:none">
+      ← Explore
+    </a>
+    <a href="generate-art.html" class="h-btn" style="text-decoration:none">
+      🎨 Generate Art
+    </a>
+    <button class="h-btn" onclick="document.querySelector('[ondragstart]').dispatchEvent(new Event('click'))">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Add Node
+    </button>
+    <button class="h-btn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Auto-generate
+    </button>
+    <button class="h-btn primary" onclick="generateAll()">
+      ✦ Generate All
+    </button>
+    <div class="avatar">T</div>
+  </div>
+</header>
+
+<div class="body">
+
+<!-- LEFT PANEL -->
+<aside class="left-panel">
+  <div class="panel-tabs">
+    <button class="ptab active" onclick="switchPTab(this,'nodes')">Nodes</button>
+    <button class="ptab" onclick="switchPTab(this,'world')">World</button>
+    <button class="ptab" onclick="switchPTab(this,'export')">Export</button>
+  </div>
+
+  <!-- NODES TAB -->
+  <div class="panel-scroll" id="tab-nodes">
+    <div class="panel-section">
+      <div class="p-label">Drag to canvas</div>
+      <div class="node-palette">
+        <div class="palette-item" draggable="true" ondragstart="startDrag(event,'biome')">
+          <div class="pi-icon" style="background:rgba(62,207,142,.1)">🌍</div>
+          <div><div class="pi-name">Biome</div><div class="pi-sub">Regions & environments</div></div>
+          <div class="pi-badge" style="background:rgba(62,207,142,.12);color:#3ecf8e">Env</div>
+        </div>
+        <div class="palette-item" draggable="true" ondragstart="startDrag(event,'character')">
+          <div class="pi-icon" style="background:rgba(155,109,255,.1)">🧝‍♀️</div>
+          <div><div class="pi-name">Character</div><div class="pi-sub">Heroes, NPCs, villains</div></div>
+          <div class="pi-badge" style="background:rgba(155,109,255,.12);color:#9b6dff">NPC</div>
+        </div>
+        <div class="palette-item" draggable="true" ondragstart="startDrag(event,'faction')">
+          <div class="pi-icon" style="background:rgba(254,158,23,.1)">⚔️</div>
+          <div><div class="pi-name">Faction</div><div class="pi-sub">Groups & organisations</div></div>
+          <div class="pi-badge" style="background:rgba(254,158,23,.12);color:var(--brand)">Grp</div>
+        </div>
+        <div class="palette-item" draggable="true" ondragstart="startDrag(event,'quest')">
+          <div class="pi-icon" style="background:rgba(0,212,255,.1)">📜</div>
+          <div><div class="pi-name">Quest</div><div class="pi-sub">Story & objectives</div></div>
+          <div class="pi-badge" style="background:rgba(0,212,255,.1);color:var(--cyan)">Str</div>
+        </div>
+        <div class="palette-item" draggable="true" ondragstart="startDrag(event,'item')">
+          <div class="pi-icon" style="background:rgba(255,77,139,.1)">💎</div>
+          <div><div class="pi-name">Item / Loot</div><div class="pi-sub">Weapons, armour, relics</div></div>
+          <div class="pi-badge" style="background:rgba(255,77,139,.1);color:var(--pink)">Itm</div>
+        </div>
+        <div class="palette-item" draggable="true" ondragstart="startDrag(event,'event')">
+          <div class="pi-icon" style="background:rgba(209,254,23,.08)">⚡</div>
+          <div><div class="pi-name">World Event</div><div class="pi-sub">Historical or live events</div></div>
+          <div class="pi-badge" style="background:rgba(209,254,23,.08);color:var(--accent)">Evt</div>
+        </div>
+        <div class="palette-item" draggable="true" ondragstart="startDrag(event,'lore')">
+          <div class="pi-icon" style="background:rgba(255,255,255,.05)">📖</div>
+          <div><div class="pi-name">Lore Rule</div><div class="pi-sub">World laws & facts</div></div>
+          <div class="pi-badge" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)">Lre</div>
+        </div>
+        <div class="palette-item" draggable="true" ondragstart="startDrag(event,'audio')">
+          <div class="pi-icon" style="background:rgba(254,158,23,.08)">🎵</div>
+          <div><div class="pi-name">Audio Zone</div><div class="pi-sub">OST & ambient audio</div></div>
+          <div class="pi-badge" style="background:rgba(254,158,23,.08);color:var(--brand)">Aud</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- World stats -->
+    <div class="panel-section" id="tab-world" style="display:block">
+      <div class="p-label">World Summary</div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-val" style="color:var(--green)" id="stat-biomes">3</div>
+          <div class="stat-label">Biomes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color:var(--purple)" id="stat-chars">5</div>
+          <div class="stat-label">Characters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color:var(--cyan)" id="stat-quests">4</div>
+          <div class="stat-label">Quests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color:var(--brand)" id="stat-items">12</div>
+          <div class="stat-label">Items</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="p-label">Generated Assets</div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px">
+          <span style="color:var(--muted)">Concept art</span>
+          <span style="color:#ddd;font-family:'JetBrains Mono',monospace;font-size:11px">8 images</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px">
+          <span style="color:var(--muted)">NPC dialogue</span>
+          <span style="color:#ddd;font-family:'JetBrains Mono',monospace;font-size:11px">240 lines</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px">
+          <span style="color:var(--muted)">Lore documents</span>
+          <span style="color:#ddd;font-family:'JetBrains Mono',monospace;font-size:11px">6 pages</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px">
+          <span style="color:var(--muted)">Audio tracks</span>
+          <span style="color:#ddd;font-family:'JetBrains Mono',monospace;font-size:11px">3 OST</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- CANVAS -->
+<main class="canvas-wrap" id="canvas" ondragover="event.preventDefault()" ondrop="dropNode(event)">
+  <!-- SVG connections layer -->
+  <svg id="connections" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <!-- Canvas toolbar -->
+  <div class="canvas-toolbar">
+    <button class="ct-btn active" id="tool-select" onclick="setTool('select',this)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M4 0l16 12-7 1-4 8z"/></svg>
+      Select
+    </button>
+    <button class="ct-btn" id="tool-connect" onclick="setTool('connect',this)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M14 7l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Connect
+    </button>
+    <div class="ct-sep"></div>
+    <button class="ct-btn" onclick="autoLayout()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+      Auto Layout
+    </button>
+    <button class="ct-btn" onclick="clearCanvas()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Clear
+    </button>
+    <div class="ct-sep"></div>
+    <span style="font-size:11px;color:var(--muted);padding:0 6px" id="zoom-label">100%</span>
+  </div>
+
+  <!-- Mini-map -->
+  <div class="minimap">
+    <div class="minimap-inner">
+      <svg width="160" height="90" id="minimap-svg" style="opacity:.6"></svg>
+    </div>
+    <span class="minimap-label">Overview</span>
+  </div>
+
+  <!-- Canvas controls -->
+  <div class="canvas-controls">
+    <button class="cc-btn" onclick="zoom(1.2)" title="Zoom in">+</button>
+    <button class="cc-btn" onclick="zoom(0.8)" title="Zoom out">−</button>
+    <button class="cc-btn" onclick="resetView()" title="Fit to screen" style="font-size:11px">⊡</button>
+  </div>
+</main>
+
+<!-- RIGHT PANEL -->
+<aside class="right-panel">
+  <div class="rp-header">
+    <div class="rp-title" id="rp-title">Node Properties</div>
+    <div class="rp-sub" id="rp-sub">Select a node to edit</div>
+  </div>
+  <div class="rp-scroll" id="rp-content">
+    <!-- Default empty state -->
+    <div style="padding:40px 20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7">
+      Click any node to view<br>and edit its properties.<br><br>
+      <span style="font-size:20px">🗺️</span>
+    </div>
+  </div>
+</aside>
+
+</div>
+</div>
+
+<script>
+// ── STATE ──
+let nodes = {};
+let connections = [];
+let selectedNode = null;
+let currentTool = 'select';
+let dragType = null;
+let connectFrom = null;
+let scale = 1;
+let offset = {x:0, y:0};
+let isDragging = false;
+let dragNode = null;
+let dragOffset = {x:0, y:0};
+
+// ── NODE DEFINITIONS ──
+const NODE_DEFS = {
+  biome: {
+    label:'Biome', icon:'🌍', color:'#3ecf8e', bg:'rgba(62,207,142,.1)',
+    badge:{text:'ENV',color:'#3ecf8e'},
+    props:[{k:'Type',v:'Dark Forest'},{k:'Climate',v:'Temperate'},{k:'Size',v:'Large'}],
+    actions:['Generate Art','Generate Audio','View Lore'],
+    thumb:'🌲',thumbBg:'linear-gradient(135deg,#0a1a10,#102a18)',
+    status:'ready',
+  },
+  character: {
+    label:'Character', icon:'🧝‍♀️', color:'#9b6dff', bg:'rgba(155,109,255,.1)',
+    badge:{text:'NPC',color:'#9b6dff'},
+    props:[{k:'Role',v:'Rogue'},{k:'Faction',v:'Shadow Guild'},{k:'Level',v:'15'}],
+    actions:['Generate Art','Generate Dialogue','Generate Voice'],
+    thumb:'🧝‍♀️',thumbBg:'linear-gradient(135deg,#1a0f2e,#2e1a3e)',
+    status:'ready',
+  },
+  faction: {
+    label:'Faction', icon:'⚔️', color:'#FE9E17', bg:'rgba(254,158,23,.1)',
+    badge:{text:'GRP',color:'#FE9E17'},
+    props:[{k:'Alignment',v:'Chaotic Neutral'},{k:'Members',v:'~2,000'},{k:'Base',v:'Shadow District'}],
+    actions:['Generate Lore','Generate Crest','Generate Quests'],
+    thumb:'⚔️',thumbBg:'linear-gradient(135deg,#1a1008,#2a1a0a)',
+    status:'pending',
+  },
+  quest: {
+    label:'Quest', icon:'📜', color:'#00d4ff', bg:'rgba(0,212,255,.1)',
+    badge:{text:'STR',color:'#00d4ff'},
+    props:[{k:'Type',v:'Main Story'},{k:'Difficulty',v:'Hard'},{k:'Reward',v:'Soul Shard'}],
+    actions:['Generate Dialogue','Generate Rewards','Export to JSON'],
+    thumb:'📜',thumbBg:'linear-gradient(135deg,#081a1e,#0f2530)',
+    status:'empty',
+  },
+  item: {
+    label:'Item', icon:'💎', color:'#ff4d8b', bg:'rgba(255,77,139,.1)',
+    badge:{text:'ITM',color:'#ff4d8b'},
+    props:[{k:'Rarity',v:'Legendary'},{k:'Type',v:'Relic'},{k:'Effect',v:'+Soul Drain'}],
+    actions:['Generate Icon','Generate Description','Generate Lore'],
+    thumb:'💎',thumbBg:'linear-gradient(135deg,#1a0810,#2a0f1a)',
+    status:'ready',
+  },
+  event: {
+    label:'World Event', icon:'⚡', color:'#d1fe17', bg:'rgba(209,254,23,.08)',
+    badge:{text:'EVT',color:'#d1fe17'},
+    props:[{k:'Era',v:'The Shattering'},{k:'Impact',v:'Global'},{k:'Date',v:'Year 0 AE'}],
+    actions:['Generate Cutscene','Generate Lore','Generate Art'],
+    thumb:'⚡',thumbBg:'linear-gradient(135deg,#1a1a00,#2a2a08)',
+    status:'empty',
+  },
+  lore: {
+    label:'Lore Rule', icon:'📖', color:'rgba(255,255,255,.5)', bg:'rgba(255,255,255,.04)',
+    badge:{text:'LRE',color:'rgba(255,255,255,.4)'},
+    props:[{k:'Category',v:'Magic System'},{k:'Scope',v:'World'},{k:'Priority',v:'High'}],
+    actions:['Expand','Generate Art','Apply to All'],
+    thumb:'📖',thumbBg:'linear-gradient(135deg,#111,#1a1a1a)',
+    status:'ready',
+  },
+  audio: {
+    label:'Audio Zone', icon:'🎵', color:'#FE9E17', bg:'rgba(254,158,23,.08)',
+    badge:{text:'AUD',color:'#FE9E17'},
+    props:[{k:'Genre',v:'Orchestral + Synth'},{k:'Tempo',v:'70 BPM'},{k:'Mood',v:'Dark, Tense'}],
+    actions:['Generate Track','Preview','Export WAV'],
+    thumb:'🎵',thumbBg:'linear-gradient(135deg,#1a1008,#0a0a0a)',
+    status:'pending',
+  },
+};
+
+// ── INITIAL NODES ──
+const INITIAL = [
+  {id:'n1', type:'biome',  x:120,  y:80,  name:'Dark Forest'},
+  {id:'n2', type:'character', x:420, y:60,  name:'Kira — Dark Elf Rogue'},
+  {id:'n3', type:'faction', x:420, y:280, name:'The Shadow Guild'},
+  {id:'n4', type:'quest',  x:720, y:120, name:'The Missing Relic'},
+  {id:'n5', type:'biome',  x:120, y:320, name:'Volcanic Forge'},
+  {id:'n6', type:'item',   x:720, y:320, name:'Soul Shard (Legendary)'},
+  {id:'n7', type:'lore',   x:120, y:530, name:'Magic is Forbidden'},
+  {id:'n8', type:'audio',  x:420, y:500, name:'Shadow District OST'},
+];
+
+const INITIAL_CONNS = [
+  {from:'n1', to:'n2', label:'home of'},
+  {from:'n2', to:'n3', label:'member of'},
+  {from:'n2', to:'n4', label:'assigned to'},
+  {from:'n4', to:'n6', label:'rewards'},
+  {from:'n3', to:'n1', label:'controls'},
+  {from:'n7', to:'n1', label:'applies to'},
+  {from:'n8', to:'n1', label:'plays in'},
+  {from:'n8', to:'n5', label:'plays in'},
+];
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  INITIAL.forEach(n => addNode(n.type, n.x, n.y, n.id, n.name));
+  INITIAL_CONNS.forEach(c => addConnection(c.from, c.to, c.label));
+  updateMinimap();
+});
+
+// ── ADD NODE ──
+let nodeCounter = 9;
+function addNode(type, x, y, id, name) {
+  const def = NODE_DEFS[type];
+  if(!def) return;
+  const nid = id || 'n'+(nodeCounter++);
+  nodes[nid] = {id:nid, type, x, y, name: name || def.label};
+
+  const el = document.createElement('div');
+  el.className = 'node';
+  el.id = nid;
+  el.style.left = x+'px';
+  el.style.top = y+'px';
+  el.style.width = '210px';
+  el.innerHTML = `
+    <div class="node-header" onmousedown="startNodeDrag(event,'${nid}')">
+      <div class="node-icon" style="background:${def.bg}">${def.icon}</div>
+      <div>
+        <div class="node-title">${nodes[nid].name}</div>
+        <div class="node-type" style="color:${def.color}">${def.label.toUpperCase()}</div>
+      </div>
+      <button class="node-menu" onclick="event.stopPropagation();selectNode('${nid}')">•••</button>
+    </div>
+    <div class="node-thumb" style="background:${def.thumbBg}">${def.thumb}</div>
+    <div class="node-body">
+      ${def.props.map(p=>`<div class="node-prop"><span class="node-prop-label">${p.k}</span><span class="node-prop-val">${p.v}</span></div>`).join('')}
+    </div>
+    <div class="node-actions">
+      ${def.actions.map((a,i)=>`<button class="node-action${i===0?' primary':''}" onclick="nodeAction('${nid}','${a}')">${a}</button>`).join('')}
+    </div>
+    <div class="node-status">
+      <div class="ns-dot ${def.status}"></div>
+      <span style="color:var(--muted);font-size:10px">${def.status === 'ready' ? 'Generated' : def.status === 'pending' ? 'Generating…' : 'Not generated'}</span>
+    </div>
+    <div class="port port-out" style="background:${def.color}" data-node="${nid}" onmousedown="startConnect(event,'${nid}')"></div>
+    <div class="port port-in" style="background:${def.color}" data-node="${nid}" onmouseup="endConnect(event,'${nid}')"></div>
+  `;
+  el.addEventListener('click', e => { if(!isDragging) selectNode(nid); });
+  document.getElementById('canvas').appendChild(el);
+  return nid;
+}
+
+// ── CONNECTIONS ──
+function addConnection(fromId, toId, label='') {
+  const existing = connections.find(c=>c.from===fromId && c.to===toId);
+  if(existing) return;
+  connections.push({from:fromId, to:toId, label});
+  drawConnections();
+}
+
+function drawConnections() {
+  const svg = document.getElementById('connections');
+  svg.innerHTML = '';
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  // arrowhead marker
+  const marker = document.createElementNS('http://www.w3.org/2000/svg','marker');
+  marker.setAttribute('id','arrow');
+  marker.setAttribute('markerWidth','8');
+  marker.setAttribute('markerHeight','8');
+  marker.setAttribute('refX','6');
+  marker.setAttribute('refY','3');
+  marker.setAttribute('orient','auto');
+  const arrowPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  arrowPath.setAttribute('d','M0,0 L0,6 L8,3 z');
+  arrowPath.setAttribute('fill','rgba(255,255,255,0.15)');
+  marker.appendChild(arrowPath);
+  defs.appendChild(marker);
+  svg.appendChild(defs);
+
+  connections.forEach(conn => {
+    const fromEl = document.getElementById(conn.from);
+    const toEl = document.getElementById(conn.to);
+    if(!fromEl || !toEl) return;
+
+    const fR = fromEl.getBoundingClientRect();
+    const tR = toEl.getBoundingClientRect();
+    const cR = document.getElementById('canvas').getBoundingClientRect();
+
+    const x1 = fR.right - cR.left;
+    const y1 = fR.top + fR.height/2 - cR.top;
+    const x2 = tR.left - cR.left;
+    const y2 = tR.top + tR.height/2 - cR.top;
+
+    const cx = (x1 + x2) / 2;
+    const def = NODE_DEFS[nodes[conn.from]?.type];
+    const color = def?.color || 'rgba(255,255,255,.2)';
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`);
+    path.setAttribute('stroke', color);
+    path.setAttribute('stroke-width','1.5');
+    path.setAttribute('stroke-opacity','0.35');
+    path.setAttribute('fill','none');
+    path.setAttribute('marker-end','url(#arrow)');
+    svg.appendChild(path);
+
+    if(conn.label) {
+      const mx = (x1+x2)/2, my = (y1+y2)/2;
+      const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',mx-24); rect.setAttribute('y',my-9);
+      rect.setAttribute('width','48'); rect.setAttribute('height','16');
+      rect.setAttribute('rx','5'); rect.setAttribute('fill','rgba(8,10,12,.85)');
+      rect.setAttribute('stroke',color); rect.setAttribute('stroke-opacity','.3');
+      rect.setAttribute('stroke-width','1');
+      svg.appendChild(rect);
+      const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+      text.setAttribute('x',mx); text.setAttribute('y',my+1);
+      text.setAttribute('text-anchor','middle'); text.setAttribute('dominant-baseline','middle');
+      text.setAttribute('fill','rgba(255,255,255,.5)'); text.setAttribute('font-size','9');
+      text.setAttribute('font-family','JetBrains Mono, monospace');
+      text.textContent = conn.label;
+      svg.appendChild(text);
+    }
+  });
+  updateMinimap();
+}
+
+// ── NODE DRAG ──
+function startNodeDrag(e, nid) {
+  if(currentTool !== 'select') return;
+  e.stopPropagation();
+  isDragging = false;
+  dragNode = nid;
+  const el = document.getElementById(nid);
+  const rect = el.getBoundingClientRect();
+  dragOffset = {x: e.clientX - rect.left, y: e.clientY - rect.top};
+
+  const onMove = (e2) => {
+    isDragging = true;
+    const canvas = document.getElementById('canvas');
+    const cRect = canvas.getBoundingClientRect();
+    const x = e2.clientX - cRect.left - dragOffset.x;
+    const y = e2.clientY - cRect.top - dragOffset.y;
+    el.style.left = Math.max(0,x)+'px';
+    el.style.top = Math.max(0,y)+'px';
+    nodes[nid].x = x; nodes[nid].y = y;
+    drawConnections();
+  };
+  const onUp = () => {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    setTimeout(()=>{ isDragging = false; }, 50);
+    dragNode = null;
+  };
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+
+// ── CONNECTION DRAG ──
+function startConnect(e, nid) {
+  if(currentTool !== 'connect') return;
+  e.stopPropagation();
+  connectFrom = nid;
+}
+function endConnect(e, nid) {
+  if(connectFrom && nid !== connectFrom) {
+    addConnection(connectFrom, nid, 'links to');
+  }
+  connectFrom = null;
+}
+
+// ── SELECT NODE ──
+function selectNode(nid) {
+  document.querySelectorAll('.node.selected').forEach(n=>n.classList.remove('selected'));
+  if(selectedNode === nid){ selectedNode=null; showEmptyPanel(); return; }
+  selectedNode = nid;
+  document.getElementById(nid)?.classList.add('selected');
+  showNodePanel(nid);
+}
+
+function showNodePanel(nid) {
+  const n = nodes[nid];
+  const def = NODE_DEFS[n.type];
+  document.getElementById('rp-title').textContent = n.name;
+  document.getElementById('rp-sub').innerHTML = `<span style="color:${def.color}">${def.label}</span>`;
+
+  const conns = connections.filter(c=>c.from===nid||c.to===nid);
+
+  document.getElementById('rp-content').innerHTML = `
+    <div class="rp-section">
+      <div class="rp-label">Preview</div>
+      <div class="rp-preview">
+        <div class="rp-preview-img" style="background:${def.thumbBg}">${def.thumb}</div>
+        <div class="rp-preview-meta">Generated · Style Lock Active · ${def.label}</div>
+      </div>
+      <button class="gen-world-btn" onclick="generateNode('${nid}')">✦ Generate Assets</button>
+    </div>
+    <div class="rp-section">
+      <div class="rp-label">Properties</div>
+      <div class="rp-field"><label>Name</label><input class="rp-input" value="${n.name}" oninput="updateNodeName('${nid}',this.value)"></div>
+      ${def.props.map(p=>`<div class="rp-field"><label>${p.k}</label><input class="rp-input" value="${p.v}"></div>`).join('')}
+    </div>
+    <div class="rp-section">
+      <div class="rp-label">Description</div>
+      <textarea class="rp-textarea" placeholder="Describe this ${def.label.toLowerCase()}…"></textarea>
+    </div>
+    <div class="rp-section">
+      <div class="rp-label">Connections (${conns.length})</div>
+      ${conns.length ? conns.map(c=>{
+        const otherId = c.from===nid ? c.to : c.from;
+        const other = nodes[otherId];
+        const otherDef = NODE_DEFS[other?.type];
+        const dir = c.from===nid ? '→' : '←';
+        return `<div class="conn-item">
+          <span style="font-size:14px">${otherDef?.icon||'?'}</span>
+          <div class="conn-arrow">${dir}</div>
+          <div class="conn-name">${other?.name||otherId}</div>
+          <div class="conn-type" style="background:${otherDef?.bg};color:${otherDef?.color}">${c.label}</div>
+        </div>`;
+      }).join('') : `<div style="font-size:12px;color:var(--muted)">No connections yet. Use Connect tool to link nodes.</div>`}
+    </div>
+    <div class="rp-section">
+      <div class="rp-label">Output Files</div>
+      ${def.actions.map(a=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--sep)">
+          <span style="font-size:12px;color:var(--muted)">${a}</span>
+          <button onclick="nodeAction('${nid}','${a}')" style="height:22px;padding:0 8px;border-radius:5px;background:var(--surface3);border:1px solid var(--sep);color:rgba(255,255,255,.5);font-size:10px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Run →</button>
+        </div>`).join('')}
+    </div>
+  `;
+}
+
+function showEmptyPanel() {
+  document.getElementById('rp-title').textContent = 'Node Properties';
+  document.getElementById('rp-sub').textContent = 'Select a node to edit';
+  document.getElementById('rp-content').innerHTML = `<div style="padding:40px 20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7">Click any node to view<br>and edit its properties.<br><br><span style="font-size:20px">🗺️</span></div>`;
+}
+
+function updateNodeName(nid, name) {
+  nodes[nid].name = name;
+  const titleEl = document.querySelector(`#${nid} .node-title`);
+  if(titleEl) titleEl.textContent = name;
+}
+
+// ── DROP FROM PALETTE ──
+function startDrag(e, type) { dragType = type; }
+function dropNode(e) {
+  if(!dragType) return;
+  const canvas = document.getElementById('canvas');
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left - 105;
+  const y = e.clientY - rect.top - 60;
+  const nid = addNode(dragType, Math.max(10,x), Math.max(10,y));
+  dragType = null;
+  updateStats();
+  setTimeout(()=>{ selectNode(nid); }, 100);
+}
+
+// ── TOOLS ──
+function setTool(tool, btn) {
+  currentTool = tool;
+  document.querySelectorAll('.ct-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('canvas').style.cursor = tool==='connect' ? 'crosshair' : 'default';
+}
+
+// ── ZOOM ──
+function zoom(factor) {
+  scale = Math.min(2, Math.max(0.3, scale * factor));
+  document.getElementById('zoom-label').textContent = Math.round(scale*100)+'%';
+}
+function resetView() { scale = 1; document.getElementById('zoom-label').textContent = '100%'; }
+
+// ── AUTO LAYOUT ──
+function autoLayout() {
+  const nodeList = Object.values(nodes);
+  const cols = Math.ceil(Math.sqrt(nodeList.length));
+  const W = 250, H = 220;
+  nodeList.forEach((n,i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    n.x = 60 + col * W;
+    n.y = 60 + row * H;
+    const el = document.getElementById(n.id);
+    if(el){ el.style.left = n.x+'px'; el.style.top = n.y+'px'; }
+  });
+  drawConnections();
+}
+
+// ── GENERATE ACTIONS ──
+function nodeAction(nid, action) {
+  const n = nodes[nid];
+  const def = NODE_DEFS[n.type];
+  const statusEl = document.querySelector(`#${nid} .ns-dot`);
+  const statusLabel = document.querySelector(`#${nid} .node-status span`);
+  if(statusEl){ statusEl.className='ns-dot pending'; statusLabel.textContent='Generating…'; }
+  setTimeout(()=>{
+    if(statusEl){ statusEl.className='ns-dot ready'; statusLabel.textContent='Generated'; }
+    if(selectedNode===nid) showNodePanel(nid);
+  }, 1800 + Math.random()*800);
+}
+
+function generateNode(nid) { nodeAction(nid, 'Generate'); }
+
+function generateAll() {
+  Object.keys(nodes).forEach((nid,i) => {
+    setTimeout(()=>nodeAction(nid,'Generate'), i*400);
+  });
+}
+
+// ── CLEAR ──
+function clearCanvas() {
+  if(!confirm('Clear all nodes?')) return;
+  Object.keys(nodes).forEach(nid => {
+    document.getElementById(nid)?.remove();
+    delete nodes[nid];
+  });
+  connections = [];
+  drawConnections();
+  showEmptyPanel();
+  updateStats();
+}
+
+// ── STATS ──
+function updateStats() {
+  const types = Object.values(nodes).map(n=>n.type);
+  document.getElementById('stat-biomes').textContent = types.filter(t=>t==='biome').length || 0;
+  document.getElementById('stat-chars').textContent = types.filter(t=>t==='character').length || 0;
+  document.getElementById('stat-quests').textContent = types.filter(t=>t==='quest').length || 0;
+  document.getElementById('stat-items').textContent = types.filter(t=>t==='item').length || 0;
+}
+
+// ── MINIMAP ──
+function updateMinimap() {
+  const svg = document.getElementById('minimap-svg');
+  svg.innerHTML = '';
+  const nodeList = Object.values(nodes);
+  if(!nodeList.length) return;
+
+  const xs = nodeList.map(n=>n.x), ys = nodeList.map(n=>n.y);
+  const minX = Math.min(...xs)-20, maxX = Math.max(...xs)+240;
+  const minY = Math.min(...ys)-20, maxY = Math.max(...ys)+200;
+  const W = maxX - minX, H = maxY - minY;
+  const scaleX = 158/W, scaleY = 88/H;
+  const sc = Math.min(scaleX, scaleY);
+
+  nodeList.forEach(n => {
+    const def = NODE_DEFS[n.type];
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x',(n.x-minX)*sc+1);
+    rect.setAttribute('y',(n.y-minY)*sc+1);
+    rect.setAttribute('width',Math.max(20,200*sc));
+    rect.setAttribute('height',Math.max(12,120*sc));
+    rect.setAttribute('rx','3');
+    rect.setAttribute('fill',def?.color||'#fff');
+    rect.setAttribute('fill-opacity','0.3');
+    svg.appendChild(rect);
+  });
+}
+
+// ── LEFT PANEL TABS ──
+function switchPTab(btn, tab) {
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Redraw connections on window resize
+window.addEventListener('resize', drawConnections);
+// Initial draw after layout
+setTimeout(drawConnections, 100);
+
+// Navigation shortcuts from node actions
+const _origNodeAction = nodeAction;
+window.nodeAction = function(nid, action) {
+  if(action === 'Generate Art') {
+    _origNodeAction(nid, action);
+    // Brief visual then open workspace
+    setTimeout(() => {
+      if(confirm('Open Generate Game Art workspace?')) {
+        window.open('generate-art.html','_blank');
+      }
+    }, 400);
+    return;
+  }
+  _origNodeAction(nid, action);
+};
+
+</script>
+<div id="gf-floatnav" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;gap:4px;padding:5px;background:rgba(8,10,12,.94);border:1px solid rgba(255,255,255,.12);border-radius:14px;backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,0,0,.7)">
+  <a href="index.html" data-page="home" class="gf-nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:9px;font-size:12px;font-weight:600;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;font-family:DM Sans,sans-serif;white-space:nowrap;border:1px solid transparent">🏠 Explore</a>
+  <a href="generate-art.html" data-page="art" class="gf-nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:9px;font-size:12px;font-weight:600;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;font-family:DM Sans,sans-serif;white-space:nowrap;border:1px solid transparent">🎨 Generate Art</a>
+  <a href="world-builder.html" data-page="world" class="gf-nav-link" style="display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:9px;font-size:12px;font-weight:600;color:rgba(255,255,255,.45);text-decoration:none;transition:all .15s;font-family:DM Sans,sans-serif;white-space:nowrap;border:1px solid transparent">🌍 World Builder</a>
+</div>
+<style>
+.gf-nav-link:hover{background:rgba(255,255,255,.08)!important;color:#fff!important}
+.gf-nav-link.gf-active{background:rgba(254,158,23,.12)!important;color:#FE9E17!important;border-color:rgba(254,158,23,.2)!important}
+</style>
+<script>document.querySelector('[data-page="world"]').classList.add('gf-active')</script>
+</body>
+</html>

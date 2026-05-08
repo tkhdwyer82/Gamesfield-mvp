@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Generate Game Art — Gamesfield</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0f1113;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;outline:none;font-family:inherit}
+
+:root{
+  --surface-primary:#1c1e20;
+  --surface-secondary:#23252a;
+  --surface-tertiary:#0f1113;
+  --separator:rgba(255,255,255,0.08);
+  --font-secondary:rgba(255,255,255,0.45);
+  --brand:#FE9E17;
+  --accent:#d1fe17;
+  --accent-text:#131517;
+  --sidebar-w:280px;
+  --panel-w:340px;
+  --header-h:52px;
+}
+
+/* ── LAYOUT SHELL ── */
+.app{display:grid;grid-template-rows:var(--header-h) 1fr;height:100vh;overflow:hidden}
+
+/* ── HEADER ── */
+.app-header{
+  height:var(--header-h);display:flex;align-items:center;
+  background:rgba(15,17,19,.95);
+  border-bottom:1px solid var(--separator);
+  backdrop-filter:blur(12px);z-index:50;position:relative;
+  padding:0 12px;gap:8px;
+}
+.header-logo{display:flex;align-items:center;gap:8px;margin-right:4px;flex-shrink:0}
+.header-logo-mark{width:28px;height:28px;border-radius:6px;overflow:hidden;flex-shrink:0}
+.header-logo-mark svg{width:28px;height:28px;display:block}
+.header-wordmark{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.04em;white-space:nowrap}
+.header-wordmark span{color:var(--brand)}
+.header-sep{width:1px;height:20px;background:var(--separator);margin:0 4px;flex-shrink:0}
+/* breadcrumb nav */
+.header-nav{display:flex;align-items:center;gap:4px;overflow:hidden;flex:1}
+.header-nav-link{font-size:13px;color:var(--font-secondary);padding:4px 8px;border-radius:8px;white-space:nowrap;transition:all .12s}
+.header-nav-link:hover{color:#fff;background:rgba(255,255,255,.05)}
+.header-nav-link.active{color:#fff}
+.header-nav-sep{color:rgba(255,255,255,.2);font-size:12px;flex-shrink:0}
+/* model selector pill */
+.model-pill{
+  display:flex;align-items:center;gap:6px;padding:5px 12px 5px 8px;
+  background:var(--surface-primary);border:1px solid var(--separator);
+  border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;
+  transition:all .15s;flex-shrink:0;
+}
+.model-pill:hover{border-color:rgba(255,255,255,.2);background:var(--surface-secondary)}
+.model-dot{width:8px;height:8px;border-radius:50%;background:var(--brand);flex-shrink:0}
+.model-chevron{color:var(--font-secondary);font-size:10px}
+/* right controls */
+.header-right{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.glass-btn{
+  height:32px;padding:0 12px;border-radius:8px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  color:#fff;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;
+  cursor:pointer;transition:all .15s;
+}
+.glass-btn:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.15)}
+.glass-icon-btn{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:all .15s;color:#fff;
+}
+.glass-icon-btn:hover{background:rgba(255,255,255,.1)}
+.avatar{
+  width:28px;height:28px;border-radius:50%;background:var(--brand);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#0d0d0d;flex-shrink:0;cursor:pointer;
+}
+.credits-badge{
+  display:flex;align-items:center;gap:5px;padding:4px 10px;
+  background:var(--surface-primary);border:1px solid var(--separator);
+  border-radius:20px;font-size:12px;color:var(--font-secondary);
+}
+.credits-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--brand)}
+
+/* ── WORKSPACE BODY ── */
+.workspace{display:grid;grid-template-columns:var(--sidebar-w) 1fr var(--panel-w);height:calc(100vh - var(--header-h));overflow:hidden}
+
+/* ── LEFT SIDEBAR ── */
+.sidebar{
+  background:var(--surface-tertiary);border-right:1px solid var(--separator);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.sidebar-section{padding:12px;border-bottom:1px solid var(--separator)}
+.sidebar-label{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+
+/* Model selector in sidebar */
+.model-list{display:flex;flex-direction:column;gap:4px}
+.model-item{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;
+  cursor:pointer;transition:all .12s;border:1px solid transparent;
+}
+.model-item:hover{background:var(--surface-primary);border-color:var(--separator)}
+.model-item.active{background:var(--surface-primary);border-color:rgba(254,158,23,.25)}
+.model-item-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.model-item-name{font-size:13px;font-weight:500;color:#ddd}
+.model-item-sub{font-size:11px;color:var(--font-secondary);margin-top:1px}
+.model-badge{font-size:9px;font-family:'JetBrains Mono',monospace;padding:2px 5px;border-radius:4px;font-weight:700;margin-left:auto;flex-shrink:0;transform:skewX(-8deg)}
+.mb-brand{background:rgba(254,158,23,.15);color:var(--brand)}
+.mb-new{background:rgba(209,254,23,.12);color:#d1fe17}
+.mb-pro{background:rgba(155,109,255,.15);color:#9b6dff}
+
+/* Style lock panel */
+.style-lock{
+  margin:10px;border-radius:12px;padding:12px;
+  background:linear-gradient(135deg,rgba(254,158,23,.08),rgba(254,158,23,.03));
+  border:1px solid rgba(254,158,23,.2);
+}
+.style-lock-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.style-lock-dot{width:8px;height:8px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.style-lock-title{font-size:12px;font-weight:600;color:var(--brand)}
+.style-lock-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;background:rgba(254,158,23,.1);border:1px solid rgba(254,158,23,.15);font-size:11px;color:var(--brand);margin:2px}
+.style-lock-tags{margin-top:6px}
+
+/* Recent generations */
+.recent-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:2px}
+.recent-thumb{
+  aspect-ratio:1;border-radius:8px;background:var(--surface-primary);
+  cursor:pointer;overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  transition:opacity .15s;
+}
+.recent-thumb:hover{opacity:.8}
+.recent-thumb-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.5);
+  opacity:0;transition:opacity .15s;display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.recent-thumb:hover .recent-thumb-overlay{opacity:1}
+
+/* ── MAIN CANVAS ── */
+.canvas{
+  background:var(--surface-tertiary);display:flex;flex-direction:column;
+  overflow:hidden;position:relative;
+}
+
+/* Canvas toolbar */
+.canvas-toolbar{
+  display:flex;align-items:center;gap:8px;padding:10px 16px;
+  border-bottom:1px solid var(--separator);flex-shrink:0;background:rgba(15,17,19,.6);
+}
+.toolbar-group{display:flex;align-items:center;gap:4px}
+.toolbar-btn{
+  height:30px;padding:0 10px;border-radius:7px;
+  background:transparent;color:var(--font-secondary);font-size:12px;font-weight:500;
+  display:flex;align-items:center;gap:5px;cursor:pointer;transition:all .12s;border:none;
+}
+.toolbar-btn:hover{background:var(--surface-primary);color:#fff}
+.toolbar-btn.active{background:var(--surface-primary);color:#fff;border:1px solid var(--separator)}
+.toolbar-sep{width:1px;height:18px;background:var(--separator);margin:0 4px}
+.aspect-selector{
+  display:flex;align-items:center;gap:4px;padding:4px 10px;
+  background:var(--surface-primary);border:1px solid var(--separator);
+  border-radius:8px;font-size:12px;cursor:pointer;
+}
+
+/* Output canvas area */
+.canvas-output{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.output-grid{
+  display:grid;gap:12px;padding:20px;width:100%;height:100%;
+  align-items:center;justify-items:center;
+}
+.output-grid.single{grid-template-columns:1fr;grid-template-rows:1fr}
+.output-grid.quad{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+
+.output-card{
+  border-radius:16px;overflow:hidden;position:relative;
+  background:var(--surface-primary);cursor:pointer;
+  border:1px solid var(--separator);
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .15s;width:100%;max-height:100%;
+}
+.output-card:hover{border-color:rgba(255,255,255,.2)}
+.output-card.generating{
+  border-color:rgba(254,158,23,.3);
+  animation:gen-pulse 2s ease-in-out infinite;
+}
+@keyframes gen-pulse{0%,100%{border-color:rgba(254,158,23,.2)}50%{border-color:rgba(254,158,23,.5)}}
+
+.output-placeholder{
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  padding:40px;text-align:center;
+}
+.output-icon{font-size:48px;opacity:.3}
+.output-hint{font-size:13px;color:rgba(255,255,255,.25);max-width:200px;line-height:1.5}
+
+.output-img{
+  width:100%;height:100%;object-fit:contain;
+  display:flex;align-items:center;justify-content:center;
+  font-size:80px;
+}
+
+/* output card hover actions */
+.output-actions{
+  position:absolute;bottom:10px;right:10px;display:flex;gap:6px;
+  opacity:0;transition:opacity .15s;
+}
+.output-card:hover .output-actions{opacity:1}
+.output-action-btn{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;cursor:pointer;font-size:14px;transition:all .15s;
+}
+.output-action-btn:hover{background:rgba(0,0,0,.9);border-color:rgba(255,255,255,.25)}
+
+/* Generation progress */
+.gen-progress{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(0,0,0,.8);backdrop-filter:blur(12px);
+  padding:16px 20px;border-top:1px solid var(--separator);
+  display:flex;align-items:center;gap:14px;
+}
+.gen-progress-bar-wrap{flex:1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.gen-progress-bar{height:100%;background:var(--brand);border-radius:2px;transition:width .3s;animation:progress-anim 3s ease-in-out forwards}
+@keyframes progress-anim{0%{width:0%}60%{width:75%}85%{width:88%}100%{width:95%}}
+.gen-progress-label{font-size:12px;color:var(--font-secondary);white-space:nowrap}
+.gen-cancel{font-size:12px;color:rgba(255,255,255,.4);cursor:pointer;transition:color .12s}
+.gen-cancel:hover{color:#fff}
+
+/* ── RIGHT PANEL ── */
+.panel{
+  background:var(--surface-tertiary);border-left:1px solid var(--separator);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.panel-section{padding:14px;border-bottom:1px solid var(--separator)}
+.panel-label{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.panel-label-action{font-size:10px;color:rgba(255,158,23,.7);cursor:pointer;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif}
+.panel-label-action:hover{color:var(--brand)}
+
+/* Prompt textarea */
+.prompt-area{
+  width:100%;background:var(--surface-primary);border:1px solid var(--separator);
+  border-radius:12px;padding:12px;color:#fff;font-family:'DM Sans',sans-serif;
+  font-size:13px;line-height:1.6;resize:none;height:120px;
+  transition:border-color .15s;outline:none;
+}
+.prompt-area:focus{border-color:rgba(254,158,23,.4)}
+.prompt-area::placeholder{color:rgba(255,255,255,.2)}
+
+/* Prompt tools row */
+.prompt-tools{display:flex;align-items:center;gap:6px;margin-top:8px}
+.prompt-tool-btn{
+  height:28px;padding:0 10px;border-radius:7px;
+  background:var(--surface-primary);border:1px solid var(--separator);
+  color:var(--font-secondary);font-size:11px;display:flex;align-items:center;gap:5px;
+  cursor:pointer;transition:all .12s;
+}
+.prompt-tool-btn:hover{color:#fff;border-color:rgba(255,255,255,.2)}
+
+/* Generate button */
+.gen-btn{
+  width:100%;height:46px;border-radius:12px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:radial-gradient(circle at 42% 100%,rgba(255,255,255,.5) 0%,transparent 100%),
+             linear-gradient(90deg,#FE9E17 0%,#ffb830 100%);
+  color:#131517;box-shadow:inset 0 -3px rgba(0,0,0,.4);
+  transition:opacity .15s;margin-top:12px;
+}
+.gen-btn:hover{opacity:.9}
+.gen-btn:active{opacity:.8;transform:translateY(1px)}
+
+/* Sliders & controls */
+.control-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.control-label{font-size:12px;color:#aaa;display:flex;align-items:center;gap:6px}
+.control-value{font-size:12px;font-family:'JetBrains Mono',monospace;color:#fff;background:var(--surface-primary);padding:2px 8px;border-radius:5px;border:1px solid var(--separator)}
+.slider{-webkit-appearance:none;width:100%;height:3px;border-radius:2px;background:var(--surface-secondary);outline:none;margin:6px 0}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--brand);cursor:pointer;border:2px solid var(--surface-tertiary);box-shadow:0 0 0 1px var(--brand)}
+.slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--brand);cursor:pointer;border:2px solid var(--surface-tertiary)}
+
+/* Toggle switch */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.toggle-label{font-size:12px;color:#aaa}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:#2a2a2a;border-radius:20px;transition:.3s}
+.toggle-slider::before{position:absolute;content:"";height:14px;width:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked + .toggle-slider{background:var(--brand)}
+.toggle input:checked + .toggle-slider::before{transform:translateX(16px)}
+
+/* Aspect ratio grid */
+.aspect-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.aspect-btn{
+  aspect-ratio:1;border-radius:8px;border:1px solid var(--separator);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;cursor:pointer;background:transparent;color:var(--font-secondary);
+  font-size:10px;transition:all .12s;
+}
+.aspect-btn:hover{border-color:rgba(255,255,255,.2);color:#fff;background:var(--surface-primary)}
+.aspect-btn.active{border-color:var(--brand);color:var(--brand);background:rgba(254,158,23,.06)}
+.aspect-icon{width:20px;height:20px;border:1.5px solid currentColor;border-radius:3px}
+
+/* Scrollable panel */
+.panel-scroll{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
+.panel-scroll::-webkit-scrollbar{width:4px}
+.panel-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+/* Negative prompt */
+.neg-prompt{
+  width:100%;background:var(--surface-primary);border:1px solid var(--separator);
+  border-radius:10px;padding:10px;color:rgba(255,255,255,.6);font-family:'DM Sans',sans-serif;
+  font-size:12px;resize:none;height:60px;outline:none;transition:border-color .15s;
+}
+.neg-prompt:focus{border-color:rgba(255,255,255,.2)}
+.neg-prompt::placeholder{color:rgba(255,255,255,.15)}
+
+/* Style presets */
+.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.preset-btn{
+  border-radius:8px;padding:8px 10px;border:1px solid var(--separator);
+  background:transparent;cursor:pointer;transition:all .12s;
+  display:flex;align-items:center;gap:8px;
+}
+.preset-btn:hover{border-color:rgba(255,255,255,.2);background:var(--surface-primary)}
+.preset-btn.active{border-color:rgba(254,158,23,.4);background:rgba(254,158,23,.06)}
+.preset-icon{font-size:18px;flex-shrink:0}
+.preset-name{font-size:11px;font-weight:500;color:#ddd;text-align:left}
+
+/* Upload area */
+.upload-area{
+  border:1.5px dashed rgba(255,255,255,.1);border-radius:10px;padding:16px;
+  text-align:center;cursor:pointer;transition:all .15s;
+}
+.upload-area:hover{border-color:rgba(254,158,23,.3);background:rgba(254,158,23,.03)}
+.upload-hint{font-size:11px;color:rgba(255,255,255,.25);margin-top:4px}
+
+/* Tabs inside panel */
+.panel-tabs{display:flex;gap:2px;padding:10px 14px 0;border-bottom:1px solid var(--separator)}
+.panel-tab{
+  padding:6px 14px;border-radius:8px 8px 0 0;font-size:12px;font-weight:500;
+  color:var(--font-secondary);cursor:pointer;border:none;background:transparent;
+  transition:all .12s;border-bottom:2px solid transparent;margin-bottom:-1px;
+}
+.panel-tab:hover{color:#fff}
+.panel-tab.active{color:#fff;border-bottom-color:var(--brand)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ── HEADER ── -->
+<header class="app-header">
+  <div class="header-logo">
+    <div class="header-logo-mark">
+      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1200" height="1200" fill="#FE9E17"/>
+        <path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/>
+        <path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/>
+      </svg>
+    </div>
+    <span class="header-wordmark">Games<span>field</span></span>
+  </div>
+  <div class="header-sep"></div>
+  <nav class="header-nav">
+    <a href="#" class="header-nav-link">Explore</a>
+    <span class="header-nav-sep">›</span>
+    <a href="#" class="header-nav-link active">Generate Game Art</a>
+  </nav>
+  <!-- Model selector -->
+  <button class="model-pill" onclick="toggleModelMenu()">
+    <div class="model-dot"></div>
+    <span id="active-model-name">Style Lock Pro</span>
+    <span class="model-chevron">▾</span>
+  </button>
+  <div class="header-right">
+    <div class="credits-badge"><div class="dot"></div>480 credits</div>
+    <button class="glass-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 10h18M3 14h18M10 3L7.5 21M16.5 3L14 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      History
+    </button>
+    <button class="glass-icon-btn" title="Settings">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.5"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
+    <div class="avatar">T</div>
+  </div>
+</header>
+
+<!-- ── WORKSPACE ── -->
+<div class="workspace">
+
+  <!-- ── LEFT SIDEBAR ── -->
+  <aside class="sidebar">
+    <!-- Style Lock -->
+    <div class="style-lock" style="margin:10px;border-radius:12px">
+      <div class="style-lock-header">
+        <div class="style-lock-dot"></div>
+        <span class="style-lock-title">Project Memory Active</span>
+        <button style="margin-left:auto;background:none;border:none;color:rgba(255,158,23,.5);font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif">Edit</button>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:6px">Locked style applied to all generations</div>
+      <div class="style-lock-tags">
+        <span class="style-lock-tag">🎮 Fantasy RPG</span>
+        <span class="style-lock-tag">🎨 Painterly</span>
+        <span class="style-lock-tag">🌙 Dark tone</span>
+      </div>
+    </div>
+
+    <!-- Model list -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">AI Models</div>
+      <div class="model-list">
+        <div class="model-item active" onclick="selectModel(this,'Style Lock Pro')">
+          <div class="model-item-icon" style="background:rgba(254,158,23,.1)">🎨</div>
+          <div>
+            <div class="model-item-name">Style Lock Pro</div>
+            <div class="model-item-sub">Preserves your game style</div>
+          </div>
+          <div class="model-badge mb-brand">Default</div>
+        </div>
+        <div class="model-item" onclick="selectModel(this,'Scenario Gen')">
+          <div class="model-item-icon" style="background:rgba(155,109,255,.1)">✦</div>
+          <div>
+            <div class="model-item-name">Scenario Gen</div>
+            <div class="model-item-sub">Concept art specialist</div>
+          </div>
+        </div>
+        <div class="model-item" onclick="selectModel(this,'Midjourney v7')">
+          <div class="model-item-icon" style="background:rgba(0,212,255,.08)">🌊</div>
+          <div>
+            <div class="model-item-name">Midjourney v7</div>
+            <div class="model-item-sub">Highest quality renders</div>
+          </div>
+          <div class="model-badge mb-pro">Pro</div>
+        </div>
+        <div class="model-item" onclick="selectModel(this,'Pixel Art AI')">
+          <div class="model-item-icon" style="background:rgba(209,254,23,.08)">🟩</div>
+          <div>
+            <div class="model-item-name">Pixel Art AI</div>
+            <div class="model-item-sub">Retro / indie style</div>
+          </div>
+          <div class="model-badge mb-new">New</div>
+        </div>
+        <div class="model-item" onclick="selectModel(this,'Flux Kontext')">
+          <div class="model-item-icon" style="background:rgba(255,77,139,.08)">⚡</div>
+          <div>
+            <div class="model-item-name">Flux Kontext</div>
+            <div class="model-item-sub">Fast iterations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent generations -->
+    <div class="sidebar-section" style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+      <div class="sidebar-label">Recent <span style="color:rgba(255,255,255,.2);font-size:9px;margin-left:4px;text-transform:none;letter-spacing:0">24</span></div>
+      <div style="overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent">
+        <div class="recent-grid">
+          <div class="recent-thumb" style="background:linear-gradient(135deg,#1a0f2e,#2e1a3e)">🧝‍♀️<div class="recent-thumb-overlay">↗</div></div>
+          <div class="recent-thumb" style="background:linear-gradient(135deg,#0f2010,#1a3020)">🏰<div class="recent-thumb-overlay">↗</div></div>
+          <div class="recent-thumb" style="background:linear-gradient(135deg,#200818,#301228)">😈<div class="recent-thumb-overlay">↗</div></div>
+          <div class="recent-thumb" style="background:linear-gradient(135deg,#08082a,#10103a)">🗡️<div class="recent-thumb-overlay">↗</div></div>
+          <div class="recent-thumb" style="background:linear-gradient(135deg,#0a1a10,#102a18)">🌲<div class="recent-thumb-overlay">↗</div></div>
+          <div class="recent-thumb" style="background:linear-gradient(135deg,#1a1a08,#2a2a10)">🏹<div class="recent-thumb-overlay">↗</div></div>
+          <div class="recent-thumb" style="background:linear-gradient(135deg,#1a0810,#2a1020)">🔮<div class="recent-thumb-overlay">↗</div></div>
+          <div class="recent-thumb" style="background:linear-gradient(135deg,#081a1e,#0f2530)">🐉<div class="recent-thumb-overlay">↗</div></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CANVAS ── -->
+  <main class="canvas">
+    <div class="canvas-toolbar">
+      <div class="toolbar-group">
+        <button class="toolbar-btn active" onclick="setCount(1,this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+          1
+        </button>
+        <button class="toolbar-btn" onclick="setCount(2,this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="18" rx="2" fill="currentColor" opacity=".6"/><rect x="13" y="3" width="8" height="18" rx="2" fill="currentColor"/></svg>
+          2
+        </button>
+        <button class="toolbar-btn" onclick="setCount(4,this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" opacity=".8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+          4
+        </button>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toolbar-group">
+        <button class="toolbar-btn" title="Zoom to fit">⊡</button>
+        <button class="toolbar-btn" title="Zoom in">＋</button>
+        <button class="toolbar-btn" title="Zoom out">－</button>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="aspect-selector">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span style="font-size:12px">1:1 Square</span>
+        <span style="font-size:10px;color:var(--font-secondary)">▾</span>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <button class="toolbar-btn" id="compare-btn" onclick="toggleCompare(this)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Compare
+        </button>
+        <button class="toolbar-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <!-- Output area -->
+    <div class="canvas-output" id="canvas-output">
+      <div class="output-grid single" id="output-grid">
+        <!-- Generated image or placeholder -->
+        <div class="output-card generating" id="main-output" style="aspect-ratio:1;max-width:520px;max-height:520px">
+          <div class="output-placeholder">
+            <div class="output-icon">🎨</div>
+            <div class="output-hint">Your game art will appear here</div>
+            <div style="margin-top:12px;font-size:11px;color:rgba(255,255,255,.15)">Enter a prompt and click Generate</div>
+          </div>
+          <div class="output-actions">
+            <button class="output-action-btn" title="Download">↓</button>
+            <button class="output-action-btn" title="Use as reference">◈</button>
+            <button class="output-action-btn" title="Upscale">⬆</button>
+            <button class="output-action-btn" title="More">•••</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generation progress bar (hidden by default, shown when generating) -->
+    <div class="gen-progress" id="gen-progress" style="display:none">
+      <div style="font-size:13px;color:#fff;white-space:nowrap">Generating…</div>
+      <div class="gen-progress-bar-wrap"><div class="gen-progress-bar" id="progress-bar"></div></div>
+      <div class="gen-progress-label" id="progress-label">Rendering style lock</div>
+      <button class="gen-cancel" onclick="cancelGeneration()">Cancel</button>
+    </div>
+  </main>
+
+  <!-- ── RIGHT PANEL ── -->
+  <aside class="panel">
+    <!-- Tabs -->
+    <div class="panel-tabs">
+      <button class="panel-tab active" onclick="switchTab(this,'generate')">Generate</button>
+      <button class="panel-tab" onclick="switchTab(this,'edit')">Edit</button>
+      <button class="panel-tab" onclick="switchTab(this,'upscale')">Upscale</button>
+    </div>
+
+    <div class="panel-scroll" id="panel-generate">
+      <!-- Prompt -->
+      <div class="panel-section">
+        <div class="panel-label">
+          Prompt
+          <span class="panel-label-action" onclick="enhancePrompt()">✦ Enhance</span>
+        </div>
+        <textarea class="prompt-area" id="prompt-input" placeholder="Dark elf rogue, hooded cloak, emerald eyes, fantasy RPG painterly style, dramatic lighting, detailed armor…"></textarea>
+        <div class="prompt-tools">
+          <button class="prompt-tool-btn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 3v1m0 16v1M4.22 4.22l.71.71m12.73 12.73l.71.71M3 12h1m16 0h1M4.22 19.78l.71-.71M18.36 5.64l.71-.71" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Random
+          </button>
+          <button class="prompt-tool-btn">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Copy
+          </button>
+          <button class="prompt-tool-btn" style="margin-left:auto">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Clear
+          </button>
+        </div>
+        <button class="gen-btn" onclick="generate()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.766 3.581c-.677-.576-1.714-.048-1.645.838l.29 3.751-3.205 1.97c-.758.466-.58 1.615.285 1.824l2.803.677-7.078 7.077a.75.75 0 001.06 1.06l7.077-7.077.678 2.803c.209.865 1.358 1.043 1.824.285l1.97-3.205 3.751.29c.886.069 1.414-.968.838-1.645L16.79 9.63l1.435-3.473a.75.75 0 00-1.108-.898l-3.02 2.06z"/></svg>
+          Generate · 4 credits
+        </button>
+      </div>
+
+      <!-- Style Presets -->
+      <div class="panel-section">
+        <div class="panel-label">Style Presets</div>
+        <div class="preset-grid">
+          <button class="preset-btn active" onclick="selectPreset(this)">
+            <span class="preset-icon">🎨</span>
+            <span class="preset-name">Painterly</span>
+          </button>
+          <button class="preset-btn" onclick="selectPreset(this)">
+            <span class="preset-icon">📸</span>
+            <span class="preset-name">Photorealistic</span>
+          </button>
+          <button class="preset-btn" onclick="selectPreset(this)">
+            <span class="preset-icon">🎮</span>
+            <span class="preset-name">Pixel Art</span>
+          </button>
+          <button class="preset-btn" onclick="selectPreset(this)">
+            <span class="preset-icon">✏️</span>
+            <span class="preset-name">Concept Art</span>
+          </button>
+          <button class="preset-btn" onclick="selectPreset(this)">
+            <span class="preset-icon">🌊</span>
+            <span class="preset-name">Watercolor</span>
+          </button>
+          <button class="preset-btn" onclick="selectPreset(this)">
+            <span class="preset-icon">🤖</span>
+            <span class="preset-name">Sci-Fi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Aspect Ratio -->
+      <div class="panel-section">
+        <div class="panel-label">Aspect Ratio</div>
+        <div class="aspect-grid">
+          <button class="aspect-btn active" onclick="selectAspect(this,'1:1')">
+            <div class="aspect-icon" style="width:16px;height:16px"></div>
+            <span>1:1</span>
+          </button>
+          <button class="aspect-btn" onclick="selectAspect(this,'4:3')">
+            <div class="aspect-icon" style="width:20px;height:15px"></div>
+            <span>4:3</span>
+          </button>
+          <button class="aspect-btn" onclick="selectAspect(this,'16:9')">
+            <div class="aspect-icon" style="width:22px;height:13px"></div>
+            <span>16:9</span>
+          </button>
+          <button class="aspect-btn" onclick="selectAspect(this,'9:16')">
+            <div class="aspect-icon" style="width:13px;height:22px"></div>
+            <span>9:16</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="panel-section">
+        <div class="panel-label">Parameters</div>
+        <div class="control-row">
+          <span class="control-label">Quality</span>
+          <span class="control-value" id="quality-val">80</span>
+        </div>
+        <input type="range" class="slider" min="1" max="100" value="80" oninput="document.getElementById('quality-val').textContent=this.value">
+
+        <div class="control-row" style="margin-top:12px">
+          <span class="control-label">Creativity</span>
+          <span class="control-value" id="creativity-val">0.7</span>
+        </div>
+        <input type="range" class="slider" min="0" max="10" value="7" oninput="document.getElementById('creativity-val').textContent=(this.value/10).toFixed(1)">
+
+        <div class="control-row" style="margin-top:12px">
+          <span class="control-label">Detail</span>
+          <span class="control-value" id="detail-val">High</span>
+        </div>
+        <input type="range" class="slider" min="1" max="3" value="2" oninput="document.getElementById('detail-val').textContent=['Low','Med','High'][this.value-1]">
+      </div>
+
+      <!-- Toggles -->
+      <div class="panel-section">
+        <div class="toggle-row">
+          <span class="toggle-label">Apply style lock</span>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row" style="margin-top:8px">
+          <span class="toggle-label">Match character roster</span>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row" style="margin-top:8px">
+          <span class="toggle-label">Safe mode</span>
+          <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+
+      <!-- Reference image -->
+      <div class="panel-section">
+        <div class="panel-label">Reference Image</div>
+        <div class="upload-area" onclick="this.style.borderColor='rgba(254,158,23,.5)'">
+          <div style="font-size:22px;margin-bottom:6px">📎</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.35)">Drop image or click to upload</div>
+          <div class="upload-hint">PNG, JPG, WEBP · Max 10MB</div>
+        </div>
+      </div>
+
+      <!-- Negative prompt -->
+      <div class="panel-section">
+        <div class="panel-label">Negative Prompt</div>
+        <textarea class="neg-prompt" placeholder="blurry, low quality, watermark, text, deformed, ugly…"></textarea>
+      </div>
+    </div>
+
+    <!-- Edit tab (hidden) -->
+    <div id="panel-edit" style="display:none;padding:16px">
+      <div style="font-size:13px;color:var(--font-secondary);text-align:center;padding:40px 20px">
+        Select a generated image to edit it
+      </div>
+    </div>
+
+    <!-- Upscale tab (hidden) -->
+    <div id="panel-upscale" style="display:none;padding:16px">
+      <div style="font-size:13px;color:var(--font-secondary);text-align:center;padding:40px 20px">
+        Generate an image first, then upscale it here
+      </div>
+    </div>
+  </aside>
+
+</div>
+</div>
+
+<script>
+// Model selection
+function selectModel(el, name) {
+  document.querySelectorAll('.model-item').forEach(m => m.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('active-model-name').textContent = name;
+}
+
+// Generation count
+function setCount(n, btn) {
+  document.querySelectorAll('.canvas-toolbar .toolbar-btn').forEach(b => {
+    if(['1','2','4'].includes(b.textContent.trim())) b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  const grid = document.getElementById('output-grid');
+  grid.className = n === 4 ? 'output-grid quad' : 'output-grid single';
+  if(n === 4) {
+    grid.innerHTML = '';
+    for(let i=0;i<4;i++){
+      grid.innerHTML += `<div class="output-card" style="aspect-ratio:1"><div class="output-placeholder"><div class="output-icon" style="font-size:32px">🎨</div></div><div class="output-actions"><button class="output-action-btn">↓</button><button class="output-action-btn">◈</button></div></div>`;
+    }
+  } else if(n === 2) {
+    grid.innerHTML = `
+      <div class="output-card" style="aspect-ratio:1;max-width:380px"><div class="output-placeholder"><div class="output-icon">🎨</div><div class="output-hint">Image 1</div></div><div class="output-actions"><button class="output-action-btn">↓</button><button class="output-action-btn">◈</button></div></div>
+      <div class="output-card" style="aspect-ratio:1;max-width:380px"><div class="output-placeholder"><div class="output-icon">🎨</div><div class="output-hint">Image 2</div></div><div class="output-actions"><button class="output-action-btn">↓</button><button class="output-action-btn">◈</button></div></div>`;
+  } else {
+    grid.innerHTML = `<div class="output-card generating" id="main-output" style="aspect-ratio:1;max-width:520px;max-height:520px"><div class="output-placeholder"><div class="output-icon">🎨</div><div class="output-hint">Your game art will appear here</div><div style="margin-top:12px;font-size:11px;color:rgba(255,255,255,.15)">Enter a prompt and click Generate</div></div><div class="output-actions"><button class="output-action-btn">↓</button><button class="output-action-btn">◈</button><button class="output-action-btn">⬆</button><button class="output-action-btn">•••</button></div></div>`;
+  }
+}
+
+// Generate simulation
+const genSteps = ['Initialising model…','Applying style lock…','Rendering composition…','Adding fine details…','Post-processing…','Almost done…'];
+let genTimer = null;
+
+function generate() {
+  const prompt = document.getElementById('prompt-input').value;
+  const progress = document.getElementById('gen-progress');
+  const bar = document.getElementById('progress-bar');
+  const label = document.getElementById('progress-label');
+  const output = document.getElementById('main-output') || document.querySelector('.output-card');
+
+  if(output) output.classList.add('generating');
+  progress.style.display = 'flex';
+  bar.style.animation = 'none';
+  bar.style.width = '0%';
+  setTimeout(()=>{ bar.style.animation = 'progress-anim 6s ease-in-out forwards'; },10);
+
+  let step = 0;
+  label.textContent = genSteps[step];
+  genTimer = setInterval(()=>{
+    step++;
+    if(step < genSteps.length) label.textContent = genSteps[step];
+    else {
+      clearInterval(genTimer);
+      setTimeout(()=>{
+        bar.style.width = '100%';
+        setTimeout(()=>{
+          progress.style.display = 'none';
+          if(output){ output.classList.remove('generating'); }
+          showResult(prompt, output);
+        },300);
+      },500);
+    }
+  }, 950);
+}
+
+function showResult(prompt, output) {
+  const emojis = ['🧝‍♀️','🏰','⚔️','🐉','🧙‍♂️','🌲','😈','🔮','🛡️','🗺️'];
+  const e = emojis[Math.floor(Math.random()*emojis.length)];
+  const gradients = [
+    'linear-gradient(135deg,#1a0f2e,#2e1a3e)',
+    'linear-gradient(135deg,#0f2010,#1a3020)',
+    'linear-gradient(135deg,#200818,#301228)',
+    'linear-gradient(135deg,#08082a,#10103a)',
+    'linear-gradient(135deg,#1a0810,#2a1020)',
+    'linear-gradient(135deg,#0a1510,#0f2018)',
+  ];
+  const g = gradients[Math.floor(Math.random()*gradients.length)];
+  if(output) {
+    output.innerHTML = `
+      <div class="output-img" style="background:${g}">${e}</div>
+      <div class="output-actions">
+        <button class="output-action-btn" title="Download">↓</button>
+        <button class="output-action-btn" title="Use as reference">◈</button>
+        <button class="output-action-btn" title="Upscale">⬆</button>
+        <button class="output-action-btn" title="More">•••</button>
+      </div>`;
+  }
+}
+
+function cancelGeneration() {
+  clearInterval(genTimer);
+  document.getElementById('gen-progress').style.display = 'none';
+  const output = document.querySelector('.output-card');
+  if(output) output.classList.remove('generating');
+}
+
+// Style presets
+function selectPreset(el) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Aspect ratio
+function selectAspect(el, ratio) {
+  document.querySelectorAll('.aspect-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelector('.aspect-selector span').textContent = ratio + ' ' + ({
+    '1:1':'Square','4:3':'Landscape','16:9':'Widescreen','9:16':'Portrait'
+  }[ratio]||'');
+}
+
+// Panel tabs
+function switchTab(btn, tab) {
+  document.querySelectorAll('.panel-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['generate','edit','upscale'].forEach(t => {
+    const el = document.getElementById('panel-'+t);
+    if(el) el.style.display = t === tab ? (t==='generate'?'block':'block') : 'none';
+  });
+}
+
+// Enhance prompt
+function enhancePrompt() {
+  const ta = document.getElementById('prompt-input');
+  const curr = ta.value || 'dark elf rogue';
+  ta.value = curr + ', dramatic rim lighting, intricate armor details, bokeh background, 8K resolution, award-winning digital art';
+}
+</script>
+</body>
+</html>

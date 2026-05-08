@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Get Started — Gamesfield</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;outline:none;font-family:inherit}
+input{font-family:inherit;outline:none}
+
+:root{
+  --bg:#0a0b0f;
+  --surface:#13151c;
+  --surface2:#1a1d27;
+  --surface3:#21253200;
+  --sep:rgba(255,255,255,0.07);
+  --sep2:rgba(255,255,255,0.12);
+  --muted:rgba(255,255,255,0.4);
+  --brand:#FE9E17;
+  --accent:#d1fe17;
+  --purple:#9b6dff;
+  --cyan:#00d4ff;
+  --green:#3ecf8e;
+  --pink:#ff4d8b;
+}
+
+/* ── LAYOUT ── */
+.shell{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  height:100vh;
+  background:var(--bg);
+  color:#fff;
+}
+
+/* ── LEFT PANEL — branding ── */
+.left{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#0d0f1a 0%,#0a0b0f 60%,#0f0a14 100%);
+  display:flex;flex-direction:column;padding:32px;
+}
+/* Animated gradient orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:drift 8s ease-in-out infinite alternate}
+.orb1{width:400px;height:400px;background:rgba(254,158,23,.18);top:-100px;left:-100px;animation-delay:0s}
+.orb2{width:300px;height:300px;background:rgba(155,109,255,.14);bottom:50px;right:-80px;animation-delay:-3s}
+.orb3{width:250px;height:250px;background:rgba(0,212,255,.1);top:40%;left:30%;animation-delay:-5s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(30px,20px) scale(1.08)}}
+
+/* Dot grid */
+.left::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+
+.left-logo{position:relative;z-index:2;display:flex;align-items:center;gap:10px;margin-bottom:auto}
+.left-logo-mark{width:36px;height:36px;border-radius:9px;overflow:hidden}
+.left-logo-mark svg{width:36px;height:36px;display:block}
+.left-logo-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.05em}
+.left-logo-name span{color:var(--brand)}
+
+.left-content{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0 20px}
+.left-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,4vw,56px);line-height:.95;letter-spacing:.01em;margin-bottom:20px}
+.left-headline span{color:var(--brand)}
+.left-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:340px;font-weight:300;margin-bottom:32px}
+
+/* Social proof / feature pills */
+.feature-pills{display:flex;flex-direction:column;gap:10px}
+.feature-pill{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;backdrop-filter:blur(8px);
+}
+.fp-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.fp-text{font-size:13px;color:rgba(255,255,255,.65);line-height:1.4}
+.fp-text strong{color:#fff;font-weight:600}
+
+/* Testimonial */
+.left-footer{position:relative;z-index:2;margin-top:32px}
+.testimonial{padding:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px}
+.testimonial-text{font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;font-style:italic;margin-bottom:10px}
+.testimonial-author{display:flex;align-items:center;gap:8px}
+.testimonial-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0d0d0d;background:var(--brand)}
+.testimonial-name{font-size:11px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace}
+
+/* ── RIGHT PANEL — form ── */
+.right{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px;overflow-y:auto;background:var(--bg);
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.07) transparent;
+}
+
+/* Step container */
+.step{display:none;width:100%;max-width:420px;animation:stepIn .3s ease}
+.step.active{display:block}
+@keyframes stepIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Progress bar */
+.progress-wrap{margin-bottom:32px}
+.progress-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.progress-step-label{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;color:var(--muted)}
+.progress-count{font-size:11px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.25)}
+.progress-bar-track{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--brand);border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+/* Step titles */
+.step-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.02em;margin-bottom:6px;line-height:1}
+.step-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.5}
+
+/* Form fields */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,.5);margin-bottom:6px;letter-spacing:.02em}
+.field-input{
+  width:100%;height:46px;padding:0 14px;
+  background:var(--surface);border:1px solid var(--sep2);border-radius:10px;
+  color:#fff;font-size:14px;transition:border-color .15s;
+}
+.field-input:focus{border-color:rgba(254,158,23,.5);box-shadow:0 0 0 3px rgba(254,158,23,.08)}
+.field-input::placeholder{color:rgba(255,255,255,.2)}
+
+/* SSO buttons */
+.sso-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.sso-btn{
+  height:46px;border-radius:10px;border:1px solid var(--sep2);
+  background:var(--surface);color:#fff;font-size:13px;font-weight:500;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;transition:all .15s;
+}
+.sso-btn:hover{border-color:rgba(255,255,255,.22);background:var(--surface2)}
+.sso-icon{width:18px;height:18px;flex-shrink:0}
+
+.divider{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.divider-line{flex:1;height:1px;background:var(--sep)}
+.divider-text{font-size:11px;color:rgba(255,255,255,.25);white-space:nowrap;font-family:'JetBrains Mono',monospace}
+
+/* CTA button */
+.cta-btn{
+  width:100%;height:48px;border-radius:12px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
+  background:radial-gradient(circle at 42% 100%,rgba(255,255,255,.5) 0%,transparent 100%),
+             linear-gradient(90deg,#FE9E17 0%,#ffb830 100%);
+  color:#131517;box-shadow:inset 0 -3px rgba(0,0,0,.4);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:opacity .15s;margin-top:6px;
+}
+.cta-btn:hover{opacity:.9}
+.cta-btn:active{opacity:.8;transform:translateY(1px)}
+.cta-btn:disabled{opacity:.4;cursor:not-allowed}
+
+.back-btn{
+  display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);
+  background:none;border:none;cursor:pointer;margin-bottom:20px;
+  transition:color .12s;padding:0;
+}
+.back-btn:hover{color:#fff}
+
+.terms{font-size:11px;color:rgba(255,255,255,.2);text-align:center;margin-top:14px;line-height:1.6}
+.terms a{color:rgba(255,255,255,.35);transition:color .12s}
+.terms a:hover{color:#fff}
+
+/* ── STEP 2: USE CASE ── */
+.usecase-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.usecase-card{
+  padding:16px 14px;border-radius:12px;border:1px solid var(--sep2);
+  background:var(--surface);cursor:pointer;transition:all .15s;
+  text-align:left;
+}
+.usecase-card:hover{border-color:rgba(255,255,255,.22);background:var(--surface2)}
+.usecase-card.selected{border-color:rgba(254,158,23,.5);background:rgba(254,158,23,.07);box-shadow:0 0 0 3px rgba(254,158,23,.1)}
+.uc-icon{font-size:22px;margin-bottom:8px}
+.uc-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px}
+.uc-sub{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* ── STEP 3: GAME TYPE ── */
+.genre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.genre-card{
+  aspect-ratio:1;border-radius:12px;border:1px solid var(--sep2);
+  background:var(--surface);cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  text-align:center;padding:12px;
+}
+.genre-card:hover{border-color:rgba(255,255,255,.22);background:var(--surface2)}
+.genre-card.selected{border-color:rgba(254,158,23,.5);background:rgba(254,158,23,.07);box-shadow:0 0 0 3px rgba(254,158,23,.1)}
+.gc-icon{font-size:24px}
+.gc-name{font-size:11px;font-weight:600;color:#ddd}
+
+/* ── STEP 4: STYLE LOCK ── */
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.style-card{
+  border-radius:12px;border:1px solid var(--sep2);
+  background:var(--surface);cursor:pointer;transition:all .15s;overflow:hidden;
+}
+.style-card:hover{border-color:rgba(255,255,255,.22)}
+.style-card.selected{border-color:rgba(254,158,23,.5);box-shadow:0 0 0 3px rgba(254,158,23,.1)}
+.sc-preview{height:80px;display:flex;align-items:center;justify-content:center;font-size:32px}
+.sc-info{padding:8px 12px 10px}
+.sc-name{font-size:12px;font-weight:600;color:#fff}
+.sc-sub{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ── STEP 5: PLAN ── */
+.plan-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.plan-card{
+  padding:16px 18px;border-radius:12px;border:1px solid var(--sep2);
+  background:var(--surface);cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;gap:16px;
+}
+.plan-card:hover{border-color:rgba(255,255,255,.22);background:var(--surface2)}
+.plan-card.selected{border-color:rgba(254,158,23,.5);background:rgba(254,158,23,.05);box-shadow:0 0 0 3px rgba(254,158,23,.1)}
+.plan-card.featured{border-color:rgba(254,158,23,.3);background:rgba(254,158,23,.04)}
+.plan-radio{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.plan-card.selected .plan-radio{border-color:var(--brand);background:var(--brand)}
+.plan-card.selected .plan-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:#0d0d0d}
+.plan-info{flex:1}
+.plan-name{font-size:14px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px}
+.plan-badge{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:4px;background:rgba(254,158,23,.15);color:var(--brand);font-weight:700;transform:skewX(-6deg);display:inline-block}
+.plan-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.plan-price{text-align:right;flex-shrink:0}
+.plan-price-main{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em}
+.plan-price-sub{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+
+/* ── SUCCESS ── */
+.success-wrap{text-align:center;padding:20px 0}
+.success-icon{
+  width:72px;height:72px;border-radius:20px;margin:0 auto 20px;
+  background:rgba(254,158,23,.12);border:1px solid rgba(254,158,23,.25);
+  display:flex;align-items:center;justify-content:center;font-size:32px;
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.success-title{font-family:'Bebas Neue',sans-serif;font-size:36px;margin-bottom:8px;letter-spacing:.02em}
+.success-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px}
+.success-summary{background:var(--surface);border:1px solid var(--sep2);border-radius:12px;padding:16px;margin-bottom:24px;text-align:left}
+.ss-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--sep);font-size:12px}
+.ss-row:last-child{border-bottom:none}
+.ss-label{color:var(--muted)}
+.ss-val{color:#fff;font-weight:500;font-family:'JetBrains Mono',monospace;font-size:11px}
+.credits-pill{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 14px;
+  background:rgba(254,158,23,.1);border:1px solid rgba(254,158,23,.2);
+  border-radius:20px;font-size:12px;color:var(--brand);font-weight:600;margin-bottom:20px;
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ── LEFT BRANDING PANEL ── -->
+<div class="left">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <div class="left-logo">
+    <div class="left-logo-mark">
+      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1200" height="1200" fill="#FE9E17"/>
+        <path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/>
+        <path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/>
+      </svg>
+    </div>
+    <span class="left-logo-name">Games<span>field</span></span>
+  </div>
+
+  <div class="left-content">
+    <!-- Content changes per step -->
+    <div id="left-step-1">
+      <div class="left-headline">Build your<br>game world<br><span>with AI</span></div>
+      <p class="left-sub">The only platform that keeps your art style, characters, and world lore consistent across every AI tool you use.</p>
+      <div class="feature-pills">
+        <div class="feature-pill">
+          <div class="fp-icon" style="background:rgba(62,207,142,.1)">🎨</div>
+          <div class="fp-text"><strong>Style Lock</strong> — generate art that always matches your game</div>
+        </div>
+        <div class="feature-pill">
+          <div class="fp-icon" style="background:rgba(155,109,255,.1)">🤖</div>
+          <div class="fp-text"><strong>NPC Brain</strong> — reactive characters with real memory</div>
+        </div>
+        <div class="feature-pill">
+          <div class="fp-icon" style="background:rgba(254,158,23,.1)">⚡</div>
+          <div class="fp-text"><strong>23+ tools</strong> — one credit, zero context switching</div>
+        </div>
+      </div>
+    </div>
+    <div id="left-step-2" style="display:none">
+      <div class="left-headline">Made for<br>every type<br><span>of dev</span></div>
+      <p class="left-sub">Solo indie or small studio — Gamesfield adapts to how you build games.</p>
+    </div>
+    <div id="left-step-3" style="display:none">
+      <div class="left-headline">Your game.<br>Your<br><span>style.</span></div>
+      <p class="left-sub">Tell us what you're building and every generation will feel native to your world.</p>
+    </div>
+    <div id="left-step-4" style="display:none">
+      <div class="left-headline">Set it<br>once. Use<br><span>everywhere.</span></div>
+      <p class="left-sub">Style Lock means Midjourney, Scenario, and Meshy all produce art that feels like one consistent game.</p>
+    </div>
+    <div id="left-step-5" style="display:none">
+      <div class="left-headline">Start<br>building<br><span>today.</span></div>
+      <p class="left-sub">Your first 50 credits are free. No credit card required on the free plan.</p>
+    </div>
+  </div>
+
+  <div class="left-footer">
+    <div class="testimonial">
+      <div class="testimonial-text">"Gamesfield cut my asset pipeline from 3 days to an afternoon. The style lock feature is the whole game."</div>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">M</div>
+        <div class="testimonial-name">mattdev — Wishlist: 12,400 · Steam Early Access</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RIGHT FORM PANEL ── -->
+<div class="right">
+
+  <!-- STEP 1: Sign Up -->
+  <div class="step active" id="step-1">
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span class="progress-step-label">Create account</span>
+        <span class="progress-count">1 / 5</span>
+      </div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:20%"></div></div>
+    </div>
+
+    <div class="step-title">Get started free</div>
+    <div class="step-sub">Join 2,400+ indie devs already building with AI</div>
+
+    <!-- SSO -->
+    <div class="sso-row">
+      <button class="sso-btn" onclick="nextStep(1)">
+        <svg class="sso-icon" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <button class="sso-btn" onclick="nextStep(1)">
+        <svg class="sso-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        Continue with GitHub
+      </button>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">or sign up with email</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="field">
+      <label>Email address</label>
+      <input class="field-input" type="email" placeholder="you@studio.com" id="email-input">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input class="field-input" type="password" placeholder="Min. 8 characters" id="pw-input">
+    </div>
+
+    <button class="cta-btn" onclick="nextStep(1)">
+      Create free account
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="terms">
+      By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<br>
+      Already have an account? <a href="index.html" style="color:var(--brand)">Sign in</a>
+    </div>
+  </div>
+
+  <!-- STEP 2: What kind of dev? -->
+  <div class="step" id="step-2">
+    <button class="back-btn" onclick="prevStep(2)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span class="progress-step-label">About you</span>
+        <span class="progress-count">2 / 5</span>
+      </div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:40%"></div></div>
+    </div>
+    <div class="step-title">What describes you best?</div>
+    <div class="step-sub">We'll personalise your workspace to match how you build games.</div>
+
+    <div class="usecase-grid">
+      <div class="usecase-card" onclick="selectCard(this,'usecase')">
+        <div class="uc-icon">🎮</div>
+        <div class="uc-name">Solo indie dev</div>
+        <div class="uc-sub">Building your game alone, wearing every hat</div>
+      </div>
+      <div class="usecase-card" onclick="selectCard(this,'usecase')">
+        <div class="uc-icon">👥</div>
+        <div class="uc-name">Small studio</div>
+        <div class="uc-sub">Team of 2–10, shipping commercially</div>
+      </div>
+      <div class="usecase-card" onclick="selectCard(this,'usecase')">
+        <div class="uc-icon">🎓</div>
+        <div class="uc-name">Student / hobbyist</div>
+        <div class="uc-sub">Learning game dev, building for fun</div>
+      </div>
+      <div class="usecase-card" onclick="selectCard(this,'usecase')">
+        <div class="uc-icon">🏢</div>
+        <div class="uc-name">Game studio</div>
+        <div class="uc-sub">Mid-size or larger team, enterprise needs</div>
+      </div>
+    </div>
+
+    <button class="cta-btn" id="step2-btn" onclick="nextStep(2)" disabled>
+      Continue
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <!-- STEP 3: Game genre -->
+  <div class="step" id="step-3">
+    <button class="back-btn" onclick="prevStep(3)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span class="progress-step-label">Your game</span>
+        <span class="progress-count">3 / 5</span>
+      </div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:60%"></div></div>
+    </div>
+    <div class="step-title">What are you building?</div>
+    <div class="step-sub">Pick up to 2 genres. This helps us tune art and audio generation.</div>
+
+    <div class="genre-grid">
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">⚔️</div><div class="gc-name">RPG / Fantasy</div>
+      </div>
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">🚀</div><div class="gc-name">Sci-Fi</div>
+      </div>
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">💀</div><div class="gc-name">Horror</div>
+      </div>
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">🏃</div><div class="gc-name">Platformer</div>
+      </div>
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">🎲</div><div class="gc-name">Roguelike</div>
+      </div>
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">🌆</div><div class="gc-name">Open World</div>
+      </div>
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">🟩</div><div class="gc-name">Pixel / Retro</div>
+      </div>
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">🧩</div><div class="gc-name">Puzzle</div>
+      </div>
+      <div class="genre-card" onclick="selectGenre(this)">
+        <div class="gc-icon">⚡</div><div class="gc-name">Action</div>
+      </div>
+    </div>
+
+    <button class="cta-btn" id="step3-btn" onclick="nextStep(3)" disabled>
+      Continue
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <!-- STEP 4: Art Style Lock -->
+  <div class="step" id="step-4">
+    <button class="back-btn" onclick="prevStep(4)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span class="progress-step-label">Style Lock</span>
+        <span class="progress-count">4 / 5</span>
+      </div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:80%"></div></div>
+    </div>
+    <div class="step-title">Pick your art style</div>
+    <div class="step-sub">This becomes your Style Lock — every generation will match it. You can change it anytime.</div>
+
+    <div class="style-grid">
+      <div class="style-card" onclick="selectCard(this,'style')">
+        <div class="sc-preview" style="background:linear-gradient(135deg,#1a0f2e,#2e1a3e)">🎨</div>
+        <div class="sc-info"><div class="sc-name">Painterly</div><div class="sc-sub">Dark Souls, Hollow Knight vibes</div></div>
+      </div>
+      <div class="style-card" onclick="selectCard(this,'style')">
+        <div class="sc-preview" style="background:linear-gradient(135deg,#0a1a10,#1a3020)">🟩</div>
+        <div class="sc-info"><div class="sc-name">Pixel Art</div><div class="sc-sub">Stardew, Celeste, retro indie</div></div>
+      </div>
+      <div class="style-card" onclick="selectCard(this,'style')">
+        <div class="sc-preview" style="background:linear-gradient(135deg,#08082a,#10103a)">✨</div>
+        <div class="sc-info"><div class="sc-name">Photorealistic</div><div class="sc-sub">Cinematic, high-fidelity renders</div></div>
+      </div>
+      <div class="style-card" onclick="selectCard(this,'style')">
+        <div class="sc-preview" style="background:linear-gradient(135deg,#1a1a08,#2a2a10)">✏️</div>
+        <div class="sc-info"><div class="sc-name">Concept Art</div><div class="sc-sub">Loose sketchy, pre-production</div></div>
+      </div>
+      <div class="style-card" onclick="selectCard(this,'style')">
+        <div class="sc-preview" style="background:linear-gradient(135deg,#1a0810,#2a1020)">🌊</div>
+        <div class="sc-info"><div class="sc-name">Anime / Cel</div><div class="sc-sub">Flat colour, manga-inspired</div></div>
+      </div>
+      <div class="style-card" onclick="selectCard(this,'style')">
+        <div class="sc-preview" style="background:linear-gradient(135deg,#0f0a14,#180f24)">🤖</div>
+        <div class="sc-info"><div class="sc-name">Sci-Fi / Neon</div><div class="sc-sub">Cyberpunk, glowing edges</div></div>
+      </div>
+    </div>
+
+    <button class="cta-btn" id="step4-btn" onclick="nextStep(4)" disabled>
+      Lock in my style
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="terms">You can upload your own reference art instead — <a href="#" style="color:var(--brand)">Skip to upload →</a></div>
+  </div>
+
+  <!-- STEP 5: Choose plan -->
+  <div class="step" id="step-5">
+    <button class="back-btn" onclick="prevStep(5)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span class="progress-step-label">Choose plan</span>
+        <span class="progress-count">5 / 5</span>
+      </div>
+      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="step-title">Start building</div>
+    <div class="step-sub">Start free. Upgrade when you're ready to ship.</div>
+
+    <div class="plan-grid">
+      <div class="plan-card selected" onclick="selectPlan(this)" id="plan-free">
+        <div class="plan-radio"></div>
+        <div class="plan-info">
+          <div class="plan-name">Indie <span style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-weight:400">Free forever</span></div>
+          <div class="plan-desc">50 credits/mo · 3 tool integrations · 1 project</div>
+        </div>
+        <div class="plan-price">
+          <div class="plan-price-main">$0</div>
+          <div class="plan-price-sub">/month</div>
+        </div>
+      </div>
+      <div class="plan-card featured" onclick="selectPlan(this)" id="plan-studio">
+        <div class="plan-radio"></div>
+        <div class="plan-info">
+          <div class="plan-name">Studio <span class="plan-badge">Popular</span></div>
+          <div class="plan-desc">600 credits/mo · All 23 tools · 5 projects · Engine export</div>
+        </div>
+        <div class="plan-price">
+          <div class="plan-price-main" style="color:var(--brand)">$49</div>
+          <div class="plan-price-sub">/month</div>
+        </div>
+      </div>
+      <div class="plan-card" onclick="selectPlan(this)" id="plan-team">
+        <div class="plan-radio"></div>
+        <div class="plan-info">
+          <div class="plan-name">Team</div>
+          <div class="plan-desc">2,500 credits/mo · Shared memory · API access · Webhooks</div>
+        </div>
+        <div class="plan-price">
+          <div class="plan-price-main">$149</div>
+          <div class="plan-price-sub">/month</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="cta-btn" onclick="nextStep(5)">
+      Enter Gamesfield
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.766 3.581c-.677-.576-1.714-.048-1.645.838l.29 3.751-3.205 1.97c-.758.466-.58 1.615.285 1.824l2.803.677-7.078 7.077a.75.75 0 001.06 1.06l7.077-7.077.678 2.803c.209.865 1.358 1.043 1.824.285l1.97-3.205 3.751.29c.886.069 1.414-.968.838-1.645L16.79 9.63l1.435-3.473a.75.75 0 00-1.108-.898l-3.02 2.06z"/></svg>
+    </button>
+    <div class="terms">No credit card required on the free plan. Cancel anytime.</div>
+  </div>
+
+  <!-- STEP 6: Success -->
+  <div class="step" id="step-6">
+    <div class="success-wrap">
+      <div class="success-icon">🎮</div>
+      <div class="success-title">You're in, dev.</div>
+      <div class="success-sub">Your world is ready to build.<br>Your style lock is active across all tools.</div>
+
+      <div class="credits-pill">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite"></div>
+        <span id="credits-amount">50</span> credits loaded and ready
+      </div>
+
+      <div class="success-summary" id="success-summary">
+        <div class="ss-row"><span class="ss-label">Dev type</span><span class="ss-val" id="ss-devtype">—</span></div>
+        <div class="ss-row"><span class="ss-label">Genre</span><span class="ss-val" id="ss-genre">—</span></div>
+        <div class="ss-row"><span class="ss-label">Art style</span><span class="ss-val" id="ss-style">—</span></div>
+        <div class="ss-row"><span class="ss-label">Plan</span><span class="ss-val" id="ss-plan">Indie (Free)</span></div>
+        <div class="ss-row"><span class="ss-label">Credits</span><span class="ss-val" id="ss-credits">50 / month</span></div>
+      </div>
+
+      <button class="cta-btn" onclick="window.location.href='world-builder.html'" style="margin-bottom:10px">
+        🌍 Open World Builder
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button onclick="window.location.href='generate-art.html'" style="width:100%;height:46px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.6);font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s" onmouseover="this.style.borderColor='rgba(255,255,255,.25)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,.12)';this.style.color='rgba(255,255,255,.6)'">
+        🎨 Generate first art instead
+      </button>
+    </div>
+  </div>
+
+</div><!-- /right -->
+</div><!-- /shell -->
+
+<style>
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+
+<script>
+// ── STATE ──
+let state = {
+  currentStep: 1,
+  devType: null,
+  genres: [],
+  artStyle: null,
+  plan: 'free',
+};
+
+// ── NAVIGATION ──
+function nextStep(from) {
+  // Validation
+  if(from === 1) {
+    const email = document.getElementById('email-input').value;
+    const pw = document.getElementById('pw-input').value;
+    // Allow SSO path (no validation needed) or basic email check
+    if(!email && !state.sso) {
+      shake('email-input'); return;
+    }
+  }
+
+  goToStep(from + 1);
+}
+
+function prevStep(from) { goToStep(from - 1); }
+
+function goToStep(n) {
+  // Hide current
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  // Update left panel content
+  document.querySelectorAll('[id^="left-step-"]').forEach(s => s.style.display = 'none');
+  const leftStep = document.getElementById(`left-step-${Math.min(n,5)}`);
+  if(leftStep) leftStep.style.display = 'block';
+  // Show new step
+  const nextEl = document.getElementById(`step-${n}`);
+  if(nextEl) nextEl.classList.add('active');
+  state.currentStep = n;
+  // Populate success if step 6
+  if(n === 6) populateSuccess();
+}
+
+// ── CARD SELECTION ──
+function selectCard(el, group) {
+  const parent = el.closest('.usecase-grid, .style-grid, .plan-grid');
+  parent.querySelectorAll(`.usecase-card, .style-card`).forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  if(group === 'usecase') {
+    state.devType = el.querySelector('.uc-name').textContent;
+    document.getElementById('step2-btn').disabled = false;
+  }
+  if(group === 'style') {
+    state.artStyle = el.querySelector('.sc-name').textContent;
+    document.getElementById('step4-btn').disabled = false;
+  }
+}
+
+// ── GENRE MULTI-SELECT (max 2) ──
+function selectGenre(el) {
+  const name = el.querySelector('.gc-name').textContent;
+  if(el.classList.contains('selected')) {
+    el.classList.remove('selected');
+    state.genres = state.genres.filter(g => g !== name);
+  } else {
+    if(state.genres.length >= 2) {
+      // Deselect first
+      const firstSelected = document.querySelector('.genre-card.selected');
+      if(firstSelected) {
+        firstSelected.classList.remove('selected');
+        state.genres.shift();
+      }
+    }
+    el.classList.add('selected');
+    state.genres.push(name);
+  }
+  document.getElementById('step3-btn').disabled = state.genres.length === 0;
+}
+
+// ── PLAN SELECTION ──
+function selectPlan(el) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  const planId = el.id.replace('plan-','');
+  state.plan = planId;
+  const credits = {free:'50',studio:'600',team:'2,500'};
+  document.getElementById('credits-amount').textContent = credits[planId] || '50';
+}
+
+// ── SUCCESS SUMMARY ──
+function populateSuccess() {
+  const planNames = {free:'Indie (Free)',studio:'Studio · $49/mo',team:'Team · $149/mo'};
+  const credits = {free:'50 / month',studio:'600 / month',team:'2,500 / month'};
+  document.getElementById('ss-devtype').textContent = state.devType || '—';
+  document.getElementById('ss-genre').textContent = state.genres.join(' + ') || '—';
+  document.getElementById('ss-style').textContent = state.artStyle || '—';
+  document.getElementById('ss-plan').textContent = planNames[state.plan] || 'Indie (Free)';
+  document.getElementById('ss-credits').textContent = credits[state.plan] || '50 / month';
+  document.getElementById('credits-amount').textContent = credits[state.plan]?.split(' ')[0] || '50';
+}
+
+// ── SHAKE ANIMATION ──
+function shake(id) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.style.animation = 'shake .3s ease';
+  el.style.borderColor = 'rgba(255,77,77,.5)';
+  setTimeout(()=>{ el.style.animation=''; el.style.borderColor=''; }, 400);
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', e => {
+  if(e.key === 'Enter' && state.currentStep < 6) {
+    const btn = document.querySelector(`#step-${state.currentStep} .cta-btn:not([disabled])`);
+    if(btn) btn.click();
+  }
+});
+
+// ── SHAKE KEYFRAME ──
+const s = document.createElement('style');
+s.textContent = '@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}';
+document.head.appendChild(s);
+
+// SSO flow bypass
+document.querySelectorAll('.sso-btn').forEach(btn => {
+  btn.addEventListener('click', () => { state.sso = true; });
+});
+</script>
+</body>
+</html>

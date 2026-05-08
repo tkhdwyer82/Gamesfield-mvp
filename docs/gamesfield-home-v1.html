@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gamesfield — AI Game Dev Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d0d0d;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{cursor:pointer;border:none;outline:none;font-family:inherit}
+
+  /* TOP BANNER */
+  .top-banner{background:#0f1a0a;padding:8px;text-align:center;font-size:13px;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;border-bottom:1px solid #1e3a14}
+  .top-banner .dot{width:8px;height:8px;background:#4dff6e;border-radius:50%;flex-shrink:0;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* ── NAV — pixel clone of Higgsfield header ── */
+  #header{
+    height:64px;width:100%;position:sticky;top:0;z-index:100;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    background:rgba(0,0,0,.9);
+    box-shadow:inset 0 1rem 1rem rgba(0,0,0,1);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  #header nav{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    padding-right:16px;height:100%;align-items:center;
+    max-width:1600px;margin:0 auto;padding-left:16px;gap:0;
+  }
+  /* Logo + wordmark */
+  .nav-brand{display:flex;align-items:center;gap:8px;margin-right:8px;flex-shrink:0;text-decoration:none;color:#fff;transition:opacity .15s}
+  .nav-brand:hover{opacity:.8}
+  .nav-brand-logo{width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0}
+  .nav-brand-logo svg{width:32px;height:32px;display:block}
+  .nav-brand-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.04em;white-space:nowrap}
+  .nav-brand-name span{color:#FE9E17}
+
+  /* Scrollable nav links */
+  #header__menu_list{
+    display:flex;align-items:center;height:100%;
+    overflow-x:auto;gap:2px;
+    scrollbar-width:none;
+  }
+  #header__menu_list::-webkit-scrollbar{display:none}
+  .nav-item{
+    padding:4px 12px;border-radius:10px;font-size:13px;font-weight:500;
+    color:rgba(255,255,255,.45);white-space:nowrap;cursor:pointer;
+    transition:color .12s,background .12s;border:none;background:transparent;
+    font-family:'DM Sans',sans-serif;text-decoration:none;display:flex;align-items:center;gap:6px;
+  }
+  .nav-item:hover{color:rgba(255,255,255,.9);}
+  .nav-item:hover,.nav-item:focus{background:rgba(255,255,255,.05)}
+  .nav-item.active{color:#fff}
+  .nav-badge{
+    border-radius:4px;font-size:10px;font-weight:600;padding:1px 5px;
+    background:rgba(254,158,23,.12);color:#FE9E17;
+    font-family:'JetBrains Mono',monospace;letter-spacing:.02em;
+  }
+
+  /* Right side controls */
+  .nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  /* Glassmorphism pill — exact Higgsfield style */
+  .glass-pill{
+    border-radius:10px;
+    background:rgba(255,255,255,.05);
+    box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px 0 rgba(255,255,255,.03);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    color:#fff;cursor:pointer;white-space:nowrap;
+    height:32px;padding:0 12px 0 8px;
+    display:flex;align-items:center;gap:6px;
+    font-size:13px;font-weight:500;border:none;font-family:'DM Sans',sans-serif;
+    transition:opacity .15s;
+  }
+  .glass-pill:hover{opacity:.8}
+  .glass-pill svg{width:16px;height:16px;flex-shrink:0}
+  /* Icon-only glass button */
+  .glass-icon{
+    border-radius:10px;
+    background:rgba(255,255,255,.05);
+    box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px 0 rgba(255,255,255,.03);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+    border:none;cursor:pointer;color:#fff;transition:opacity .15s;
+  }
+  .glass-icon:hover{opacity:.75}
+  .glass-icon svg{width:16px;height:16px}
+  /* Assets button — border variant */
+  .assets-btn{
+    border-radius:8px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px 0 rgba(255,255,255,.03);
+    backdrop-filter:blur(12px);
+    height:32px;padding:0 12px 0 8px;
+    display:flex;align-items:center;gap:6px;
+    font-size:13px;font-weight:500;color:#fff;cursor:pointer;
+    font-family:'DM Sans',sans-serif;text-decoration:none;transition:opacity .15s;
+  }
+  .assets-btn:hover{opacity:.8}
+  /* Profile avatar ring — exact Higgsfield */
+  .nav-avatar-wrap{position:relative;width:32px;height:32px;cursor:pointer}
+  .nav-avatar-img{
+    position:absolute;width:24px;height:24px;
+    top:4px;left:4px;border-radius:50%;overflow:hidden;
+    background:#FE9E17;display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:700;color:#0d0d0d;
+  }
+  .nav-avatar-ring{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+  .nav-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 4px}
+
+  /* HERO 3-PANEL */
+  .hero{display:grid;grid-template-columns:1fr 1fr 1fr;height:280px;overflow:hidden}
+  .hero-card{position:relative;overflow:hidden;cursor:pointer}
+  .hero-card:hover .hero-overlay{background:linear-gradient(transparent,rgba(0,0,0,1))}
+  .hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.88));transition:background .2s}
+  .hero-overlay h3{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;color:#FE9E17}
+  .hero-overlay p{font-size:12px;color:#888}
+
+  /* Hero card 1 — Concept art panel */
+  .card-concept{background:linear-gradient(135deg,#0a0a1a 0%,#1a0f2e 40%,#0a1a10 100%);display:flex;align-items:center;justify-content:center;position:relative}
+  .concept-glow{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(155,109,255,.35) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)}
+  .concept-char{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100px;height:190px;background:linear-gradient(180deg,transparent 0%,rgba(155,109,255,.08) 40%,rgba(155,109,255,.18) 100%);border-radius:50px 50px 0 0}
+  .concept-char::before{content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);width:44px;height:44px;border-radius:50%;background:rgba(155,109,255,.25);border:1.5px solid rgba(155,109,255,.4)}
+  .concept-label{position:absolute;top:14px;left:14px;font-size:10px;font-family:'JetBrains Mono',monospace;color:rgba(155,109,255,.7);letter-spacing:.08em}
+
+  /* Hero card 2 — 3D asset */
+  .card-3d{background:linear-gradient(135deg,#0a1510 0%,#0f2018 100%);display:flex;align-items:center;justify-content:center;position:relative}
+  .threed-text{font-family:'Bebas Neue',sans-serif;font-size:80px;color:rgba(0,212,120,.06);letter-spacing:-3px;position:absolute;user-select:none}
+  .threed-obj{width:120px;height:120px;position:relative;z-index:1}
+  .threed-obj::before{content:'';position:absolute;inset:0;border-radius:18px;background:linear-gradient(135deg,rgba(0,212,120,.15),rgba(0,212,120,.05));border:1px solid rgba(0,212,120,.2)}
+  .threed-obj::after{content:'◈';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:48px;color:rgba(0,212,120,.4);line-height:120px;text-align:center}
+
+  /* Hero card 3 — Audio/SFX */
+  .card-audio{background:#050505;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:10px;position:relative}
+  .audio-title{font-family:'Bebas Neue',sans-serif;color:#FE9E17;font-size:36px;line-height:1;letter-spacing:1px}
+  .audio-sub{color:#fff;font-size:11px;font-weight:600;letter-spacing:2px;color:#555}
+  .audio-bars{display:flex;align-items:flex-end;gap:3px;height:40px}
+  .audio-bar{width:4px;border-radius:2px;background:#FE9E17;animation:audiowave var(--d,.8s) ease-in-out infinite alternate}
+  @keyframes audiowave{from{height:4px;opacity:.3}to{height:var(--h,20px);opacity:1}}
+
+  /* TOOLS GRID */
+  .tools-grid{display:grid;grid-template-columns:minmax(240px,1.4fr) 1fr 1fr 1fr;gap:10px;padding:14px 14px 0}
+  .gen-card{background:linear-gradient(135deg,#111,#161616);border:1px solid #222;border-radius:14px;padding:22px 20px;position:relative;overflow:hidden;grid-row:span 2}
+  .gen-card h2{font-size:17px;font-weight:600;margin-bottom:5px;position:relative;z-index:2}
+  .gen-card p{font-size:12px;color:#666;margin-bottom:60px;position:relative;z-index:2;line-height:1.5}
+  .gen-card-visual{position:absolute;right:0;top:0;bottom:0;width:55%;background:linear-gradient(160deg,#1a1a2e,#0f0f1a)}
+  .gen-card-visual::after{content:'◈';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:52px;color:rgba(155,109,255,.2)}
+  .gen-fade{position:absolute;right:52%;top:0;bottom:0;width:40px;background:linear-gradient(to right,#111,transparent);z-index:1}
+  .start-btn{background:#FE9E17;color:#0d0d0d;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;position:relative;z-index:2;display:inline-block;transition:background .15s}
+  .start-btn:hover{background:#ffb040}
+
+  .tool-card{background:#111;border:1px solid #1e1e1e;border-radius:14px;padding:14px;cursor:pointer;transition:background .15s,border-color .15s;display:flex;flex-direction:column;gap:5px}
+  .tool-card:hover{background:#161616;border-color:#2a2a2a}
+  .tc-icon{width:28px;height:28px;background:#1e1e1e;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:3px;flex-shrink:0}
+  .tc-name{font-size:13px;font-weight:600;color:#ddd}
+  .tc-desc{font-size:11px;color:#555;line-height:1.4}
+  .badge-new{background:#1a2a10;color:#FE9E17;border:1px solid #2a3a18;border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;width:fit-content;margin-bottom:2px;font-family:'JetBrains Mono',monospace}
+  .badge-hot{background:#2a1010;color:#ff6b6b;border:1px solid #3a1a1a;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;width:fit-content;margin-bottom:2px;font-family:'JetBrains Mono',monospace}
+
+  /* PROMO BLOCKS */
+  .promo-block{margin:14px;border-radius:16px;padding:28px 32px;display:grid;gap:24px;align-items:center}
+  .promo-block.two-col{grid-template-columns:280px 1fr}
+  .promo-eyebrow{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px;font-weight:700;font-family:'JetBrains Mono',monospace}
+  .promo-block h2{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;margin-bottom:10px;letter-spacing:.02em}
+  .promo-block p{font-size:13px;color:#777;margin-bottom:16px;line-height:1.6}
+  .pbtn{display:inline-flex;align-items:center;gap:6px;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s}
+  .pbtn-orange{background:#FE9E17;color:#0d0d0d}
+  .pbtn-orange:hover{background:#ffb040}
+  .pbtn-outline{background:transparent;color:#888;border:1px solid #2a2a2a}
+  .pbtn-outline:hover{border-color:#444;color:#fff}
+  .pbtn-green{background:#1a8a4a;color:#fff}
+  .pbtn-green:hover{background:#22aa5a}
+  .promo-visual{border-radius:12px;height:200px;display:flex;align-items:center;justify-content:center;font-size:13px;border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden}
+
+  /* mock canvas visual */
+  .canvas-vis{background:rgba(0,0,0,.4)}
+  .canvas-vis-inner{display:flex;flex-direction:column;gap:8px;width:80%}
+  .cv-node{height:36px;border-radius:8px;background:#1a1a2e;border:1px solid #2a2a4a;display:flex;align-items:center;padding:0 12px;font-size:11px;color:#6677cc;gap:8px}
+  .cv-dot{width:8px;height:8px;border-radius:50%}
+  .cv-line{height:1px;background:linear-gradient(to right,transparent,#2a2a4a,transparent);margin:2px 20px}
+
+  /* img grid mock */
+  .img-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;height:200px}
+  .ig-cell{border-radius:8px;overflow:hidden}
+
+  /* CREATE SECTION */
+  .create-section{padding:28px 16px;text-align:center}
+  .create-section h2{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1.1;margin-bottom:8px;letter-spacing:.02em}
+  .create-section p{color:#555;font-size:13px;margin-bottom:20px}
+  .pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+  .pill{background:#161616;color:#888;border:1px solid #222;border-radius:8px;padding:7px 15px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s}
+  .pill:hover{border-color:#333;color:#ccc}
+  .pill.active{background:#FE9E17;color:#0d0d0d;border-color:#FE9E17;font-weight:600}
+  .pill .new-tag{background:#1a2a10;color:#FE9E17;border-radius:3px;padding:1px 5px;font-size:9px;margin-left:4px;font-family:'JetBrains Mono',monospace}
+
+  /* SECTION HEADERS */
+  .section-eyebrow{padding:14px 16px 4px;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;font-family:'JetBrains Mono',monospace}
+  .section-sub{padding:0 16px 12px;color:#555;font-size:13px}
+  .section-sub a{color:#666;border-bottom:1px solid #2a2a2a}
+
+  /* TOOLS SHOWCASE */
+  .tools-show{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 14px 20px}
+  .ts-card{background:#111;border:1px solid #1e1e1e;border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .15s}
+  .ts-card:hover{border-color:#2a2a2a}
+  .ts-thumb{height:110px;position:relative;overflow:hidden}
+  .ts-info{padding:10px 12px}
+  .ts-name{font-size:13px;font-weight:600;margin-bottom:3px;color:#ddd}
+  .ts-desc{font-size:11px;color:#555;line-height:1.4}
+  .ts-pro{float:right;background:#1a0d2a;color:#9b6dff;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace}
+
+  /* CHIPS */
+  .chips-row{display:flex;gap:8px;overflow-x:auto;padding:0 14px 16px;scrollbar-width:none}
+  .chips-row::-webkit-scrollbar{display:none}
+  .chip{background:#111;border:1px solid #1e1e1e;border-radius:7px;padding:6px 14px;font-size:12px;white-space:nowrap;cursor:pointer;color:#888;transition:all .12s;flex-shrink:0}
+  .chip:hover{background:#1a1a1a;border-color:#2d2d2d;color:#fff}
+
+  /* ── CAROUSEL ── */
+  .carousel-wrap{position:relative;padding:0 0 20px}
+  .carousel-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px}
+  .carousel-header-left{display:flex;flex-direction:column;gap:3px}
+  .carousel-eyebrow{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;font-family:'JetBrains Mono',monospace}
+  .carousel-title{font-size:15px;font-weight:600;color:#ccc}
+  .carousel-header-right{display:flex;align-items:center;gap:10px}
+  .carousel-see-all{font-size:12px;color:#555;border-bottom:1px solid #2a2a2a;padding-bottom:1px;transition:color .1s}
+  .carousel-see-all:hover{color:#aaa}
+  .carousel-arrows{display:flex;gap:6px}
+  .carousel-arrow{width:28px;height:28px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#777;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;user-select:none}
+  .carousel-arrow:hover{background:#2a2a2a;color:#fff;border-color:#3a3a3a}
+
+  .carousel-track-wrap{overflow:hidden;position:relative}
+  .carousel-track-wrap::after{content:'';position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,#0d0d0d,transparent);pointer-events:none;z-index:2}
+  .carousel-track{display:flex;gap:10px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none;scroll-behavior:smooth}
+  .carousel-track::-webkit-scrollbar{display:none}
+
+  /* MEDIA CARD — tall portrait (images/characters) */
+  .mc{flex-shrink:0;width:200px;border-radius:12px;overflow:hidden;cursor:pointer;position:relative;background:#111;border:1px solid #1e1e1e;transition:border-color .15s,transform .15s}
+  .mc:hover{border-color:#2a2a2a;transform:translateY(-2px)}
+  .mc-thumb{height:260px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .mc-thumb img{width:100%;height:100%;object-fit:cover}
+  .mc-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;background:rgba(0,0,0,.4)}
+  .mc:hover .mc-play{opacity:1}
+  .mc-play-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:14px;color:#0d0d0d}
+  .mc-tool-tag{position:absolute;top:10px;left:10px;font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;padding:3px 8px;border-radius:4px;font-weight:700;text-transform:uppercase}
+  .mc-info{padding:10px 12px}
+  .mc-prompt{font-size:11px;color:#888;line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .mc-meta{display:flex;align-items:center;justify-content:space-between}
+  .mc-author{display:flex;align-items:center;gap:5px;font-size:10px;color:#555}
+  .mc-avatar{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#0d0d0d;flex-shrink:0}
+  .mc-likes{font-size:10px;color:#444;display:flex;align-items:center;gap:3px}
+
+  /* MEDIA CARD — landscape (3D assets / environments) */
+  .mc-land{flex-shrink:0;width:280px;border-radius:12px;overflow:hidden;cursor:pointer;position:relative;background:#111;border:1px solid #1e1e1e;transition:border-color .15s,transform .15s}
+  .mc-land:hover{border-color:#2a2a2a;transform:translateY(-2px)}
+  .mc-land-thumb{height:170px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .mc-land:hover .mc-play{opacity:1}
+  .mc-land .mc-info{padding:10px 12px}
+
+  /* MEDIA CARD — square (audio waveforms / icons) */
+  .mc-sq{flex-shrink:0;width:200px;border-radius:12px;overflow:hidden;cursor:pointer;position:relative;background:#111;border:1px solid #1e1e1e;transition:border-color .15s,transform .15s}
+  .mc-sq:hover{border-color:#2a2a2a;transform:translateY(-2px)}
+  .mc-sq-thumb{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .mc-sq:hover .mc-play{opacity:1}
+
+  /* gradient thumb backgrounds */
+  .g-purple{background:linear-gradient(135deg,#1a0f2e,#2e1a3e)}
+  .g-teal{background:linear-gradient(135deg,#0a1e1a,#0f2e22)}
+  .g-orange{background:linear-gradient(135deg,#1e0f00,#2e1a00)}
+  .g-blue{background:linear-gradient(135deg,#080a1e,#10142e)}
+  .g-pink{background:linear-gradient(135deg,#1e0810,#2e1020)}
+  .g-green{background:linear-gradient(135deg,#081e10,#102e18)}
+  .g-dark{background:linear-gradient(135deg,#111,#1a1a1a)}
+  .g-red{background:linear-gradient(135deg,#1e0808,#2e1010)}
+  .g-cyan{background:linear-gradient(135deg,#081a1e,#0f2530)}
+
+  /* tag colours */
+  .tag-art{background:rgba(155,109,255,.15);color:#9b6dff;border:1px solid rgba(155,109,255,.25)}
+  .tag-3d{background:rgba(0,212,120,.12);color:#00d478;border:1px solid rgba(0,212,120,.2)}
+  .tag-audio{background:rgba(254,158,23,.12);color:#FE9E17;border:1px solid rgba(254,158,23,.2)}
+  .tag-npc{background:rgba(0,212,255,.12);color:#00d4ff;border:1px solid rgba(0,212,255,.2)}
+  .tag-trailer{background:rgba(255,77,139,.12);color:#ff4d8b;border:1px solid rgba(255,77,139,.2)}
+  .tag-code{background:rgba(78,201,176,.12);color:#4ec9b0;border:1px solid rgba(78,201,176,.2)}
+
+  /* FOOTER */
+  footer{background:#080808;border-top:1px solid #1a1a1a;padding:36px 36px 20px;display:grid;grid-template-columns:200px 1fr 1fr 1fr 1fr;gap:24px;font-size:13px}
+  footer h4{color:#444;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;font-weight:700;font-family:'JetBrains Mono',monospace}
+  .fl a{display:block;color:#444;margin-bottom:8px;transition:color .1s;font-size:12px}
+  .fl a:hover{color:#aaa}
+  .fb-logo{width:32px;height:32px;margin-bottom:10px}
+  .fb-logo svg{width:32px;height:32px;border-radius:7px}
+  .fb-name{color:#555;font-size:12px;margin-bottom:14px;font-family:'Bebas Neue',sans-serif;letter-spacing:.05em;font-size:16px}
+  .fb-name span{color:#FE9E17}
+  .fb-addr{color:#333;font-size:11px;line-height:1.7}
+  .fb-social{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .fb-social a{color:#333;font-size:11px;border:1px solid #1e1e1e;border-radius:5px;padding:4px 8px;transition:all .1s;font-family:'JetBrains Mono',monospace}
+  .fb-social a:hover{color:#fff;border-color:#444}
+  .footer-btm{grid-column:span 5;border-top:1px solid #1a1a1a;padding-top:16px;color:#2a2a2a;font-size:11px;text-align:center;margin-top:10px;font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<div class="top-banner">
+  <div class="dot"></div>
+  <strong>Beta now live.</strong>&nbsp; Early access is open — join 2,400+ indie devs building with AI. &nbsp;<a href="#" style="color:#FE9E17;text-decoration:underline">Claim your spot →</a>
+</div>
+
+<header id="header">
+<nav aria-label="primary navigation">
+  <a class="nav-brand" href="#">
+    <div class="nav-brand-logo">
+      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#cn)"><path d="M0 0H138.534H1061.74H1200V91.0658V1107.76V1200H1061.76H136.868H0V1107.12V93.4061V0Z" fill="#FE9E17"/><path d="M0 0H138.534C127.116 2.23825 117.439 3.0593 105.855 5.87918C69.2136 14.9917 38.2311 33.7011 18.6367 58.548C6.31766 74.2225 7.79364 78.4904 0 93.4061V0Z" fill="#FEFEFE"/><path d="M0 1107.12C3.77494 1115.02 5.67412 1121.69 10.2967 1129.62C25.8521 1155.69 53.3621 1176.76 87.8739 1189.03C111.391 1197.33 115.827 1195.38 136.868 1200H0V1107.12Z" fill="#FEFEFE"/><path d="M1061.76 1200C1081.56 1196.09 1087.82 1197.09 1108.72 1190.21C1144.47 1178.51 1173.12 1157.32 1189.14 1130.75C1193.92 1122.7 1195.92 1115.61 1200 1107.76V1200H1061.76Z" fill="#FEFEFE"/><path d="M1061.74 0H1200V91.0658C1199.03 89.3496 1198.31 87.3369 1197.57 85.5334C1193.42 75.3779 1188.3 65.891 1180.9 56.7834C1160.7 32.2772 1129.4 13.996 1092.67 5.2643C1082.76 2.92089 1071.99 1.8798 1061.74 0Z" fill="#FEFEFE"/><path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/><path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/><path d="M815.498 200.074C839.914 199.676 864.267 202.033 887.741 207.066C917.69 213.657 946.171 226.808 960.989 247.762C985.075 281.82 976.073 329.854 926.543 348.107C875.49 366.92 814.116 357.909 762.66 345.922C712.004 333.498 665.022 315.618 617.556 297.741C605.983 293.382 594.496 289.247 583.222 284.439C584.657 283.133 586.145 281.86 587.685 280.622C650.576 230.055 722.933 202.679 815.498 200.074Z" fill="#FE9E17"/><path d="M407.882 318.402C417.061 317.344 432.831 318.367 442.039 319.061C375.943 407.657 335.885 516.179 313.46 615.809C306.921 644.865 299.879 687.006 298.797 716.549C288.889 709.898 282.362 704.156 274.173 696.404C239.942 662.408 222.033 625.377 216.434 583.093C203.646 486.527 250.36 330.539 407.882 318.402Z" fill="#FE9E17"/></g><defs><clipPath id="cn"><rect width="1200" height="1200" fill="white"/></clipPath></defs></svg>
+    </div>
+    <span class="nav-brand-name">Games<span>field</span></span>
+  </a>
+  <div id="header__menu_list">
+    <a href="#" class="nav-item active">Explore</a>
+    <button class="nav-item">Image</button>
+    <button class="nav-item">3D Assets</button>
+    <button class="nav-item">Audio</button>
+    <a href="#" class="nav-item">Collab</a>
+    <a href="#" class="nav-item">Canvas <span class="nav-badge">New</span></a>
+    <button class="nav-item">Edit</button>
+    <button class="nav-item">Character</button>
+    <a href="#" class="nav-item">World Builder <span class="nav-badge">New</span></a>
+    <a href="#" class="nav-item">MCP &amp; CLI <span class="nav-badge">New</span></a>
+    <a href="#" class="nav-item">Trailers</a>
+    <a href="#" class="nav-item">Originals</a>
+    <button class="nav-item">Community</button>
+  </div>
+  <div class="nav-right">
+    <button class="glass-pill">
+      <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.562 3.523A2.75 2.75 0 017.81 3h8.376c.47 0 .92.189 1.249.523l5.154 5.244c.673.685.668 1.785-.011 2.464l-9.342 9.342a1.75 1.75 0 01-2.474 0L1.419 11.23a1.75 1.75 0 01-.01-2.464L6.562 3.523z" fill="currentColor"/></svg>
+      480 credits
+    </button>
+    <div class="nav-sep"></div>
+    <button class="glass-icon" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C8.165 2 4.999 4.988 4.807 8.8l-.202 3.97a1.25 1.25 0 01-.131.481L3.153 15.822A1.5 1.5 0 003 16.482V16.5A1.5 1.5 0 004.5 18H7.527c.249 2.25 2.156 4 4.473 4s4.224-1.75 4.473-4H19.5A1.5 1.5 0 0021 16.5v-.018a1.5 1.5 0 00-.153-.66l-1.401-2.772a1.25 1.25 0 01-.131-.481l-.202-3.97C18.92 4.988 15.835 2 12 2z" fill="currentColor"/></svg>
+    </button>
+    <a href="#" class="assets-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 6a3 3 0 013-3h2.25a3 3 0 012.122.879l.628.628A3 3 0 0013.122 5H18a3 3 0 013 3v10a3 3 0 01-3 3H6a3 3 0 01-3-3V6z" fill="currentColor" opacity=".5"/><path d="M3 10h18v8a3 3 0 01-3 3H6a3 3 0 01-3-3v-8z" fill="currentColor"/></svg>
+      My Assets
+    </a>
+    <button style="background:transparent;border:none;cursor:pointer;padding:0">
+      <div class="nav-avatar-wrap">
+        <div class="nav-avatar-img">T</div>
+        <svg class="nav-avatar-ring" width="32" height="32">
+          <circle r="15" cx="16" cy="16" stroke="rgba(255,255,255,.1)" fill="transparent" stroke-width="2"/>
+          <circle r="15" cx="16" cy="16" fill="transparent" stroke="#FE9E17" stroke-linecap="round" stroke-width="2" stroke-dashoffset="4.7" stroke-dasharray="94.2"/>
+        </svg>
+      </div>
+    </button>
+  </div>
+</nav>
+</header>
+
+<!-- HERO 3-PANEL -->
+<div class="hero">
+  <!-- Panel 1: Concept Art -->
+  <div class="hero-card card-concept">
+    <div class="concept-glow"></div>
+    <div class="concept-char"></div>
+    <div class="concept-label">// NPC_CHARACTER_001</div>
+    <div class="hero-overlay">
+      <h3>Character Generator</h3>
+      <p>Describe your hero, villain, or NPC — generate in seconds</p>
+    </div>
+  </div>
+  <!-- Panel 2: 3D Asset -->
+  <div class="hero-card card-3d">
+    <div class="threed-text">MESH</div>
+    <div class="threed-obj"></div>
+    <div class="hero-overlay">
+      <h3>3D Asset Studio</h3>
+      <p>Text to 3D mesh, rigged and ready for Unity or Unreal</p>
+    </div>
+  </div>
+  <!-- Panel 3: Audio -->
+  <div class="hero-card card-audio">
+    <div class="audio-title">GAME<br>AUDIO</div>
+    <div class="audio-sub">AI · SFX · OST · VOICE</div>
+    <div class="audio-bars">
+      <div class="audio-bar" style="--h:12px;--d:.6s"></div>
+      <div class="audio-bar" style="--h:28px;--d:.4s"></div>
+      <div class="audio-bar" style="--h:20px;--d:.7s"></div>
+      <div class="audio-bar" style="--h:34px;--d:.5s"></div>
+      <div class="audio-bar" style="--h:18px;--d:.8s"></div>
+      <div class="audio-bar" style="--h:38px;--d:.45s"></div>
+      <div class="audio-bar" style="--h:22px;--d:.65s"></div>
+      <div class="audio-bar" style="--h:30px;--d:.55s"></div>
+      <div class="audio-bar" style="--h:16px;--d:.7s"></div>
+      <div class="audio-bar" style="--h:24px;--d:.5s"></div>
+    </div>
+    <div class="hero-overlay" style="background:linear-gradient(transparent,rgba(5,5,5,.9))">
+      <h3>Audio Studio</h3>
+      <p>OST, SFX, and voice acting — all from one prompt</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS GRID -->
+<div class="tools-grid">
+  <!-- Big generate card -->
+  <div class="gen-card">
+    <h2>Generate Game Art</h2>
+    <p>Describe your scene, character, or asset and generate production-ready art in your game's style</p>
+    <button class="start-btn">Start Creating</button>
+    <div class="gen-card-visual"></div>
+    <div class="gen-fade"></div>
+  </div>
+  <div class="tool-card">
+    <div class="tc-icon">◈</div>
+    <div class="tc-name">3D Asset Gen</div>
+    <div class="tc-desc">Text to rigged 3D mesh in seconds</div>
+  </div>
+  <div class="tool-card">
+    <div class="tc-icon">🎙</div>
+    <div class="tc-name">Voice Acting AI</div>
+    <div class="tc-desc">ElevenLabs-powered NPC voices</div>
+  </div>
+  <div class="tool-card">
+    <div class="badge-hot">HOT</div>
+    <div class="tc-icon">🎵</div>
+    <div class="tc-name">OST Composer</div>
+    <div class="tc-desc">Adaptive game music, any genre</div>
+  </div>
+  <div class="tool-card">
+    <div class="badge-new">NEW</div>
+    <div class="tc-icon">🤖</div>
+    <div class="tc-name">NPC Brain</div>
+    <div class="tc-desc">Inworld AI — living, reactive characters</div>
+  </div>
+  <div class="tool-card">
+    <div class="tc-icon">🌍</div>
+    <div class="tc-name">World Builder</div>
+    <div class="tc-desc">Procedural levels and environments</div>
+  </div>
+  <div class="tool-card">
+    <div class="tc-icon">🎬</div>
+    <div class="tc-name">Trailer Studio</div>
+    <div class="tc-desc">Cinematic game trailers from gameplay</div>
+  </div>
+</div>
+
+<!-- CAROUSEL: COMMUNITY CHARACTER ART -->
+<div class="carousel-wrap">
+  <div class="carousel-header">
+    <div class="carousel-header-left">
+      <div class="carousel-eyebrow" style="color:#9b6dff">Community</div>
+      <div class="carousel-title">Character Art — created by devs like you</div>
+    </div>
+    <div class="carousel-header-right">
+      <a href="#" class="carousel-see-all">See all</a>
+      <div class="carousel-arrows">
+        <div class="carousel-arrow" onclick="shiftCarousel('c1',-1)">←</div>
+        <div class="carousel-arrow" onclick="shiftCarousel('c1',1)">→</div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-track-wrap">
+    <div class="carousel-track" id="c1">
+      <div class="mc"><div class="mc-thumb g-purple"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-art">Scenario</div><div style="font-size:52px">🧝‍♀️</div></div><div class="mc-info"><div class="mc-prompt">Dark elf rogue, hooded cloak, emerald eyes, fantasy RPG style</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#9b6dff">D</div>devkira</div><div class="mc-likes">♥ 284</div></div></div></div>
+      <div class="mc"><div class="mc-thumb g-orange"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-art">Midjourney</div><div style="font-size:52px">🧙‍♂️</div></div><div class="mc-info"><div class="mc-prompt">Aged fire wizard, tattered robes, glowing staff, cel-shaded</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#FE9E17">M</div>mattdev</div><div class="mc-likes">♥ 192</div></div></div></div>
+      <div class="mc"><div class="mc-thumb g-teal"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-art">Scenario</div><div style="font-size:52px">🤺</div></div><div class="mc-info"><div class="mc-prompt">Paladin in emerald armour, shield raised, cinematic lighting</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#3ecf8e">S</div>studiofox</div><div class="mc-likes">♥ 317</div></div></div></div>
+      <div class="mc"><div class="mc-thumb g-blue"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-art">Midjourney</div><div style="font-size:52px">🤖</div></div><div class="mc-info"><div class="mc-prompt">Cyberpunk bounty hunter, chrome arm, neon city backdrop</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">A</div>axelgames</div><div class="mc-likes">♥ 441</div></div></div></div>
+      <div class="mc"><div class="mc-thumb g-pink"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-art">Scenario</div><div style="font-size:52px">🧜‍♀️</div></div><div class="mc-info"><div class="mc-prompt">Sea witch with coral crown, dark ocean background, painterly</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#ff4d8b">L</div>lunastudio</div><div class="mc-likes">♥ 256</div></div></div></div>
+      <div class="mc"><div class="mc-thumb g-green"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-art">Midjourney</div><div style="font-size:52px">🪖</div></div><div class="mc-info"><div class="mc-prompt">Jungle soldier, war-worn gear, tropical leaves, realism style</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#4dff6e">R</div>rookiedev</div><div class="mc-likes">♥ 178</div></div></div></div>
+      <div class="mc"><div class="mc-thumb g-red"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-art">Scenario</div><div style="font-size:52px">😈</div></div><div class="mc-info"><div class="mc-prompt">Demon overlord boss, lava arena, 4K cinematic render</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#ff4444">B</div>bosscraft</div><div class="mc-likes">♥ 503</div></div></div></div>
+      <div class="mc"><div class="mc-thumb g-cyan"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-art">Midjourney</div><div style="font-size:52px">🐉</div></div><div class="mc-info"><div class="mc-prompt">Ice dragon mount, rider's perspective, breath weapon glow</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">P</div>pixelwyrm</div><div class="mc-likes">♥ 388</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMO: PROJECT MEMORY / CANVAS -->
+<div class="promo-block two-col" style="background:linear-gradient(135deg,#08141e,#0e1a10)">
+  <div>
+    <div class="promo-eyebrow" style="color:#00d4aa">NEW FEATURE</div>
+    <h2>ONE PROJECT.<br>ALL YOUR TOOLS.</h2>
+    <p>Lock in your art style, characters, and world lore once. Every tool you use reads from the same project memory — automatically.</p>
+    <button class="pbtn pbtn-orange">Try Project Memory</button>
+  </div>
+  <div class="promo-visual canvas-vis">
+    <div class="canvas-vis-inner">
+      <div class="cv-node"><div class="cv-dot" style="background:#FE9E17"></div> Game Style Lock · Fantasy RPG</div>
+      <div class="cv-line"></div>
+      <div class="cv-node"><div class="cv-dot" style="background:#9b6dff"></div> Character: Kira — Rogue, Dark Elf</div>
+      <div class="cv-line"></div>
+      <div class="cv-node"><div class="cv-dot" style="background:#00d4ff"></div> World: Aetheris · Post-apocalyptic</div>
+      <div class="cv-line"></div>
+      <div class="cv-node"><div class="cv-dot" style="background:#3ecf8e"></div> Audio Profile: Orchestral + Synth</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMO: MESHY 3D -->
+<div class="promo-block two-col" style="background:#0a0a0a;border:1px solid #1a1a1a">
+  <div>
+    <div class="promo-eyebrow" style="color:#555">POWERED BY MESHY</div>
+    <h2>Text to 3D.<br>Game-Ready.</h2>
+    <p>Generate production-quality 3D assets with automatic rigging, UV unwrapping, and PBR textures. Export directly to Unity or Unreal.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="pbtn" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#fff">◈ Try 3D Gen</button>
+      <button class="pbtn pbtn-outline">View all assets ↗</button>
+    </div>
+  </div>
+  <div class="img-grid">
+    <div class="ig-cell" style="background:linear-gradient(135deg,#0f0f2a,#1a1030);grid-row:span 2;display:flex;align-items:center;justify-content:center;font-size:36px">⚔️</div>
+    <div class="ig-cell" style="background:linear-gradient(135deg,#0a1a10,#0f2010);display:flex;align-items:center;justify-content:center;font-size:24px">🧙</div>
+    <div class="ig-cell" style="background:linear-gradient(135deg,#1a0a0a,#2a0f0f);display:flex;align-items:center;justify-content:center;font-size:24px">🏰</div>
+    <div class="ig-cell" style="background:linear-gradient(135deg,#0a0a1a,#0f0f2a);display:flex;align-items:center;justify-content:center;font-size:24px">🐉</div>
+    <div class="ig-cell" style="background:linear-gradient(135deg,#1a1a0a,#2a2a0f);display:flex;align-items:center;justify-content:center;font-size:24px">🛡️</div>
+    <div class="ig-cell" style="background:linear-gradient(135deg,#0a1a1a,#0f2020);display:flex;align-items:center;justify-content:center;font-size:24px">🗡️</div>
+    <div class="ig-cell" style="background:linear-gradient(135deg,#1a0a1a,#2a0f2a);display:flex;align-items:center;justify-content:center;font-size:24px">💎</div>
+  </div>
+</div>
+
+<!-- CAROUSEL: 3D ASSETS -->
+<div class="carousel-wrap">
+  <div class="carousel-header">
+    <div class="carousel-header-left">
+      <div class="carousel-eyebrow" style="color:#00d478">3D Assets</div>
+      <div class="carousel-title">Game-ready meshes — export to Unity, Unreal, Godot</div>
+    </div>
+    <div class="carousel-header-right">
+      <a href="#" class="carousel-see-all">See all</a>
+      <div class="carousel-arrows">
+        <div class="carousel-arrow" onclick="shiftCarousel('c2',-1)">←</div>
+        <div class="carousel-arrow" onclick="shiftCarousel('c2',1)">→</div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-track-wrap">
+    <div class="carousel-track" id="c2">
+      <div class="mc-land"><div class="mc-land-thumb g-teal" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-3d">Meshy</div>⚔️</div><div class="mc-info"><div class="mc-prompt">Longsword, ornate crossguard, PBR metallic, game-ready LODs</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d478">J</div>jforge</div><div class="mc-likes">♥ 612</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-blue" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-3d">Meshy</div>🏰</div><div class="mc-info"><div class="mc-prompt">Medieval castle gate, crumbling stone, moss detail, 4K tex</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">W</div>worldbld</div><div class="mc-likes">♥ 489</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-purple" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-3d">Meshy</div>🧪</div><div class="mc-info"><div class="mc-prompt">Alchemy lab set — flasks, cauldron, bookshelf, stylised</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#9b6dff">A</div>alchemy3d</div><div class="mc-likes">♥ 344</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-orange" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-3d">Meshy</div>🛡️</div><div class="mc-info"><div class="mc-prompt">Paladin shield, golden trim, embedded gem, rigged handle</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#FE9E17">K</div>knightkit</div><div class="mc-likes">♥ 271</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-dark" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-3d">Meshy</div>🚀</div><div class="mc-info"><div class="mc-prompt">Sci-fi starfighter hull, modular panels, cockpit detail</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#aaa">S</div>spacedev</div><div class="mc-likes">♥ 533</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-green" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-3d">Meshy</div>🌲</div><div class="mc-info"><div class="mc-prompt">Fantasy tree pack — oak, willow, dead variants, wind-ready</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#3ecf8e">N</div>naturegen</div><div class="mc-likes">♥ 198</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMO: TRAILER STUDIO -->
+<div class="promo-block two-col" style="background:linear-gradient(135deg,#180814,#20081a)">
+  <div>
+    <div class="promo-eyebrow" style="color:#ff4d8b">SHIP FASTER.</div>
+    <h2 style="margin-top:8px">GAMEPLAY IN.<br>TRAILER OUT.</h2>
+    <p>Record your gameplay, describe your vibe. Get a cinematic trailer cut, colour-graded and ready to post.</p>
+    <button class="pbtn" style="background:#ff4d8b;color:#fff;margin-top:14px">Try Trailer Studio</button>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <div style="background:#1e0a18;border:1px solid #3a1030;border-radius:8px;padding:7px 14px;font-size:12px;color:#cc4488">📁 Drop your gameplay clip</div>
+    </div>
+    <a href="#" style="display:block;margin-top:12px;font-size:12px;color:#555">View all Trailer Studio ↗</a>
+  </div>
+  <div class="img-grid">
+    <div class="ig-cell" style="background:linear-gradient(135deg,#200818,#100810);grid-row:span 2;display:flex;align-items:center;justify-content:center;font-size:40px">🎬</div>
+    <div class="ig-cell" style="background:#100820;display:flex;align-items:center;justify-content:center;font-size:22px">🎮</div>
+    <div class="ig-cell" style="background:#281020;display:flex;align-items:center;justify-content:center;font-size:22px">⚡</div>
+    <div class="ig-cell" style="background:#182010;display:flex;align-items:center;justify-content:center;font-size:22px">🔥</div>
+    <div class="ig-cell" style="background:#201810;display:flex;align-items:center;justify-content:center;font-size:22px">💥</div>
+    <div class="ig-cell" style="background:#0e1828;display:flex;align-items:center;justify-content:center;font-size:22px">🌟</div>
+    <div class="ig-cell" style="background:#180e20;display:flex;align-items:center;justify-content:center;font-size:22px">🎯</div>
+  </div>
+</div>
+
+<!-- CAROUSEL: GAME TRAILERS -->
+<div class="carousel-wrap">
+  <div class="carousel-header">
+    <div class="carousel-header-left">
+      <div class="carousel-eyebrow" style="color:#ff4d8b">Trailers</div>
+      <div class="carousel-title">Cinematic game trailers — generated in minutes</div>
+    </div>
+    <div class="carousel-header-right">
+      <a href="#" class="carousel-see-all">See all</a>
+      <div class="carousel-arrows">
+        <div class="carousel-arrow" onclick="shiftCarousel('c3',-1)">←</div>
+        <div class="carousel-arrow" onclick="shiftCarousel('c3',1)">→</div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-track-wrap">
+    <div class="carousel-track" id="c3">
+      <div class="mc-land"><div class="mc-land-thumb g-red" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-trailer">Kling AI</div>🔥</div><div class="mc-info"><div class="mc-prompt">Souls-like reveal trailer, orchestral swell, slow hero walk</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#ff4d8b">T</div>trailrx</div><div class="mc-likes">♥ 821</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-blue" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-trailer">Kling AI</div>🌌</div><div class="mc-info"><div class="mc-prompt">Space RTS cinematic, fleet battle, sweeping camera moves</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">C</div>cinedev</div><div class="mc-likes">♥ 644</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-green" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-trailer">Kling AI</div>🏹</div><div class="mc-info"><div class="mc-prompt">Open world RPG teaser, golden hour forest, hero silhouette</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#3ecf8e">O</div>opendev</div><div class="mc-likes">♥ 492</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-purple" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-trailer">Kling AI</div>💀</div><div class="mc-info"><div class="mc-prompt">Roguelike launch trailer, fast cuts, drum & bass soundtrack</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#9b6dff">R</div>roguecut</div><div class="mc-likes">♥ 377</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-cyan" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-trailer">Kling AI</div>🤖</div><div class="mc-info"><div class="mc-prompt">Cyberpunk city flythrough, rain & neon, lo-fi hip hop edit</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">N</div>neoncut</div><div class="mc-likes">♥ 713</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CAROUSEL: GAME AUDIO -->
+<div class="carousel-wrap">
+  <div class="carousel-header">
+    <div class="carousel-header-left">
+      <div class="carousel-eyebrow" style="color:#FE9E17">Audio</div>
+      <div class="carousel-title">OST, SFX & voice packs — ready to drop in</div>
+    </div>
+    <div class="carousel-header-right">
+      <a href="#" class="carousel-see-all">See all</a>
+      <div class="carousel-arrows">
+        <div class="carousel-arrow" onclick="shiftCarousel('c4',-1)">←</div>
+        <div class="carousel-arrow" onclick="shiftCarousel('c4',1)">→</div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-track-wrap">
+    <div class="carousel-track" id="c4">
+      <div class="mc-sq"><div class="mc-sq-thumb g-orange" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-audio">AIVA</div><div style="font-size:36px">🎵</div><div style="display:flex;align-items:flex-end;gap:2px;height:30px">${[14,22,18,30,12,28,20,24,16,26,10,22].map(h=>`<div style="width:3px;height:${h}px;border-radius:2px;background:#FE9E17;opacity:.8"></div>`).join('')}</div></div><div class="mc-info"><div class="mc-prompt">Epic orchestral boss theme, 3:24, loop-ready</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#FE9E17">A</div>aivacraft</div><div class="mc-likes">♥ 341</div></div></div></div>
+      <div class="mc-sq"><div class="mc-sq-thumb g-purple" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-audio">AIVA</div><div style="font-size:36px">🎹</div><div style="display:flex;align-items:flex-end;gap:2px;height:30px">${[8,20,14,28,10,24,18,12,26,8,22,16].map(h=>`<div style="width:3px;height:${h}px;border-radius:2px;background:#9b6dff;opacity:.8"></div>`).join('')}</div></div><div class="mc-info"><div class="mc-prompt">Peaceful village ambience, piano & strings, 2:10</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#9b6dff">V</div>villagefx</div><div class="mc-likes">♥ 228</div></div></div></div>
+      <div class="mc-sq"><div class="mc-sq-thumb g-red" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-audio">ElevenLabs</div><div style="font-size:36px">🎙️</div><div style="display:flex;align-items:flex-end;gap:2px;height:30px">${[20,12,28,16,24,8,22,18,30,10,20,14].map(h=>`<div style="width:3px;height:${h}px;border-radius:2px;background:#ff4d8b;opacity:.8"></div>`).join('')}</div></div><div class="mc-info"><div class="mc-prompt">Villain NPC voice pack — 40 lines, menacing tone</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#ff4d8b">V</div>voicelab</div><div class="mc-likes">♥ 415</div></div></div></div>
+      <div class="mc-sq"><div class="mc-sq-thumb g-teal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-audio">AIVA</div><div style="font-size:36px">⚡</div><div style="display:flex;align-items:flex-end;gap:2px;height:30px">${[16,30,10,24,18,28,12,22,20,8,26,14].map(h=>`<div style="width:3px;height:${h}px;border-radius:2px;background:#00d478;opacity:.8"></div>`).join('')}</div></div><div class="mc-info"><div class="mc-prompt">Intense combat loop, metal + synth hybrid, 1:45</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#3ecf8e">C</div>combatfx</div><div class="mc-likes">♥ 287</div></div></div></div>
+      <div class="mc-sq"><div class="mc-sq-thumb g-blue" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-audio">ElevenLabs</div><div style="font-size:36px">👾</div><div style="display:flex;align-items:flex-end;gap:2px;height:30px">${[12,22,18,26,8,20,28,14,24,10,18,22].map(h=>`<div style="width:3px;height:${h}px;border-radius:2px;background:#00d4ff;opacity:.8"></div>`).join('')}</div></div><div class="mc-info"><div class="mc-prompt">Alien merchant voice pack — 60 lines, 3 tones</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">X</div>xenovoice</div><div class="mc-likes">♥ 193</div></div></div></div>
+      <div class="mc-sq"><div class="mc-sq-thumb g-dark" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-audio">AIVA</div><div style="font-size:36px">🌙</div><div style="display:flex;align-items:flex-end;gap:2px;height:30px">${[10,18,28,14,22,8,24,16,20,12,26,18].map(h=>`<div style="width:3px;height:${h}px;border-radius:2px;background:#aaa;opacity:.6"></div>`).join('')}</div></div><div class="mc-info"><div class="mc-prompt">Haunted mansion ambience, reverb piano, 4:02</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#666">H</div>hauntfx</div><div class="mc-likes">♥ 356</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMO: NPC AI -->
+<div class="promo-block two-col" style="background:linear-gradient(135deg,#08081e,#0c0c20)">
+  <div>
+    <div class="promo-eyebrow" style="color:#9b6dff">POWERED BY INWORLD AI</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:44px;color:#9b6dff;letter-spacing:-1px;line-height:1;margin:8px 0 10px">NPC<br>BRAIN 2.0</div>
+    <p>Give your NPCs real memory, personality, and reactive dialogue. Players will never break immersion again.</p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="pbtn" style="background:#9b6dff;color:#fff">Try NPC Brain</button>
+      <a href="#" style="font-size:12px;color:#555">Learn more</a>
+    </div>
+    <a href="#" style="display:block;margin-top:12px;font-size:12px;color:#444">View all NPC tools ↗</a>
+  </div>
+  <div class="img-grid">
+    <div class="ig-cell" style="background:#08082a;grid-row:span 2;display:flex;align-items:center;justify-content:center;font-size:40px">🤖</div>
+    <div class="ig-cell" style="background:#0a1220;display:flex;align-items:center;justify-content:center;font-size:22px">💬</div>
+    <div class="ig-cell" style="background:#140828;display:flex;align-items:center;justify-content:center;font-size:22px">🧠</div>
+    <div class="ig-cell" style="background:#081a14;display:flex;align-items:center;justify-content:center;font-size:22px">👁️</div>
+    <div class="ig-cell" style="background:#181408;display:flex;align-items:center;justify-content:center;font-size:22px">⚙️</div>
+    <div class="ig-cell" style="background:#20081a;display:flex;align-items:center;justify-content:center;font-size:22px">🎭</div>
+    <div class="ig-cell" style="background:#081414;display:flex;align-items:center;justify-content:center;font-size:22px">🗺️</div>
+  </div>
+</div>
+
+<!-- CAROUSEL: WORLD ENVIRONMENTS -->
+<div class="carousel-wrap">
+  <div class="carousel-header">
+    <div class="carousel-header-left">
+      <div class="carousel-eyebrow" style="color:#00d4ff">Environments</div>
+      <div class="carousel-title">Game worlds & biomes — concept to playable</div>
+    </div>
+    <div class="carousel-header-right">
+      <a href="#" class="carousel-see-all">See all</a>
+      <div class="carousel-arrows">
+        <div class="carousel-arrow" onclick="shiftCarousel('c5',-1)">←</div>
+        <div class="carousel-arrow" onclick="shiftCarousel('c5',1)">→</div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-track-wrap">
+    <div class="carousel-track" id="c5">
+      <div class="mc-land"><div class="mc-land-thumb g-teal" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-npc">Promethean</div>🌲</div><div class="mc-info"><div class="mc-prompt">Ancient forest dungeon, bioluminescent fungi, fog layer</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">F</div>fogworld</div><div class="mc-likes">♥ 529</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-red" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-npc">Promethean</div>🌋</div><div class="mc-info"><div class="mc-prompt">Volcanic forge biome, obsidian platforms, lava rivers</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#ff4444">V</div>volcndev</div><div class="mc-likes">♥ 441</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-blue" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-npc">Promethean</div>🏙️</div><div class="mc-info"><div class="mc-prompt">Cyberpunk megacity district, rain-slick streets, neon signs</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">C</div>cybrmap</div><div class="mc-likes">♥ 688</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-purple" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-npc">Promethean</div>🌌</div><div class="mc-info"><div class="mc-prompt">Void realm level, floating ruins, purple energy rifts</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#9b6dff">V</div>voidzone</div><div class="mc-likes">♥ 374</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-orange" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-npc">Promethean</div>🏜️</div><div class="mc-info"><div class="mc-prompt">Desert ruins, sandstorm particles, buried temple entrance</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#FE9E17">D</div>desrtdev</div><div class="mc-likes">♥ 298</div></div></div></div>
+      <div class="mc-land"><div class="mc-land-thumb g-cyan" style="display:flex;align-items:center;justify-content:center;font-size:60px"><div class="mc-play"><div class="mc-play-btn">▶</div></div><div class="mc-tool-tag tag-npc">Promethean</div>🌊</div><div class="mc-info"><div class="mc-prompt">Underwater coral fortress, shafts of light, fish particles</div><div class="mc-meta"><div class="mc-author"><div class="mc-avatar" style="background:#00d4ff">S</div>seacraft</div><div class="mc-likes">♥ 461</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT WILL YOU CREATE -->
+<div class="create-section">
+  <h2>WHAT WILL YOU<br>BUILD TODAY?</h2>
+  <p>From concept to shipped — every game dev tool you need in one workspace</p>
+  <div class="pill-row">
+    <div class="pill active">Generate Art</div>
+    <div class="pill">Create 3D</div>
+    <div class="pill">Compose Audio <span class="new-tag">NEW</span></div>
+    <div class="pill">Build NPC</div>
+    <div class="pill">Write Lore</div>
+    <div class="pill">Make Trailer</div>
+    <div class="pill">Design UI</div>
+    <div class="pill">Generate Code</div>
+  </div>
+  <a href="#" style="font-size:12px;color:#444;border-bottom:1px solid #222;padding-bottom:1px">Explore all tools</a>
+</div>
+
+<!-- TOP TOOLS -->
+<div class="section-eyebrow" style="color:#FE9E17">TOP PICKS</div>
+<div class="section-sub">Dev-recommended tools, tuned for your game &nbsp; <a href="#">See all</a></div>
+<div class="tools-show">
+  <div class="ts-card">
+    <div class="ts-thumb" style="background:linear-gradient(135deg,#1a0f2e,#2a1a3e);display:flex;align-items:center;justify-content:center;font-size:36px">🎨</div>
+    <div class="ts-info"><div class="ts-name">Style Lock</div><div class="ts-desc">Lock your art style across all generations</div></div>
+  </div>
+  <div class="ts-card">
+    <div class="ts-thumb" style="background:linear-gradient(135deg,#0f2010,#1a3020);display:flex;align-items:center;justify-content:center;font-size:36px">◈</div>
+    <div class="ts-info"><span class="ts-pro">PRO</span><div class="ts-name">Meshy 3D Pro</div><div class="ts-desc">Rigged 3D characters with facial blendshapes</div></div>
+  </div>
+  <div class="ts-card">
+    <div class="ts-thumb" style="background:linear-gradient(135deg,#200818,#301228);display:flex;align-items:center;justify-content:center;font-size:36px">🤖</div>
+    <div class="ts-info"><span class="ts-pro">PRO</span><div class="ts-name">NPC Brain 2.0</div><div class="ts-desc">Persistent memory, reactive dialogue trees</div></div>
+  </div>
+  <div class="ts-card">
+    <div class="ts-thumb" style="background:linear-gradient(135deg,#08082a,#10103a);display:flex;align-items:center;justify-content:center;font-size:36px">🎵</div>
+    <div class="ts-info"><div class="ts-name">AIVA Composer</div><div class="ts-desc">Adaptive OST that responds to gameplay</div></div>
+  </div>
+  <div class="ts-card">
+    <div class="ts-thumb" style="background:linear-gradient(135deg,#1a1a08,#2a2a10);display:flex;align-items:center;justify-content:center;font-size:36px">🌍</div>
+    <div class="ts-info"><span class="ts-pro">PRO</span><div class="ts-name">World Builder</div><div class="ts-desc">Procedural biomes, dungeons, and cities</div></div>
+  </div>
+  <div class="ts-card">
+    <div class="ts-thumb" style="background:linear-gradient(135deg,#0a1a10,#102010);display:flex;align-items:center;justify-content:center;font-size:36px">🎬</div>
+    <div class="ts-info"><div class="ts-name">Trailer Cut AI</div><div class="ts-desc">Auto-edit gameplay into cinematic reels</div></div>
+  </div>
+  <div class="ts-card">
+    <div class="ts-thumb" style="background:linear-gradient(135deg,#1a0a08,#2a1010);display:flex;align-items:center;justify-content:center;font-size:36px">🗺️</div>
+    <div class="ts-info"><div class="ts-name">Lore Writer</div><div class="ts-desc">Full lore bibles, item descriptions, quest text</div></div>
+  </div>
+  <div class="ts-card">
+    <div class="ts-thumb" style="background:linear-gradient(135deg,#0a0a1a,#14142a);display:flex;align-items:center;justify-content:center;font-size:36px">🎙️</div>
+    <div class="ts-info"><div class="ts-name">Voice Director</div><div class="ts-desc">Multi-character voice acting from one script</div></div>
+  </div>
+</div>
+
+<!-- VISUAL EFFECTS CHIPS -->
+<div class="section-eyebrow" style="color:#ff4d8b">GAME VFX</div>
+<div class="section-sub">Cinematic effects, explosions, magic — drag and drop into your engine.</div>
+<div class="chips-row">
+  <div class="chip">Spell Explosion</div><div class="chip">Lightning Strike</div><div class="chip">Lava Flow</div><div class="chip">Shadow Mist</div><div class="chip">Portal Rift</div><div class="chip">Dragon Fire</div><div class="chip">Water Splash</div><div class="chip">Blood Moon</div><div class="chip">Freeze Ray</div><div class="chip">Shockwave</div><div class="chip">Soul Drain</div><div class="chip">Meteor Fall</div><div class="chip">Teleport Burst</div><div class="chip">Void Collapse</div><div class="chip">Holy Light</div><div class="chip">Poison Cloud</div><div class="chip">Time Warp</div><div class="chip">Earthquake</div><div class="chip">Blizzard</div><div class="chip">Acid Splash</div><div class="chip">Mind Blast</div><div class="chip">Wind Slash</div><div class="chip">Sand Storm</div><div class="chip">Necro Summon</div>
+</div>
+
+<!-- GAMESFIELD TOOLS CHIPS -->
+<div class="section-eyebrow" style="color:#9b6dff">GAMESFIELD TOOLS</div>
+<div class="section-sub">Everything your game needs — generated, not googled.</div>
+<div class="chips-row">
+  <div class="chip">Style Lock</div><div class="chip">NPC Brain</div><div class="chip">Lore Bible</div><div class="chip">World Builder</div><div class="chip">Trailer Cut</div><div class="chip">Asset Variants</div><div class="chip">Skin Pack</div><div class="chip">Item Forge</div><div class="chip">Quest Generator</div><div class="chip">Dialogue Tree</div><div class="chip">Voice Director</div><div class="chip">Sound FX Kit</div><div class="chip">UI Theme Gen</div><div class="chip">Icon Factory</div><div class="chip">Splash Screen</div><div class="chip">Map Maker</div><div class="chip">Enemy Designer</div><div class="chip">Boss Template</div><div class="chip">Skill Tree Gen</div><div class="chip">Economy Balancer</div><div class="chip">Cutscene Builder</div>
+</div>
+
+<!-- EXPLORE MORE CHIPS -->
+<div class="section-eyebrow" style="color:#444;margin-top:4px">EXPLORE MORE</div>
+<div class="chips-row" style="padding-bottom:30px">
+  <div class="chip">Meshy 3D</div><div class="chip">Inworld NPC</div><div class="chip">ElevenLabs Voice</div><div class="chip">AIVA Music</div><div class="chip">Ludo Research</div><div class="chip">Scenario Art</div><div class="chip">Kling Trailer</div><div class="chip">Midjourney</div><div class="chip">Cursor Code</div><div class="chip">Convai Agents</div><div class="chip">Promethean AI</div><div class="chip">Unity Export</div><div class="chip">Unreal Export</div><div class="chip">Godot Export</div><div class="chip">Steam Page Gen</div><div class="chip">App Store Kit</div><div class="chip">Itch.io Pack</div><div class="chip">Discord Bot</div><div class="chip">Press Kit</div><div class="chip">Speedrun Clip</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="fb-logo">
+      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip-footer)">
+          <path d="M0 0H138.534H1061.74H1200V91.0658V1107.76V1200H1061.76H136.868H0V1107.12V93.4061V0Z" fill="#FE9E17"/>
+          <path d="M0 0H138.534C127.116 2.23825 117.439 3.0593 105.855 5.87918C69.2136 14.9917 38.2311 33.7011 18.6367 58.548C6.31766 74.2225 7.79364 78.4904 0 93.4061V0Z" fill="#FEFEFE"/>
+          <path d="M0 1107.12C3.77494 1115.02 5.67412 1121.69 10.2967 1129.62C25.8521 1155.69 53.3621 1176.76 87.8739 1189.03C111.391 1197.33 115.827 1195.38 136.868 1200H0V1107.12Z" fill="#FEFEFE"/>
+          <path d="M1061.76 1200C1081.56 1196.09 1087.82 1197.09 1108.72 1190.21C1144.47 1178.51 1173.12 1157.32 1189.14 1130.75C1193.92 1122.7 1195.92 1115.61 1200 1107.76V1200H1061.76Z" fill="#FEFEFE"/>
+          <path d="M1061.74 0H1200V91.0658C1199.03 89.3496 1198.31 87.3369 1197.57 85.5334C1193.42 75.3779 1188.3 65.891 1180.9 56.7834C1160.7 32.2772 1129.4 13.996 1092.67 5.2643C1082.76 2.92089 1071.99 1.8798 1061.74 0Z" fill="#FEFEFE"/>
+          <path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/>
+          <path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/>
+          <path d="M815.498 200.074C839.914 199.676 864.267 202.033 887.741 207.066C917.69 213.657 946.171 226.808 960.989 247.762C985.075 281.82 976.073 329.854 926.543 348.107C875.49 366.92 814.116 357.909 762.66 345.922C712.004 333.498 665.022 315.618 617.556 297.741C605.983 293.382 594.496 289.247 583.222 284.439C584.657 283.133 586.145 281.86 587.685 280.622C650.576 230.055 722.933 202.679 815.498 200.074Z" fill="#FE9E17"/>
+          <path d="M407.882 318.402C417.061 317.344 432.831 318.367 442.039 319.061C375.943 407.657 335.885 516.179 313.46 615.809C306.921 644.865 299.879 687.006 298.797 716.549C288.889 709.898 282.362 704.156 274.173 696.404C239.942 662.408 222.033 625.377 216.434 583.093C203.646 486.527 250.36 330.539 407.882 318.402Z" fill="#FE9E17"/>
+        </g>
+        <defs><clipPath id="clip-footer"><rect width="1200" height="1200" fill="white"/></clipPath></defs>
+      </svg>
+    </div>
+    <div class="fb-name">Games<span>field</span></div>
+    <div class="fb-addr">Built for indie devs.<br>Powered by Claude AI.</div>
+    <div class="fb-social">
+      <a href="#">X</a><a href="#">YT</a><a href="#">IG</a><a href="#">Discord</a>
+    </div>
+  </div>
+  <div class="fl">
+    <h4>Company</h4>
+    <a href="#">About</a><a href="#">Roadmap</a><a href="#">Careers</a><a href="#">Contact</a><a href="#">Pricing</a><a href="#">Blog</a><a href="#">Discord</a>
+  </div>
+  <div class="fl">
+    <h4>Platform</h4>
+    <a href="#">Project Memory</a><a href="#">Tool Hub</a><a href="#">Canvas</a><a href="#">Collab</a><a href="#">API Access</a><a href="#">Enterprise</a><a href="#">Team Plans</a>
+  </div>
+  <div class="fl">
+    <h4>Art & 3D</h4>
+    <a href="#">Game Art Gen</a><a href="#">Style Lock</a><a href="#">Meshy 3D</a><a href="#">Scenario</a><a href="#">Midjourney</a><a href="#">UI Theme</a><a href="#">Icon Factory</a><a href="#">Splash Screen</a>
+  </div>
+  <div class="fl">
+    <h4>Game Dev</h4>
+    <a href="#">NPC Brain</a><a href="#">Voice Acting</a><a href="#">OST Composer</a><a href="#">World Builder</a><a href="#">Lore Writer</a><a href="#">Trailer Studio</a><a href="#">Unity Export</a><a href="#">Unreal Export</a>
+  </div>
+  <div class="footer-btm">© 2026 Gamesfield — AI Infrastructure for Game Developers</div>
+</footer>
+
+<script>
+function shiftCarousel(id, dir) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const cardWidth = el.querySelector('.mc, .mc-land, .mc-sq').offsetWidth + 10;
+  el.scrollBy({ left: dir * cardWidth * 3, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
