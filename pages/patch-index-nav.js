@@ -12,10 +12,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const FILE = path.join(__dirname, 'pages', 'index.html');
+const FILE = fs.existsSync(path.join(__dirname, "index.html")) ? path.join(__dirname, "index.html") : path.join(__dirname, "pages", "index.html");
 
 if (!fs.existsSync(FILE)) {
-  console.error('❌  Not found: pages/index.html\n   Run this script from the root of your repo.');
+  console.error('❌  Not found: index.html — make sure this script is in the same folder as index.html');
   process.exit(1);
 }
 
