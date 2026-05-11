@@ -5,718 +5,693 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Pricing — Gamesfield</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#0f1113;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;border:none;outline:none;font-family:inherit}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d0d0d;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  button{cursor:pointer;border:none;outline:none;font-family:inherit}
 
-/* ── NAV ── */
-#header{height:64px;width:100%;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);background:rgba(15,17,19,.92);box-shadow:inset 0 1rem 1rem rgba(0,0,0,1);border-bottom:1px solid rgba(255,255,255,.06)}
-#header nav{display:grid;grid-template-columns:auto 1fr auto;padding:0 16px;height:100%;align-items:center;max-width:1600px;margin:0 auto;gap:0}
-.nav-brand{display:flex;align-items:center;gap:8px;flex-shrink:0;text-decoration:none;color:#fff;transition:opacity .15s}
-.nav-brand:hover{opacity:.8}
-.nav-brand-logo{width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0}
-.nav-brand-logo svg{width:32px;height:32px;display:block}
-.nav-brand-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.04em;white-space:nowrap}
-.nav-brand-name span{color:#FE9E17}
-#header__menu_list{display:flex;align-items:center;height:100%;overflow-x:auto;gap:2px;scrollbar-width:none}
-#header__menu_list::-webkit-scrollbar{display:none}
-.nav-item{padding:4px 12px;border-radius:10px;font-size:13px;font-weight:500;color:rgba(255,255,255,.45);white-space:nowrap;cursor:pointer;transition:color .12s,background .12s;border:none;background:transparent;font-family:'DM Sans',sans-serif;text-decoration:none;display:flex;align-items:center;gap:6px}
-.nav-item:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.05)}
-.nav-item.active{color:#fff}
-.nav-badge{border-radius:4px;font-size:10px;font-weight:600;padding:1px 5px;background:rgba(254,158,23,.12);color:#FE9E17;font-family:'JetBrains Mono',monospace;letter-spacing:.02em}
-.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.glass-pill{border-radius:10px;background:rgba(255,255,255,.05);box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px 0 rgba(255,255,255,.03);backdrop-filter:blur(12px);color:#fff;cursor:pointer;white-space:nowrap;height:32px;padding:0 12px 0 8px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;border:none;font-family:'DM Sans',sans-serif;transition:opacity .15s}
-.glass-pill:hover{opacity:.8}
-.nav-cta{height:32px;padding:0 16px;border-radius:10px;background:#FE9E17;color:#0f1113;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s;border:none}
-.nav-cta:hover{opacity:.85}
-.nav-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 4px}
+  /* ── TOP BANNER ── */
+  .top-banner{background:#0f1a0a;padding:8px;text-align:center;font-size:13px;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;border-bottom:1px solid #1e3a14}
+  .top-banner .dot{width:8px;height:8px;background:#4dff6e;border-radius:50%;flex-shrink:0;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── HERO ── */
-.hero-section{padding:80px 24px 0;text-align:center;position:relative;overflow:hidden}
-.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#FE9E17;margin-bottom:16px;display:block}
-.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(64px,10vw,120px);line-height:.92;letter-spacing:.02em;margin-bottom:20px}
-.hero-title .hi{color:#FE9E17}
-.hero-sub{font-size:16px;font-weight:300;color:rgba(255,255,255,.5);max-width:480px;margin:0 auto 40px;line-height:1.6}
+  /* ── NAV ── */
+  #header{height:64px;width:100%;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);background:rgba(0,0,0,.9);box-shadow:inset 0 1rem 1rem rgba(0,0,0,1);border-bottom:1px solid rgba(255,255,255,.06)}
+  #header nav{display:grid;grid-template-columns:auto 1fr auto;padding-right:16px;height:100%;align-items:center;max-width:1600px;margin:0 auto;padding-left:16px;gap:0}
+  .nav-brand{display:flex;align-items:center;gap:8px;margin-right:8px;flex-shrink:0;text-decoration:none;color:#fff;transition:opacity .15s}
+  .nav-brand:hover{opacity:.8}
+  .nav-brand-logo{width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0}
+  .nav-brand-logo svg{width:32px;height:32px;display:block}
+  .nav-brand-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.04em;white-space:nowrap}
+  .nav-brand-name span{color:#FE9E17}
+  #header__menu_list{display:flex;align-items:center;height:100%;overflow-x:auto;gap:2px;scrollbar-width:none}
+  #header__menu_list::-webkit-scrollbar{display:none}
+  .nav-item{padding:4px 12px;border-radius:10px;font-size:13px;font-weight:500;color:rgba(255,255,255,.45);white-space:nowrap;cursor:pointer;transition:color .12s,background .12s;border:none;background:transparent;font-family:'DM Sans',sans-serif;text-decoration:none;display:flex;align-items:center;gap:6px}
+  .nav-item:hover{color:rgba(255,255,255,.9)}
+  .nav-item:hover,.nav-item:focus{background:rgba(255,255,255,.05)}
+  .nav-item.active{color:#fff}
+  .nav-badge{border-radius:4px;font-size:10px;font-weight:600;padding:1px 5px;background:rgba(254,158,23,.12);color:#FE9E17;font-family:'JetBrains Mono',monospace;letter-spacing:.02em}
+  .nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .glass-pill{border-radius:10px;background:rgba(255,255,255,.05);box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px 0 rgba(255,255,255,.03);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;cursor:pointer;white-space:nowrap;height:32px;padding:0 12px 0 8px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;border:none;font-family:'DM Sans',sans-serif;transition:opacity .15s}
+  .glass-pill:hover{opacity:.8}
+  .glass-icon{border-radius:10px;background:rgba(255,255,255,.05);box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px 0 rgba(255,255,255,.03);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:#fff;transition:opacity .15s}
+  .glass-icon:hover{opacity:.75}
+  .assets-btn{border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);box-shadow:0 2px 1.5px -0.5px rgba(0,0,0,.03),inset 0 2px 3px 0 rgba(255,255,255,.03);backdrop-filter:blur(12px);height:32px;padding:0 12px 0 8px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:opacity .15s}
+  .assets-btn:hover{opacity:.8}
+  .nav-avatar-wrap{position:relative;width:32px;height:32px;cursor:pointer}
+  .nav-avatar-img{position:absolute;width:24px;height:24px;top:4px;left:4px;border-radius:50%;overflow:hidden;background:#FE9E17;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0d0d0d}
+  .nav-avatar-ring{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+  .nav-sep{width:1px;height:20px;background:rgba(255,255,255,.1);margin:0 4px}
 
-/* Toggle */
-.toggle-wrap{display:inline-flex;align-items:center;gap:0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:4px;margin-bottom:64px}
-.toggle-btn{height:36px;padding:0 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .2s;background:transparent;color:rgba(255,255,255,.45)}
-.toggle-btn.on{background:#1c1e20;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.4)}
-.save-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:#d1fe17;background:rgba(209,254,23,.1);border:1px solid rgba(209,254,23,.2);border-radius:4px;padding:2px 6px;margin-left:6px}
+  /* ── PAGE HERO ── */
+  .page-hero{
+    text-align:center;
+    padding:80px 24px 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  .page-hero::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 700px 400px at 50% -60px, rgba(254,158,23,.08) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .page-hero-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:2.5px;text-transform:uppercase;
+    color:#FE9E17;margin-bottom:16px;opacity:.8;
+  }
+  .page-hero-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(52px,7vw,88px);
+    letter-spacing:.03em;line-height:.95;
+    margin-bottom:16px;
+  }
+  .page-hero-title span{color:#FE9E17}
+  .page-hero-sub{
+    font-size:15px;color:#666;max-width:480px;
+    margin:0 auto 32px;line-height:1.6;
+  }
 
-/* ── PRICING GRID ── */
-.pricing-outer{max-width:1200px;margin:0 auto;padding:0 24px 80px}
-.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(255,255,255,.04);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+  /* ── BILLING TOGGLE ── */
+  .billing-toggle{
+    display:inline-flex;align-items:center;gap:0;
+    background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:3px;
+    margin-bottom:64px;
+  }
+  .toggle-btn{
+    padding:6px 18px;border-radius:7px;font-size:13px;font-weight:500;
+    color:#555;background:transparent;border:none;cursor:pointer;
+    transition:all .15s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;
+  }
+  .toggle-btn.active{background:#1e1e1e;color:#fff}
+  .save-badge{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.05em;
+    background:rgba(209,254,23,.12);color:#d1fe17;
+    padding:2px 6px;border-radius:4px;font-weight:600;
+  }
 
-/* Plan card */
-.plan{background:#0f1113;padding:28px 24px 24px;display:flex;flex-direction:column;gap:0;position:relative;transition:background .2s}
-.plan:hover{background:#111315}
-.plan.popular{background:#111517;border:none;position:relative}
-.plan.popular::before{content:'';position:absolute;inset:0;border:1.5px solid rgba(254,158,23,.35);border-radius:0;pointer-events:none;z-index:1}
-.popular-tag{position:absolute;top:16px;right:16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#0f1113;background:#FE9E17;border-radius:4px;padding:3px 8px}
+  /* ── PRICING GRID ── */
+  .pricing-wrap{
+    max-width:1100px;margin:0 auto;
+    padding:0 24px 80px;
+  }
+  .pricing-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:2px;
+    background:#161616;
+    border:1px solid #1e1e1e;
+    border-radius:16px;
+    overflow:hidden;
+  }
 
-.plan-tier{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px}
-.plan-name{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.03em;line-height:1;margin-bottom:4px}
-.plan-tagline{font-size:12px;font-weight:400;color:rgba(255,255,255,.35);margin-bottom:24px;line-height:1.4;font-style:italic}
+  /* ── TIER CARD ── */
+  .tier{
+    background:#0d0d0d;
+    padding:32px 28px 36px;
+    position:relative;
+    display:flex;flex-direction:column;
+    transition:background .2s;
+  }
+  .tier:hover{background:#0f0f0f}
+  .tier.featured{
+    background:linear-gradient(180deg,#111008 0%,#0d0d0d 100%);
+    border-left:1px solid rgba(254,158,23,.15);
+    border-right:1px solid rgba(254,158,23,.15);
+  }
+  .tier.featured::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,#FE9E17,transparent);
+  }
 
-.price-row{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
-.price-dollar{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);margin-top:4px}
-.price-amount{font-family:'Bebas Neue',sans-serif;font-size:56px;line-height:1;letter-spacing:.01em}
-.price-period{font-size:13px;font-weight:400;color:rgba(255,255,255,.35);align-self:flex-end;padding-bottom:6px}
-.price-annual-note{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.25);margin-bottom:20px;min-height:14px}
-.price-annual-note.lime{color:#d1fe17}
+  /* Popular badge */
+  .tier-badge{
+    position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:600;
+    background:#FE9E17;color:#000;
+    padding:3px 10px 3px;border-radius:0 0 7px 7px;
+    white-space:nowrap;
+  }
 
-/* CTA button */
-.plan-btn{width:100%;height:44px;border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all .2s;margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:8px}
-.plan-btn.free-btn{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
-.plan-btn.free-btn:hover{background:rgba(255,255,255,.1);color:#fff}
-.plan-btn.primary-btn{background:#FE9E17;color:#0f1113}
-.plan-btn.primary-btn:hover{opacity:.9}
-.plan-btn.outline-btn{background:transparent;color:#FE9E17;border:1px solid rgba(254,158,23,.4)}
-.plan-btn.outline-btn:hover{background:rgba(254,158,23,.06);border-color:rgba(254,158,23,.7)}
+  .tier-name{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+    color:#444;margin-bottom:20px;
+  }
+  .tier.featured .tier-name{color:#FE9E17;opacity:.7}
 
-/* Credits chip */
-.credits-row{display:flex;align-items:center;gap:8px;padding:12px 14px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:20px;border:1px solid rgba(255,255,255,.06)}
-.credits-icon{font-size:16px}
-.credits-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;color:#FE9E17}
-.credits-sublabel{font-size:11px;color:rgba(255,255,255,.3);margin-left:auto}
+  .tier-price-row{margin-bottom:6px;display:flex;align-items:flex-end;gap:4px}
+  .tier-price{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:52px;letter-spacing:.01em;line-height:1;
+    color:#fff;
+  }
+  .tier-price-free{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:52px;letter-spacing:.01em;line-height:1;
+    color:#333;
+  }
+  .tier-price-suffix{
+    font-size:13px;color:#444;margin-bottom:8px;
+    font-weight:400;
+  }
+  .tier-price-annual{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;color:#333;margin-bottom:20px;letter-spacing:.02em;
+    min-height:16px;
+  }
+  .tier-price-annual.highlight{color:#d1fe17}
 
-/* Feature list */
-.feat-divider{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:14px;padding-top:4px}
-.feat-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.feat-list li{display:flex;align-items:flex-start;gap:10px;font-size:13px;font-weight:400;color:rgba(255,255,255,.65);line-height:1.4}
-.feat-list li .fi{flex-shrink:0;width:16px;height:16px;margin-top:1px}
-.feat-list li .fi.check{color:#4dff8e}
-.feat-list li .fi.x{color:rgba(255,255,255,.15)}
-.feat-list li .fi.amber{color:#FE9E17}
-.feat-list li.muted{color:rgba(255,255,255,.25)}
-.feat-highlight{color:#fff;font-weight:500}
+  .tier-divider{height:1px;background:#1a1a1a;margin-bottom:20px}
 
-/* ── COMPARISON TABLE ── */
-.compare-section{max-width:1200px;margin:0 auto;padding:0 24px 100px}
-.compare-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:12px;display:block}
-.compare-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);letter-spacing:.03em;margin-bottom:48px;line-height:1}
-.compare-heading span{color:#FE9E17}
-.compare-table{width:100%;border-collapse:collapse}
-.compare-table thead tr th{padding:12px 16px;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.35);text-align:center;border-bottom:1px solid rgba(255,255,255,.06)}
-.compare-table thead tr th:first-child{text-align:left}
-.compare-table thead tr th.col-highlight{color:#FE9E17;position:relative}
-.compare-table thead tr th.col-highlight::after{content:'';position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(254,158,23,.04);pointer-events:none}
-.compare-table tbody tr td{padding:14px 16px;font-size:13px;color:rgba(255,255,255,.6);text-align:center;border-bottom:1px solid rgba(255,255,255,.04)}
-.compare-table tbody tr td:first-child{text-align:left;color:rgba(255,255,255,.8);font-weight:500}
-.compare-table tbody tr.group-head td{background:rgba(255,255,255,.02);padding-top:20px;padding-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);font-weight:600}
-.compare-table tbody tr td.col-highlight{background:rgba(254,158,23,.03);color:#fff}
-.compare-table tbody tr:hover td{background:rgba(255,255,255,.02)}
-.check-icon{color:#4dff8e;font-size:15px}
-.x-icon{color:rgba(255,255,255,.12);font-size:15px}
-.partial-icon{color:#FE9E17;font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:600}
+  .tier-credits{
+    display:flex;align-items:center;gap:8px;
+    margin-bottom:20px;
+  }
+  .tier-credits-icon{
+    width:28px;height:28px;border-radius:7px;
+    background:rgba(254,158,23,.08);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .tier-credits-val{
+    font-family:'JetBrains Mono',monospace;font-size:13px;
+    font-weight:500;color:#ccc;
+  }
+  .tier-credits-val span{color:#555;font-size:11px;margin-left:2px}
 
-/* ── FAQ ── */
-.faq-section{max-width:720px;margin:0 auto;padding:0 24px 100px}
-.faq-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:12px;display:block}
-.faq-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,56px);letter-spacing:.03em;margin-bottom:40px}
-.faq-item{border-bottom:1px solid rgba(255,255,255,.07);overflow:hidden}
-.faq-q{width:100%;background:none;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;text-align:left;padding:20px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:color .15s}
-.faq-q:hover{color:#FE9E17}
-.faq-icon{flex-shrink:0;width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:50%;border:1px solid rgba(255,255,255,.15);font-size:12px;color:rgba(255,255,255,.4);transition:all .2s}
-.faq-item.open .faq-icon{background:#FE9E17;border-color:#FE9E17;color:#0f1113;transform:rotate(45deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s}
-.faq-item.open .faq-a{max-height:300px;padding-bottom:20px}
-.faq-a p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.5)}
-.faq-a p a{color:#FE9E17;border-bottom:1px solid rgba(254,158,23,.3)}
-.faq-a p strong{color:rgba(255,255,255,.8);font-weight:500}
+  .tier-cta{
+    width:100%;padding:11px 0;border-radius:9px;
+    font-size:13px;font-weight:600;
+    margin-bottom:24px;cursor:pointer;
+    transition:all .15s;font-family:'DM Sans',sans-serif;
+    letter-spacing:.01em;
+  }
+  .cta-free{background:#1a1a1a;color:#555;border:1px solid #222}
+  .cta-free:hover{background:#222;color:#888}
+  .cta-indie{background:rgba(254,158,23,.1);color:#FE9E17;border:1px solid rgba(254,158,23,.2)}
+  .cta-indie:hover{background:rgba(254,158,23,.18);border-color:rgba(254,158,23,.35)}
+  .cta-featured{background:#FE9E17;color:#000;border:none;font-weight:700}
+  .cta-featured:hover{background:#ffad35;transform:translateY(-1px);box-shadow:0 4px 20px rgba(254,158,23,.3)}
+  .cta-team{background:rgba(209,254,23,.08);color:#d1fe17;border:1px solid rgba(209,254,23,.15)}
+  .cta-team:hover{background:rgba(209,254,23,.14);border-color:rgba(209,254,23,.3)}
 
-/* ── BOTTOM CTA ── */
-.bottom-cta{text-align:center;padding:80px 24px 100px;position:relative;overflow:hidden}
-.bottom-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 100%,rgba(254,158,23,.08),transparent);pointer-events:none}
-.bcta-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#FE9E17;margin-bottom:16px;display:block}
-.bcta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,9vw,96px);line-height:.9;letter-spacing:.02em;margin-bottom:20px}
-.bcta-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,.45);max-width:400px;margin:0 auto 36px;line-height:1.6}
-.bcta-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
-.bcta-primary{height:52px;padding:0 32px;border-radius:12px;background:#FE9E17;color:#0f1113;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:opacity .15s;display:flex;align-items:center;gap:8px}
-.bcta-primary:hover{opacity:.88}
-.bcta-secondary{height:52px;padding:0 28px;border-radius:12px;background:rgba(255,255,255,.05);color:#fff;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:all .15s;display:flex;align-items:center;gap:8px}
-.bcta-secondary:hover{background:rgba(255,255,255,.09)}
+  /* Feature list */
+  .tier-features{list-style:none;display:flex;flex-direction:column;gap:10px;flex:1}
+  .tier-features li{
+    display:flex;align-items:flex-start;gap:9px;
+    font-size:12.5px;color:#555;line-height:1.4;
+  }
+  .tier-features li.on{color:#888}
+  .tier-features li.on.bold{color:#bbb;font-weight:500}
+  .feat-icon{width:14px;height:14px;flex-shrink:0;margin-top:1px}
+  .feat-check{color:#FE9E17}
+  .feat-check-lime{color:#d1fe17}
+  .feat-dash{color:#2a2a2a}
+  .feat-section{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+    color:#2a2a2a;padding-top:6px;
+  }
 
-/* ── FOOTER ── */
-footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 24px 24px;max-width:1600px;margin:0 auto;display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr;gap:40px}
-.fb-logo{width:48px;height:48px;border-radius:10px;overflow:hidden;flex-shrink:0;margin-bottom:10px}
-.fb-logo svg{width:48px;height:48px;display:block}
-.fb-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;margin-bottom:4px}
-.fb-name span{color:#FE9E17}
-.fb-addr{font-size:12px;color:rgba(255,255,255,.3);line-height:1.6;margin-bottom:14px}
-.fb-social{display:flex;gap:12px}
-.fb-social a{font-size:12px;color:rgba(255,255,255,.3);transition:color .15s}
-.fb-social a:hover{color:#fff}
-.fl h4{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:14px}
-.fl{display:flex;flex-direction:column;gap:0}
-.fl a{font-size:13px;color:rgba(255,255,255,.4);padding:4px 0;transition:color .15s}
-.fl a:hover{color:#fff}
-.footer-btm{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.06);padding-top:20px;font-size:12px;color:rgba(255,255,255,.2);display:flex;justify-content:space-between;align-items:center}
+  /* ── CREDIT EXPLAINER ── */
+  .credit-strip{
+    max-width:1100px;margin:0 auto 64px;
+    padding:0 24px;
+  }
+  .credit-strip-inner{
+    background:#111;border:1px solid #1e1e1e;border-radius:12px;
+    padding:24px 28px;
+    display:grid;grid-template-columns:1fr auto;
+    align-items:center;gap:24px;
+  }
+  .credit-strip-left h4{
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.12em;text-transform:uppercase;color:#FE9E17;
+    margin-bottom:6px;opacity:.7;
+  }
+  .credit-strip-left p{font-size:13px;color:#555;line-height:1.5;max-width:520px}
+  .credit-strip-left p strong{color:#888}
+  .credit-topup{
+    background:#1a1a1a;border:1px solid #222;border-radius:9px;
+    padding:14px 20px;text-align:center;flex-shrink:0;
+  }
+  .credit-topup-price{
+    font-family:'Bebas Neue',sans-serif;font-size:28px;color:#FE9E17;line-height:1;
+  }
+  .credit-topup-label{font-size:11px;color:#444;margin-top:2px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
 
-/* Glow orb */
-.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
-.orb-amber{width:600px;height:400px;background:rgba(254,158,23,.06);top:-100px;left:50%;transform:translateX(-50%)}
+  /* ── COMPARISON TABLE ── */
+  .compare-wrap{
+    max-width:1100px;margin:0 auto 80px;
+    padding:0 24px;
+  }
+  .compare-eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.15em;text-transform:uppercase;color:#333;
+    text-align:center;margin-bottom:32px;
+  }
+  .compare-table{width:100%;border-collapse:collapse}
+  .compare-table th{
+    padding:10px 16px;font-size:11px;font-weight:600;
+    text-align:left;color:#333;border-bottom:1px solid #1a1a1a;
+    font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;
+  }
+  .compare-table th:first-child{width:35%;color:#444}
+  .compare-table th:not(:first-child){text-align:center;width:16.25%}
+  .compare-table td{
+    padding:11px 16px;font-size:12.5px;color:#444;
+    border-bottom:1px solid #111;
+  }
+  .compare-table td:not(:first-child){text-align:center}
+  .compare-table tr:hover td{background:rgba(255,255,255,.015)}
+  .compare-table .cat-row td{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;
+    text-transform:uppercase;color:#2a2a2a;padding-top:20px;padding-bottom:6px;
+    border-bottom:none;
+  }
+  .compare-table .check-y{color:#FE9E17;font-size:14px}
+  .compare-table .check-lime{color:#d1fe17;font-size:14px}
+  .compare-table .check-n{color:#222;font-size:14px}
+  .compare-table .feat-name{color:#666}
+  .compare-table .tier-head-free{color:#333}
+  .compare-table .tier-head-indie{color:#FE9E17}
+  .compare-table .tier-head-studio{color:#FE9E17}
+  .compare-table .tier-head-team{color:#d1fe17}
 
-/* Responsive */
-@media(max-width:900px){
-  .pricing-grid{grid-template-columns:1fr 1fr}
-  footer{grid-template-columns:1fr 1fr;gap:32px}
-  .compare-table thead tr th:not(:first-child){display:none}
-  .compare-table tbody tr td:not(:first-child){display:none}
-}
-@media(max-width:600px){
-  .pricing-grid{grid-template-columns:1fr}
-  footer{grid-template-columns:1fr}
-  .hero-section{padding:48px 16px 0}
-}
+  /* ── FAQ ── */
+  .faq-wrap{
+    max-width:680px;margin:0 auto 80px;
+    padding:0 24px;
+  }
+  .faq-eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.15em;text-transform:uppercase;color:#333;
+    text-align:center;margin-bottom:32px;
+  }
+  .faq-item{
+    border-bottom:1px solid #141414;
+  }
+  .faq-q{
+    width:100%;background:transparent;border:none;color:#fff;
+    font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;
+    padding:18px 0;text-align:left;cursor:pointer;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+    transition:color .15s;
+  }
+  .faq-q:hover{color:#FE9E17}
+  .faq-q-icon{
+    font-size:18px;color:#333;transition:transform .2s,color .15s;flex-shrink:0;
+    font-weight:300;line-height:1;
+  }
+  .faq-item.open .faq-q-icon{transform:rotate(45deg);color:#FE9E17}
+  .faq-a{
+    font-size:13.5px;color:#555;line-height:1.65;
+    max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;
+  }
+  .faq-item.open .faq-a{max-height:200px;padding-bottom:18px}
 
-/* Subtle shimmer on popular card */
-@keyframes shimmer{0%{opacity:.5}50%{opacity:1}100%{opacity:.5}}
-.popular-glow{position:absolute;inset:-1px;border-radius:2px;background:linear-gradient(180deg,rgba(254,158,23,.08),transparent 60%);pointer-events:none;animation:shimmer 4s ease-in-out infinite}
+  /* ── BOTTOM CTA ── */
+  .bottom-cta{
+    text-align:center;padding:80px 24px;
+    border-top:1px solid #111;
+    position:relative;overflow:hidden;
+  }
+  .bottom-cta::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 600px 300px at 50% 100%, rgba(254,158,23,.05) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .bottom-cta h2{
+    font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);
+    letter-spacing:.03em;margin-bottom:12px;
+  }
+  .bottom-cta h2 span{color:#FE9E17}
+  .bottom-cta p{font-size:14px;color:#555;margin-bottom:28px}
+  .cta-row{display:flex;align-items:center;justify-content:center;gap:10px}
+  .btn-primary{
+    background:#FE9E17;color:#000;font-weight:700;
+    font-size:14px;padding:12px 28px;border-radius:10px;
+    border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+    transition:all .15s;
+  }
+  .btn-primary:hover{background:#ffad35;transform:translateY(-1px);box-shadow:0 4px 20px rgba(254,158,23,.3)}
+  .btn-ghost{
+    background:transparent;color:#555;font-size:14px;
+    padding:12px 24px;border-radius:10px;
+    border:1px solid #1e1e1e;cursor:pointer;font-family:'DM Sans',sans-serif;
+    transition:all .15s;
+  }
+  .btn-ghost:hover{color:#fff;border-color:#333}
 
-/* Credit top-up note */
-.topup-note{margin-top:32px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.25);line-height:1.7}
-.topup-note a{color:#FE9E17;border-bottom:1px solid rgba(254,158,23,.3)}
+  /* ── FOOTER ── */
+  footer{
+    border-top:1px solid #111;
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;
+    gap:32px;padding:40px 40px 32px;max-width:1600px;margin:0 auto;
+  }
+  .fl h4{font-size:11px;font-weight:600;color:#2a2a2a;margin-bottom:14px;letter-spacing:.05em;text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+  .fl a{display:block;color:#444;margin-bottom:8px;transition:color .1s;font-size:12px}
+  .fl a:hover{color:#aaa}
+  .fb-logo{width:32px;height:32px;margin-bottom:10px}
+  .fb-logo svg{width:32px;height:32px;border-radius:7px}
+  .fb-name{color:#555;font-size:16px;margin-bottom:14px;font-family:'Bebas Neue',sans-serif;letter-spacing:.05em}
+  .fb-name span{color:#FE9E17}
+  .fb-addr{color:#333;font-size:11px;line-height:1.7}
+  .fb-social{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .fb-social a{color:#333;font-size:11px;border:1px solid #1e1e1e;border-radius:5px;padding:4px 8px;transition:all .1s;font-family:'JetBrains Mono',monospace}
+  .fb-social a:hover{color:#fff;border-color:#444}
+  .footer-btm{grid-column:span 5;border-top:1px solid #1a1a1a;padding-top:16px;color:#2a2a2a;font-size:11px;text-align:center;margin-top:10px;font-family:'JetBrains Mono',monospace}
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .tier{animation:fadeUp .4s ease both}
+  .tier:nth-child(1){animation-delay:.05s}
+  .tier:nth-child(2){animation-delay:.1s}
+  .tier:nth-child(3){animation-delay:.15s}
+  .tier:nth-child(4){animation-delay:.2s}
 </style>
 </head>
 <body>
 
+<!-- TOP BANNER -->
+<div class="top-banner">
+  <div class="dot"></div>
+  <strong>Beta now live.</strong>&nbsp; Early access is open — join 2,400+ indie devs building with AI. &nbsp;<a href="#" style="color:#FE9E17;text-decoration:underline">Claim your spot →</a>
+</div>
+
 <!-- NAV -->
 <header id="header">
-  <nav>
-    <a class="nav-brand" href="gamesfield-home.html">
-      <div class="nav-brand-logo">
-        <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="1200" height="1200" fill="#FE9E17"/>
-          <path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/>
-          <path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/>
+<nav aria-label="primary navigation">
+  <a class="nav-brand" href="index.html">
+    <div class="nav-brand-logo">
+      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#cn)"><path d="M0 0H138.534H1061.74H1200V91.0658V1107.76V1200H1061.76H136.868H0V1107.12V93.4061V0Z" fill="#FE9E17"/><path d="M0 0H138.534C127.116 2.23825 117.439 3.0593 105.855 5.87918C69.2136 14.9917 38.2311 33.7011 18.6367 58.548C6.31766 74.2225 7.79364 78.4904 0 93.4061V0Z" fill="#FEFEFE"/><path d="M0 1107.12C3.77494 1115.02 5.67412 1121.69 10.2967 1129.62C25.8521 1155.69 53.3621 1176.76 87.8739 1189.03C111.391 1197.33 115.827 1195.38 136.868 1200H0V1107.12Z" fill="#FEFEFE"/><path d="M1061.76 1200C1081.56 1196.09 1087.82 1197.09 1108.72 1190.21C1144.47 1178.51 1173.12 1157.32 1189.14 1130.75C1193.92 1122.7 1195.92 1115.61 1200 1107.76V1200H1061.76Z" fill="#FEFEFE"/><path d="M1061.74 0H1200V91.0658C1199.03 89.3496 1198.31 87.3369 1197.57 85.5334C1193.42 75.3779 1188.3 65.891 1180.9 56.7834C1160.7 32.2772 1129.4 13.996 1092.67 5.2643C1082.76 2.92089 1071.99 1.8798 1061.74 0Z" fill="#FEFEFE"/><path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/><path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/><path d="M815.498 200.074C839.914 199.676 864.267 202.033 887.741 207.066C917.69 213.657 946.171 226.808 960.989 247.762C985.075 281.82 976.073 329.854 926.543 348.107C875.49 366.92 814.116 357.909 762.66 345.922C712.004 333.498 665.022 315.618 617.556 297.741C605.983 293.382 594.496 289.247 583.222 284.439C584.657 283.133 586.145 281.86 587.685 280.622C650.576 230.055 722.933 202.679 815.498 200.074Z" fill="#FE9E17"/><path d="M407.882 318.402C417.061 317.344 432.831 318.367 442.039 319.061C375.943 407.657 335.885 516.179 313.46 615.809C306.921 644.865 299.879 687.006 298.797 716.549C288.889 709.898 282.362 704.156 274.173 696.404C239.942 662.408 222.033 625.377 216.434 583.093C203.646 486.527 250.36 330.539 407.882 318.402Z" fill="#FE9E17"/></g><defs><clipPath id="cn"><rect width="1200" height="1200" fill="white"/></clipPath></defs></svg>
+    </div>
+    <span class="nav-brand-name">Games<span>field</span></span>
+  </a>
+  <div id="header__menu_list">
+    <a href="index.html" class="nav-item">Explore</a>
+    <button class="nav-item">Image</button>
+    <button class="nav-item">3D Assets</button>
+    <button class="nav-item">Audio</button>
+    <a href="#" class="nav-item">Collab</a>
+    <a href="#" class="nav-item">Canvas <span class="nav-badge">New</span></a>
+    <button class="nav-item">Edit</button>
+    <button class="nav-item">Character</button>
+    <a href="#" class="nav-item">World Builder <span class="nav-badge">New</span></a>
+    <a href="#" class="nav-item active">Pricing</a>
+  </div>
+  <div class="nav-right">
+    <button class="glass-pill">
+      <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.562 3.523A2.75 2.75 0 017.81 3h8.376c.47 0 .92.189 1.249.523l5.154 5.244c.673.685.668 1.785-.011 2.464l-9.342 9.342a1.75 1.75 0 01-2.474 0L1.419 11.23a1.75 1.75 0 01-.01-2.464L6.562 3.523z" fill="currentColor"/></svg>
+      480 credits
+    </button>
+    <div class="nav-sep"></div>
+    <button class="glass-icon" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C8.165 2 4.999 4.988 4.807 8.8l-.202 3.97a1.25 1.25 0 01-.131.481L3.153 15.822A1.5 1.5 0 003 16.482V16.5A1.5 1.5 0 004.5 18H7.527c.249 2.25 2.156 4 4.473 4s4.224-1.75 4.473-4H19.5A1.5 1.5 0 0021 16.5v-.018a1.5 1.5 0 00-.153-.66l-1.401-2.772a1.25 1.25 0 01-.131-.481l-.202-3.97C18.92 4.988 15.835 2 12 2z" fill="currentColor"/></svg>
+    </button>
+    <a href="#" class="assets-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 6a3 3 0 013-3h2.25a3 3 0 012.122.879l.628.628A3 3 0 0013.122 5H18a3 3 0 013 3v10a3 3 0 01-3 3H6a3 3 0 01-3-3V6z" fill="currentColor" opacity=".5"/><path d="M3 10h18v8a3 3 0 01-3 3H6a3 3 0 01-3-3v-8z" fill="currentColor"/></svg>
+      My Assets
+    </a>
+    <button style="background:transparent;border:none;cursor:pointer;padding:0">
+      <div class="nav-avatar-wrap">
+        <div class="nav-avatar-img">T</div>
+        <svg class="nav-avatar-ring" width="32" height="32">
+          <circle r="15" cx="16" cy="16" stroke="rgba(255,255,255,.1)" fill="transparent" stroke-width="2"/>
+          <circle r="15" cx="16" cy="16" fill="transparent" stroke="#FE9E17" stroke-linecap="round" stroke-width="2" stroke-dashoffset="4.7" stroke-dasharray="94.2"/>
         </svg>
       </div>
-      <span class="nav-brand-name">Games<span>field</span></span>
-    </a>
-    <div id="header__menu_list">
-      <a class="nav-item" href="gamesfield-home.html">Explore</a>
-      <a class="nav-item" href="pages/generate-art.html">Generate Art</a>
-      <a class="nav-item" href="pages/world-builder.html">World Builder</a>
-      <a class="nav-item">NPC Brain <span class="nav-badge">SOON</span></a>
-      <a class="nav-item active" href="#">Pricing</a>
-      <a class="nav-item" href="#">Docs</a>
-    </div>
-    <div class="nav-right">
-      <button class="glass-pill">Log in</button>
-      <button class="nav-cta">Start free</button>
-    </div>
-  </nav>
+    </button>
+  </div>
+</nav>
 </header>
 
-<!-- HERO -->
-<div class="hero-section">
-  <div class="orb orb-amber"></div>
-  <span class="hero-eyebrow">Simple, transparent pricing</span>
-  <h1 class="hero-title">Ship your<br><span class="hi">game.</span><br>Not your budget.</h1>
-  <p class="hero-sub">One subscription. 23+ AI tools. No style drift. No juggling 8 logins.</p>
-
-  <!-- Billing toggle -->
-  <div class="toggle-wrap">
-    <button class="toggle-btn on" id="monthly-btn" onclick="setBilling('monthly')">Monthly</button>
-    <button class="toggle-btn" id="annual-btn" onclick="setBilling('annual')">Annual <span class="save-tag">SAVE 20%</span></button>
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-eyebrow">Simple pricing</div>
+  <h1 class="page-hero-title">ONE TOOL.<br><span>EVERY AI.</span></h1>
+  <p class="page-hero-sub">Replace $165–380/mo of fragmented subscriptions with one workspace that keeps your entire game consistent.</p>
+  <div class="billing-toggle">
+    <button class="toggle-btn active" onclick="setBilling('monthly',this)">Monthly</button>
+    <button class="toggle-btn" onclick="setBilling('annual',this)">Annual <span class="save-badge">SAVE 20%</span></button>
   </div>
 </div>
 
 <!-- PRICING CARDS -->
-<div class="pricing-outer">
+<div class="pricing-wrap">
   <div class="pricing-grid">
 
     <!-- FREE -->
-    <div class="plan">
-      <div class="plan-tier">Tier 01</div>
-      <div class="plan-name">Free</div>
-      <div class="plan-tagline">Try it. No credit card.</div>
-      <div class="price-row">
-        <span class="price-dollar">$</span>
-        <span class="price-amount">0</span>
-        <span class="price-period">/mo</span>
+    <div class="tier">
+      <div class="tier-name">Free</div>
+      <div class="tier-price-row">
+        <div class="tier-price-free">$0</div>
       </div>
-      <div class="price-annual-note">&nbsp;</div>
-      <button class="plan-btn free-btn">Get started free</button>
-      <div class="credits-row">
-        <span class="credits-icon">⚡</span>
-        <span class="credits-label">50 credits / mo</span>
-        <span class="credits-sublabel">~10 generations</span>
+      <div class="tier-price-annual" id="ann-free">&nbsp;</div>
+      <div class="tier-divider"></div>
+      <div class="tier-credits">
+        <div class="tier-credits-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.562 3.523A2.75 2.75 0 017.81 3h8.376c.47 0 .92.189 1.249.523l5.154 5.244c.673.685.668 1.785-.011 2.464l-9.342 9.342a1.75 1.75 0 01-2.474 0L1.419 11.23a1.75 1.75 0 01-.01-2.464L6.562 3.523z" fill="#FE9E17"/></svg>
+        </div>
+        <div class="tier-credits-val">50 credits<span>/mo</span></div>
       </div>
-      <div class="feat-divider">Includes</div>
-      <ul class="feat-list">
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span><span class="feat-highlight">3 tool integrations</span></span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>1 active Project Memory</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Game Art Generator</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Standard resolution exports</span>
-        </li>
-        <li class="muted">
-          <svg class="fi x" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span>No Style Lock</span>
-        </li>
-        <li class="muted">
-          <svg class="fi x" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span>No priority generation</span>
-        </li>
-        <li class="muted">
-          <svg class="fi x" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <span>No commercial licence</span>
-        </li>
+      <button class="tier-cta cta-free">Get started free</button>
+      <ul class="tier-features">
+        <li class="feat-section">Includes</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>3 tool integrations</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Project Memory (1 project)</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Community gallery access</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Standard generation queue</li>
+        <li><span class="feat-icon feat-dash">—</span>All tool integrations</li>
+        <li><span class="feat-icon feat-dash">—</span>Unlimited projects</li>
+        <li><span class="feat-icon feat-dash">—</span>Priority queue</li>
+        <li><span class="feat-icon feat-dash">—</span>Commercial licence</li>
+        <li><span class="feat-icon feat-dash">—</span>API access</li>
       </ul>
     </div>
 
-    <!-- INDIE (POPULAR) -->
-    <div class="plan popular">
-      <div class="popular-glow"></div>
-      <div class="popular-tag">MOST POPULAR</div>
-      <div class="plan-tier">Tier 02</div>
-      <div class="plan-name">Indie</div>
-      <div class="plan-tagline">For solo devs shipping solo.</div>
-      <div class="price-row">
-        <span class="price-dollar">$</span>
-        <span class="price-amount" id="indie-price">49</span>
-        <span class="price-period">/mo</span>
+    <!-- INDIE -->
+    <div class="tier">
+      <div class="tier-name">Indie</div>
+      <div class="tier-price-row">
+        <div class="tier-price" id="price-indie">$49</div>
+        <div class="tier-price-suffix">/mo</div>
       </div>
-      <div class="price-annual-note lime" id="indie-note">&nbsp;</div>
-      <button class="plan-btn primary-btn">Start Indie →</button>
-      <div class="credits-row">
-        <span class="credits-icon">⚡</span>
-        <span class="credits-label">600 credits / mo</span>
-        <span class="credits-sublabel">~120 generations</span>
+      <div class="tier-price-annual" id="ann-indie">&nbsp;</div>
+      <div class="tier-divider"></div>
+      <div class="tier-credits">
+        <div class="tier-credits-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.562 3.523A2.75 2.75 0 017.81 3h8.376c.47 0 .92.189 1.249.523l5.154 5.244c.673.685.668 1.785-.011 2.464l-9.342 9.342a1.75 1.75 0 01-2.474 0L1.419 11.23a1.75 1.75 0 01-.01-2.464L6.562 3.523z" fill="#FE9E17"/></svg>
+        </div>
+        <div class="tier-credits-val">750 credits<span>/mo</span></div>
       </div>
-      <div class="feat-divider">Everything in Free, plus</div>
-      <ul class="feat-list">
-        <li>
-          <svg class="fi amber" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span><span class="feat-highlight">All core tool integrations</span></span>
-        </li>
-        <li>
-          <svg class="fi amber" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span><span class="feat-highlight">Style Lock</span> — art style memory</span>
-        </li>
-        <li>
-          <svg class="fi amber" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>3 Project Memories</span>
-        </li>
-        <li>
-          <svg class="fi amber" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>4K + commercial licence</span>
-        </li>
-        <li>
-          <svg class="fi amber" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Meshy 3D integration</span>
-        </li>
-        <li>
-          <svg class="fi amber" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>ElevenLabs voice (basic)</span>
-        </li>
-        <li>
-          <svg class="fi amber" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Priority queue</span>
-        </li>
+      <button class="tier-cta cta-indie">Start creating</button>
+      <ul class="tier-features">
+        <li class="feat-section">Everything in Free, plus</li>
+        <li class="on bold"><span class="feat-icon feat-check">✓</span>All tool integrations</li>
+        <li class="on bold"><span class="feat-icon feat-check">✓</span>Unlimited projects</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Project Memory across all tools</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Commercial licence</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Export to Unity / Unreal / Godot</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Style Lock</li>
+        <li><span class="feat-icon feat-dash">—</span>Priority queue</li>
+        <li><span class="feat-icon feat-dash">—</span>Team workspace</li>
+        <li><span class="feat-icon feat-dash">—</span>API access</li>
       </ul>
     </div>
 
-    <!-- STUDIO -->
-    <div class="plan">
-      <div class="plan-tier">Tier 03</div>
-      <div class="plan-name">Studio</div>
-      <div class="plan-tagline">For small teams, big ambitions.</div>
-      <div class="price-row">
-        <span class="price-dollar">$</span>
-        <span class="price-amount" id="studio-price">149</span>
-        <span class="price-period">/mo</span>
+    <!-- STUDIO — FEATURED -->
+    <div class="tier featured">
+      <div class="tier-badge">Most popular</div>
+      <div class="tier-name">Studio</div>
+      <div class="tier-price-row">
+        <div class="tier-price" id="price-studio">$149</div>
+        <div class="tier-price-suffix">/mo</div>
       </div>
-      <div class="price-annual-note" id="studio-note">&nbsp;</div>
-      <button class="plan-btn outline-btn">Start Studio →</button>
-      <div class="credits-row">
-        <span class="credits-icon">⚡</span>
-        <span class="credits-label">2,500 credits / mo</span>
-        <span class="credits-sublabel">~500 generations</span>
+      <div class="tier-price-annual" id="ann-studio">&nbsp;</div>
+      <div class="tier-divider"></div>
+      <div class="tier-credits">
+        <div class="tier-credits-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.562 3.523A2.75 2.75 0 017.81 3h8.376c.47 0 .92.189 1.249.523l5.154 5.244c.673.685.668 1.785-.011 2.464l-9.342 9.342a1.75 1.75 0 01-2.474 0L1.419 11.23a1.75 1.75 0 01-.01-2.464L6.562 3.523z" fill="#FE9E17"/></svg>
+        </div>
+        <div class="tier-credits-val">3,000 credits<span>/mo</span></div>
       </div>
-      <div class="feat-divider">Everything in Indie, plus</div>
-      <ul class="feat-list">
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span><span class="feat-highlight">Up to 5 seats</span></span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Shared Project Memory</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>NPC Brain (Inworld)</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>AIVA OST Composer</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Unlimited Project Memories</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Kling trailer generation</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Dedicated support</span>
-        </li>
+      <button class="tier-cta cta-featured">Start free trial</button>
+      <ul class="tier-features">
+        <li class="feat-section">Everything in Indie, plus</li>
+        <li class="on bold"><span class="feat-icon feat-check">✓</span>Priority generation queue</li>
+        <li class="on bold"><span class="feat-icon feat-check">✓</span>Team workspace (up to 5 seats)</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Shared Project Memory</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Asset version history</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Collab canvas</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Advanced style controls</li>
+        <li class="on"><span class="feat-icon feat-check">✓</span>Priority support</li>
+        <li><span class="feat-icon feat-dash">—</span>API access</li>
+        <li><span class="feat-icon feat-dash">—</span>White-label</li>
       </ul>
     </div>
 
     <!-- TEAM -->
-    <div class="plan">
-      <div class="plan-tier">Tier 04</div>
-      <div class="plan-name">Team</div>
-      <div class="plan-tagline">Full pipeline. Full studio power.</div>
-      <div class="price-row">
-        <span class="price-dollar">$</span>
-        <span class="price-amount" id="team-price">299</span>
-        <span class="price-period">/mo</span>
+    <div class="tier">
+      <div class="tier-name">Team</div>
+      <div class="tier-price-row">
+        <div class="tier-price" id="price-team">$399</div>
+        <div class="tier-price-suffix">/mo</div>
       </div>
-      <div class="price-annual-note" id="team-note">&nbsp;</div>
-      <button class="plan-btn outline-btn">Start Team →</button>
-      <div class="credits-row">
-        <span class="credits-icon">⚡</span>
-        <span class="credits-label">Unlimited credits</span>
-        <span class="credits-sublabel">fair use policy</span>
+      <div class="tier-price-annual" id="ann-team">&nbsp;</div>
+      <div class="tier-divider"></div>
+      <div class="tier-credits">
+        <div class="tier-credits-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.562 3.523A2.75 2.75 0 017.81 3h8.376c.47 0 .92.189 1.249.523l5.154 5.244c.673.685.668 1.785-.011 2.464l-9.342 9.342a1.75 1.75 0 01-2.474 0L1.419 11.23a1.75 1.75 0 01-.01-2.464L6.562 3.523z" fill="#d1fe17"/></svg>
+        </div>
+        <div class="tier-credits-val">7,500 credits<span>/mo</span></div>
       </div>
-      <div class="feat-divider">Everything in Studio, plus</div>
-      <ul class="feat-list">
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span><span class="feat-highlight">Up to 20 seats</span></span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>API access + webhooks</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Unity + Unreal direct export</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>Admin dashboard + audit logs</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>SSO + SAML</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>SLA + priority support</span>
-        </li>
-        <li>
-          <svg class="fi check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>White-label exports</span>
-        </li>
+      <button class="tier-cta cta-team">Talk to us</button>
+      <ul class="tier-features">
+        <li class="feat-section">Everything in Studio, plus</li>
+        <li class="on bold"><span class="feat-icon feat-check-lime">✓</span>Up to 20 seats</li>
+        <li class="on bold"><span class="feat-icon feat-check-lime">✓</span>Full API access</li>
+        <li class="on bold"><span class="feat-icon feat-check-lime">✓</span>White-label option</li>
+        <li class="on"><span class="feat-icon feat-check-lime">✓</span>SSO / SAML</li>
+        <li class="on"><span class="feat-icon feat-check-lime">✓</span>Dedicated Slack support</li>
+        <li class="on"><span class="feat-icon feat-check-lime">✓</span>Custom tool integrations</li>
+        <li class="on"><span class="feat-icon feat-check-lime">✓</span>Usage analytics dashboard</li>
+        <li class="on"><span class="feat-icon feat-check-lime">✓</span>SLA guarantee</li>
+        <li class="on"><span class="feat-icon feat-check-lime">✓</span>Credit rollover</li>
       </ul>
     </div>
 
-  </div>
+  </div><!-- /pricing-grid -->
+</div><!-- /pricing-wrap -->
 
-  <p class="topup-note">
-    Need more credits mid-month? <a href="#">Top-up packs</a> available from $9 for 100 credits.<br>
-    AA studios &amp; education platforms — <a href="#">contact us for Enterprise pricing</a> ($2,400–$24,000/yr, unlimited seats, custom SLA).
-  </p>
+<!-- CREDIT TOP-UP STRIP -->
+<div class="credit-strip">
+  <div class="credit-strip-inner">
+    <div class="credit-strip-left">
+      <h4>Credit top-ups</h4>
+      <p>Running low mid-sprint? Buy credits any time — no waiting for next month. Top-ups are available on all paid plans. <strong>Credits never expire</strong> and roll over month to month on Team.</p>
+    </div>
+    <div class="credit-topup">
+      <div class="credit-topup-price">$10</div>
+      <div class="credit-topup-label">per 100 credits</div>
+    </div>
+  </div>
 </div>
 
 <!-- COMPARISON TABLE -->
-<div class="compare-section">
-  <span class="compare-eyebrow">Full breakdown</span>
-  <h2 class="compare-heading">Compare <span>plans</span></h2>
+<div class="compare-wrap">
+  <div class="compare-eyebrow">Full feature breakdown</div>
   <table class="compare-table">
     <thead>
       <tr>
-        <th>Feature</th>
-        <th>Free</th>
-        <th class="col-highlight">Indie</th>
-        <th>Studio</th>
-        <th>Team</th>
+        <th></th>
+        <th class="tier-head-free">Free</th>
+        <th class="tier-head-indie">Indie</th>
+        <th class="tier-head-studio">Studio</th>
+        <th class="tier-head-team">Team</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="group-head"><td colspan="5">Credits & Usage</td></tr>
-      <tr>
-        <td>Monthly credits</td>
-        <td>50</td>
-        <td class="col-highlight">600</td>
-        <td>2,500</td>
-        <td>Unlimited</td>
-      </tr>
-      <tr>
-        <td>Credit top-ups</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>Priority generation queue</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
+      <tr class="cat-row"><td colspan="5">Credits & Usage</td></tr>
+      <tr><td class="feat-name">Monthly credits</td><td>50</td><td>750</td><td>3,000</td><td>7,500</td></tr>
+      <tr><td class="feat-name">Credit top-ups</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">Credit rollover</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-lime">✓</td></tr>
 
-      <tr class="group-head"><td colspan="5">Project Memory</td></tr>
-      <tr>
-        <td>Active projects</td>
-        <td>1</td>
-        <td class="col-highlight">3</td>
-        <td>Unlimited</td>
-        <td>Unlimited</td>
-      </tr>
-      <tr>
-        <td>Shared team memory</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>Style Lock</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>Character roster lock</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>World lore rules</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
+      <tr class="cat-row"><td colspan="5">Project Memory</td></tr>
+      <tr><td class="feat-name">Projects</td><td>1</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
+      <tr><td class="feat-name">Style Lock</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">Character roster memory</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">Shared team memory</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">Asset version history</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
 
-      <tr class="group-head"><td colspan="5">Tool Integrations</td></tr>
-      <tr>
-        <td>Integrations unlocked</td>
-        <td>3</td>
-        <td class="col-highlight">All core</td>
-        <td>All tools</td>
-        <td>All tools + API</td>
-      </tr>
-      <tr>
-        <td>Meshy 3D</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>Inworld NPC Brain</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>ElevenLabs voice</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="partial-icon">Basic</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>AIVA OST Composer</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>Kling trailer generation</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
+      <tr class="cat-row"><td colspan="5">Tools & Integrations</td></tr>
+      <tr><td class="feat-name">Tool integrations</td><td>3</td><td>All</td><td>All</td><td>All + custom</td></tr>
+      <tr><td class="feat-name">Export (Unity / Unreal / Godot)</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">API access</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-lime">✓</td></tr>
+      <tr><td class="feat-name">White-label</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-lime">✓</td></tr>
 
-      <tr class="group-head"><td colspan="5">Export & Licensing</td></tr>
-      <tr>
-        <td>Export resolution</td>
-        <td>Standard</td>
-        <td class="col-highlight">4K</td>
-        <td>4K</td>
-        <td>4K + lossless</td>
-      </tr>
-      <tr>
-        <td>Commercial licence</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>Unity / Unreal direct export</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="x-icon">—</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>White-label exports</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="x-icon">—</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
+      <tr class="cat-row"><td colspan="5">Collaboration</td></tr>
+      <tr><td class="feat-name">Team seats</td><td>1</td><td>1</td><td>Up to 5</td><td>Up to 20</td></tr>
+      <tr><td class="feat-name">Collab canvas</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">SSO / SAML</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-lime">✓</td></tr>
 
-      <tr class="group-head"><td colspan="5">Team & Admin</td></tr>
-      <tr>
-        <td>Seats included</td>
-        <td>1</td>
-        <td class="col-highlight">1</td>
-        <td>Up to 5</td>
-        <td>Up to 20</td>
-      </tr>
-      <tr>
-        <td>Admin dashboard</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="partial-icon">Basic</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>SSO / SAML</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="x-icon">—</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>API access + webhooks</td>
-        <td><span class="x-icon">—</span></td>
-        <td class="col-highlight"><span class="x-icon">—</span></td>
-        <td><span class="x-icon">—</span></td>
-        <td><span class="check-icon">✓</span></td>
-      </tr>
-      <tr>
-        <td>Support</td>
-        <td>Community</td>
-        <td class="col-highlight">Email</td>
-        <td>Priority email</td>
-        <td>SLA + Slack</td>
-      </tr>
+      <tr class="cat-row"><td colspan="5">Support</td></tr>
+      <tr><td class="feat-name">Community support</td><td class="check-y">✓</td><td class="check-y">✓</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">Priority support</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">Dedicated Slack channel</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-lime">✓</td></tr>
+      <tr><td class="feat-name">SLA guarantee</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-lime">✓</td></tr>
+
+      <tr class="cat-row"><td colspan="5">Licence</td></tr>
+      <tr><td class="feat-name">Commercial licence</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
+      <tr><td class="feat-name">Priority generation queue</td><td class="check-n">—</td><td class="check-n">—</td><td class="check-y">✓</td><td class="check-y">✓</td></tr>
     </tbody>
   </table>
 </div>
 
 <!-- FAQ -->
-<div class="faq-section">
-  <span class="faq-eyebrow">Got questions</span>
-  <h2 class="faq-heading">FAQ</h2>
+<div class="faq-wrap">
+  <div class="faq-eyebrow">Frequently asked</div>
 
-  <div class="faq-item open">
+  <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">
-      What's a credit?
-      <span class="faq-icon">+</span>
+      What is a credit?
+      <span class="faq-q-icon">+</span>
     </button>
-    <div class="faq-a">
-      <p>One credit = one AI generation. Simple art and lore prompts typically cost 1–3 credits. Heavy tasks like Meshy 3D rigging or Kling trailer renders cost 5–15 credits. You can always see the credit cost before confirming a generation. <strong>Credits reset monthly</strong> and don't roll over.</p>
-    </div>
+    <div class="faq-a">One credit = one AI generation. A 2D character illustration costs 1–3 credits depending on quality settings. A 3D mesh costs 5–10. A 30-second trailer clip costs 15–20. You can see exact credit costs before you generate anything — no surprises.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">
-      What is Project Memory, exactly?
-      <span class="faq-icon">+</span>
+      Can I switch plans anytime?
+      <span class="faq-q-icon">+</span>
     </button>
-    <div class="faq-a">
-      <p>Project Memory is a locked context object that every tool in Gamesfield reads from. It stores your <strong>art style, colour palette, character roster, world lore rules, and world name</strong>. Every generation stays consistent without you re-pasting prompts. Think of it as a game bible your AI tools actually listen to.</p>
-    </div>
+    <div class="faq-a">Yes. Upgrade instantly and get prorated credit. Downgrade at the end of your billing cycle. No lock-in, no cancellation fees. Annual plans are refundable within 30 days.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">
-      Can I switch plans or cancel anytime?
-      <span class="faq-icon">+</span>
+      Do unused credits roll over?
+      <span class="faq-q-icon">+</span>
     </button>
-    <div class="faq-a">
-      <p>Yes — upgrade, downgrade, or cancel any time from your dashboard. If you cancel, you keep your current plan until the end of the billing period. No lock-ins, no cancellation fees.</p>
-    </div>
+    <div class="faq-a">Credits reset monthly on Free, Indie, and Studio plans. Team plans get full credit rollover — unused credits carry forward indefinitely. Credit top-ups never expire on any plan.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">
-      Do I own the art I generate?
-      <span class="faq-icon">+</span>
+      What tools are included?
+      <span class="faq-q-icon">+</span>
     </button>
-    <div class="faq-a">
-      <p>On paid plans (Indie and above), you get a <strong>full commercial licence</strong> to everything you generate — use it in your game, sell it on Steam, publish it anywhere. Free plan outputs are for personal/evaluation use only.</p>
-    </div>
+    <div class="faq-a">Paid plans include all current integrations: Meshy 3D, Scenario, Midjourney, ElevenLabs Voice, AIVA Music, Inworld NPC, Kling Trailers, Promethean AI, and more. New tool integrations are added regularly — all included at no extra cost. Free plan includes 3 integrations of your choice.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">
-      What if I run out of credits?
-      <span class="faq-icon">+</span>
+      Do I own what I generate?
+      <span class="faq-q-icon">+</span>
     </button>
-    <div class="faq-a">
-      <p>You can purchase <a href="#">top-up packs</a> starting at $9 for 100 credits. These don't expire. Alternatively, upgrade to a higher plan mid-cycle and we'll prorate the difference.</p>
-    </div>
+    <div class="faq-a">Yes. On all paid plans you own full commercial rights to everything you generate through Gamesfield. Free plan outputs are for personal, non-commercial use only. Check the individual tool provider's terms for any additional restrictions — we surface these clearly in the tool settings.</div>
   </div>
 
   <div class="faq-item">
     <button class="faq-q" onclick="toggleFaq(this)">
-      Is there a free trial for paid plans?
-      <span class="faq-icon">+</span>
+      What happens when I run out of credits?
+      <span class="faq-q-icon">+</span>
     </button>
-    <div class="faq-a">
-      <p>The Free tier is your trial — no credit card required, 50 credits to explore. During early access, beta users get <strong>30 days of Indie free</strong>. Join the waitlist to claim yours.</p>
-    </div>
+    <div class="faq-a">You can top up instantly at $10 per 100 credits — no waiting for next month. Alternatively, upgrade your plan to get more credits at a better rate. We always show your remaining credit balance before you generate so you're never caught off-guard.</div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)">
-      We're a bigger studio. Do you do Enterprise?
-      <span class="faq-icon">+</span>
-    </button>
-    <div class="faq-a">
-      <p>Yes — <a href="#">contact us</a> for Enterprise pricing ($2,400–$24,000/yr). Enterprise includes unlimited seats, white-label deployment, custom SLA, dedicated onboarding, and volume API access. We work with AA studios, education platforms, and game incubators.</p>
-    </div>
-  </div>
 </div>
 
 <!-- BOTTOM CTA -->
 <div class="bottom-cta">
-  <span class="bcta-eyebrow">Ready to build</span>
-  <h2 class="bcta-title">Your game.<br>Your world.<br><span style="color:#FE9E17">Consistent.</span></h2>
-  <p class="bcta-sub">Join 200+ indie devs already on the waitlist. Free to start. No credit card.</p>
-  <div class="bcta-btns">
-    <button class="bcta-primary">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      Start building free
-    </button>
-    <button class="bcta-secondary">See all tools →</button>
+  <h2>START BUILDING<br><span>FOR FREE</span></h2>
+  <p>No credit card required. 50 credits a month, forever.</p>
+  <div class="cta-row">
+    <button class="btn-primary">Get started free</button>
+    <button class="btn-ghost">See the platform →</button>
   </div>
 </div>
 
@@ -724,20 +699,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 24px 24px;max-wid
 <footer>
   <div>
     <div class="fb-logo">
-      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip-footer)">
-          <path d="M0 0H138.534H1061.74H1200V91.0658V1107.76V1200H1061.76H136.868H0V1107.12V93.4061V0Z" fill="#FE9E17"/>
-          <path d="M0 0H138.534C127.116 2.23825 117.439 3.0593 105.855 5.87918C69.2136 14.9917 38.2311 33.7011 18.6367 58.548C6.31766 74.2225 7.79364 78.4904 0 93.4061V0Z" fill="#FEFEFE"/>
-          <path d="M0 1107.12C3.77494 1115.02 5.67412 1121.69 10.2967 1129.62C25.8521 1155.69 53.3621 1176.76 87.8739 1189.03C111.391 1197.33 115.827 1195.38 136.868 1200H0V1107.12Z" fill="#FEFEFE"/>
-          <path d="M1061.76 1200C1081.56 1196.09 1087.82 1197.09 1108.72 1190.21C1144.47 1178.51 1173.12 1157.32 1189.14 1130.75C1193.92 1122.7 1195.92 1115.61 1200 1107.76V1200H1061.76Z" fill="#FEFEFE"/>
-          <path d="M1061.74 0H1200V91.0658C1199.03 89.3496 1198.31 87.3369 1197.57 85.5334C1193.42 75.3779 1188.3 65.891 1180.9 56.7834C1160.7 32.2772 1129.4 13.996 1092.67 5.2643C1082.76 2.92089 1071.99 1.8798 1061.74 0Z" fill="#FEFEFE"/>
-          <path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/>
-          <path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/>
-          <path d="M815.498 200.074C839.914 199.676 864.267 202.033 887.741 207.066C917.69 213.657 946.171 226.808 960.989 247.762C985.075 281.82 976.073 329.854 926.543 348.107C875.49 366.92 814.116 357.909 762.66 345.922C712.004 333.498 665.022 315.618 617.556 297.741C605.983 293.382 594.496 289.247 583.222 284.439C584.657 283.133 586.145 281.86 587.685 280.622C650.576 230.055 722.933 202.679 815.498 200.074Z" fill="#FE9E17"/>
-          <path d="M407.882 318.402C417.061 317.344 432.831 318.367 442.039 319.061C375.943 407.657 335.885 516.179 313.46 615.809C306.921 644.865 299.879 687.006 298.797 716.549C288.889 709.898 282.362 704.156 274.173 696.404C239.942 662.408 222.033 625.377 216.434 583.093C203.646 486.527 250.36 330.539 407.882 318.402Z" fill="#FE9E17"/>
-        </g>
-        <defs><clipPath id="clip-footer"><rect width="1200" height="1200" fill="white"/></clipPath></defs>
-      </svg>
+      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip-footer)"><path d="M0 0H138.534H1061.74H1200V91.0658V1107.76V1200H1061.76H136.868H0V1107.12V93.4061V0Z" fill="#FE9E17"/><path d="M0 0H138.534C127.116 2.23825 117.439 3.0593 105.855 5.87918C69.2136 14.9917 38.2311 33.7011 18.6367 58.548C6.31766 74.2225 7.79364 78.4904 0 93.4061V0Z" fill="#FEFEFE"/><path d="M0 1107.12C3.77494 1115.02 5.67412 1121.69 10.2967 1129.62C25.8521 1155.69 53.3621 1176.76 87.8739 1189.03C111.391 1197.33 115.827 1195.38 136.868 1200H0V1107.12Z" fill="#FEFEFE"/><path d="M1061.76 1200C1081.56 1196.09 1087.82 1197.09 1108.72 1190.21C1144.47 1178.51 1173.12 1157.32 1189.14 1130.75C1193.92 1122.7 1195.92 1115.61 1200 1107.76V1200H1061.76Z" fill="#FEFEFE"/><path d="M1061.74 0H1200V91.0658C1199.03 89.3496 1198.31 87.3369 1197.57 85.5334C1193.42 75.3779 1188.3 65.891 1180.9 56.7834C1160.7 32.2772 1129.4 13.996 1092.67 5.2643C1082.76 2.92089 1071.99 1.8798 1061.74 0Z" fill="#FEFEFE"/><path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/><path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.668 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/><path d="M815.498 200.074C839.914 199.676 864.267 202.033 887.741 207.066C917.69 213.657 946.171 226.808 960.989 247.762C985.075 281.82 976.073 329.854 926.543 348.107C875.49 366.92 814.116 357.909 762.66 345.922C712.004 333.498 665.022 315.618 617.556 297.741C605.983 293.382 594.496 289.247 583.222 284.439C584.657 283.133 586.145 281.86 587.685 280.622C650.576 230.055 722.933 202.679 815.498 200.074Z" fill="#FE9E17"/><path d="M407.882 318.402C417.061 317.344 432.831 318.367 442.039 319.061C375.943 407.657 335.885 516.179 313.46 615.809C306.921 644.865 299.879 687.006 298.797 716.549C288.889 709.898 282.362 704.156 274.173 696.404C239.942 662.408 222.033 625.377 216.434 583.093C203.646 486.527 250.36 330.539 407.882 318.402Z" fill="#FE9E17"/></g><defs><clipPath id="clip-footer"><rect width="1200" height="1200" fill="white"/></clipPath></defs></svg>
     </div>
     <div class="fb-name">Games<span>field</span></div>
     <div class="fb-addr">Built for indie devs.<br>Powered by Claude AI.</div>
@@ -747,7 +709,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 24px 24px;max-wid
   </div>
   <div class="fl">
     <h4>Company</h4>
-    <a href="#">About</a><a href="#">Roadmap</a><a href="#">Careers</a><a href="#">Contact</a><a href="#">Pricing</a><a href="#">Blog</a><a href="#">Discord</a>
+    <a href="#">About</a><a href="#">Roadmap</a><a href="#">Careers</a><a href="#">Contact</a><a href="gamesfield-pricing.html">Pricing</a><a href="#">Blog</a><a href="#">Discord</a>
   </div>
   <div class="fl">
     <h4>Platform</h4>
@@ -755,54 +717,58 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 24px 24px;max-wid
   </div>
   <div class="fl">
     <h4>Art & 3D</h4>
-    <a href="#">Game Art Gen</a><a href="#">Style Lock</a><a href="#">Meshy 3D</a><a href="#">Scenario</a><a href="#">Midjourney</a><a href="#">UI Theme</a><a href="#">Icon Factory</a>
+    <a href="#">Game Art Gen</a><a href="#">Style Lock</a><a href="#">Meshy 3D</a><a href="#">Scenario</a><a href="#">Midjourney</a><a href="#">UI Theme</a><a href="#">Icon Factory</a><a href="#">Splash Screen</a>
   </div>
   <div class="fl">
     <h4>Game Dev</h4>
-    <a href="#">NPC Brain</a><a href="#">Voice Acting</a><a href="#">OST Composer</a><a href="#">World Builder</a><a href="#">Lore Writer</a><a href="#">Trailer Studio</a><a href="#">Unity Export</a>
+    <a href="#">NPC Brain</a><a href="#">Voice Acting</a><a href="#">OST Composer</a><a href="#">World Builder</a><a href="#">Lore Writer</a><a href="#">Trailer Studio</a><a href="#">Unity Export</a><a href="#">Unreal Export</a>
   </div>
-  <div class="footer-btm">
-    <span>© 2026 Gamesfield — AI Infrastructure for Game Developers</span>
-    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.15)">pricing.html v1.0</span>
-  </div>
+  <div class="footer-btm">© 2026 Gamesfield — AI Infrastructure for Game Developers</div>
 </footer>
 
 <script>
+// Billing toggle
 let billing = 'monthly';
 const prices = {
   indie:  { monthly: 49,  annual: 39  },
   studio: { monthly: 149, annual: 119 },
-  team:   { monthly: 299, annual: 239 },
+  team:   { monthly: 399, annual: 319 },
 };
 
-function setBilling(mode) {
+function setBilling(mode, btn) {
   billing = mode;
-  document.getElementById('monthly-btn').classList.toggle('on', mode === 'monthly');
-  document.getElementById('annual-btn').classList.toggle('on', mode === 'annual');
-  updatePrices();
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  if (mode === 'annual') {
+    document.getElementById('price-indie').textContent  = '$' + prices.indie.annual;
+    document.getElementById('price-studio').textContent = '$' + prices.studio.annual;
+    document.getElementById('price-team').textContent   = '$' + prices.team.annual;
+    document.getElementById('ann-indie').textContent    = 'Billed $' + (prices.indie.annual * 12) + '/yr — save $120';
+    document.getElementById('ann-studio').textContent   = 'Billed $' + (prices.studio.annual * 12) + '/yr — save $360';
+    document.getElementById('ann-team').textContent     = 'Billed $' + (prices.team.annual * 12) + '/yr — save $960';
+    document.getElementById('ann-indie').classList.add('highlight');
+    document.getElementById('ann-studio').classList.add('highlight');
+    document.getElementById('ann-team').classList.add('highlight');
+  } else {
+    document.getElementById('price-indie').textContent  = '$' + prices.indie.monthly;
+    document.getElementById('price-studio').textContent = '$' + prices.studio.monthly;
+    document.getElementById('price-team').textContent   = '$' + prices.team.monthly;
+    document.getElementById('ann-indie').textContent    = '\u00a0';
+    document.getElementById('ann-studio').textContent   = '\u00a0';
+    document.getElementById('ann-team').textContent     = '\u00a0';
+    document.getElementById('ann-indie').classList.remove('highlight');
+    document.getElementById('ann-studio').classList.remove('highlight');
+    document.getElementById('ann-team').classList.remove('highlight');
+  }
 }
 
-function updatePrices() {
-  ['indie','studio','team'].forEach(plan => {
-    const price = prices[plan][billing];
-    document.getElementById(`${plan}-price`).textContent = price;
-    const note = document.getElementById(`${plan}-note`);
-    if (billing === 'annual') {
-      const saving = prices[plan].monthly * 12 - price * 12;
-      note.textContent = `Billed annually — save $${saving}/yr`;
-      note.className = 'price-annual-note lime';
-    } else {
-      note.textContent = '\u00a0';
-      note.className = 'price-annual-note';
-    }
-  });
-}
-
+// FAQ accordion
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item');
-  const wasOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
-  if (!wasOpen) item.classList.add('open');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
 }
 </script>
 </body>
