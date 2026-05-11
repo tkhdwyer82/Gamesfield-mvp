@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Gamesfield · World Builder · build: 2026-05-11 · v0.1 -->
+<!-- Gamesfield · NPC Brain · build: 2026-05-11 · v0.1 -->
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>World Builder — Gamesfield</title>
+<title>NPC Brain — Gamesfield</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -69,44 +69,54 @@
   .fb-social a{color:#333;font-size:11px;border:1px solid #1e1e1e;border-radius:5px;padding:4px 8px;transition:all .1s;font-family:'JetBrains Mono',monospace}
   .fb-social a:hover{color:#fff;border-color:#444}
   .footer-btm{grid-column:span 5;border-top:1px solid #1a1a1a;padding-top:16px;color:#2a2a2a;font-size:11px;text-align:center;margin-top:10px;font-family:'JetBrains Mono',monospace}
-  .wb-layout{display:grid;grid-template-columns:260px 1fr 260px;height:calc(100vh - 64px - 37px);overflow:hidden}
-  .wb-sidebar{background:#111;border-right:1px solid #1e1e1e;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
-  .wb-sidebar::-webkit-scrollbar{width:4px}
-  .wb-sidebar::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
-  .wb-canvas{position:relative;overflow:hidden;background:#0a0a0a;cursor:grab}
-  .wb-canvas:active{cursor:grabbing}
-  .wb-panel{background:#111;border-left:1px solid #1e1e1e;overflow-y:auto;padding:14px}
-  .wb-panel::-webkit-scrollbar{width:4px}
-  .wb-panel::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
+  .npc-layout{display:grid;grid-template-columns:280px 1fr 320px;height:calc(100vh - 64px - 37px);overflow:hidden}
+  .npc-sidebar{background:#111;border-right:1px solid #1e1e1e;overflow-y:auto;padding:14px}
+  .npc-sidebar::-webkit-scrollbar{width:4px}
+  .npc-sidebar::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
+  .npc-main{overflow-y:auto;background:#0d0d0d;display:flex;flex-direction:column}
+  .npc-main::-webkit-scrollbar{width:4px}
+  .npc-main::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
+  .npc-panel{background:#111;border-left:1px solid #1e1e1e;overflow-y:auto;padding:14px}
+  .npc-panel::-webkit-scrollbar{width:4px}
+  .npc-panel::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
   .ws-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#444;margin-bottom:10px;font-family:"JetBrains Mono",monospace}
-  .region-card{background:#161616;border:1px solid #222;border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .15s;margin-bottom:6px}
-  .region-card:hover,.region-card.active{border-color:#FE9E17;background:#1e1400}
-  .region-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0}
-  .region-name{font-size:13px;color:#ccc;display:flex;align-items:center}
-  .region-type{font-size:10px;color:#555;margin-top:3px;font-family:"JetBrains Mono",monospace}
-  .canvas-toolbar{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px;background:#161616;border:1px solid #2a2a2a;border-radius:10px;padding:6px}
-  .tb-btn{background:transparent;border:none;border-radius:7px;padding:7px 12px;font-size:12px;color:#666;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .12s;display:flex;align-items:center;gap:5px}
-  .tb-btn:hover,.tb-btn.active{background:#222;color:#fff}
-  .tb-sep{width:1px;background:#2a2a2a;margin:2px 0}
-  /* Canvas nodes */
-  .cn{position:absolute;border-radius:12px;border:1.5px solid;padding:12px 14px;cursor:pointer;transition:all .2s;min-width:120px}
-  .cn:hover{transform:scale(1.03);z-index:10}
-  .cn-title{font-size:12px;font-weight:600;margin-bottom:3px}
-  .cn-type{font-size:10px;opacity:.6;font-family:"JetBrains Mono",monospace}
-  /* SVG connector lines */
-  .wb-svg{position:absolute;inset:0;pointer-events:none;overflow:visible}
-  /* Grid bg */
-  .canvas-grid{position:absolute;inset:0;background-image:radial-gradient(circle,#222 1px,transparent 1px);background-size:28px 28px;opacity:.4}
+  .char-card{background:#161616;border:1px solid #222;border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .15s;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  .char-card:hover,.char-card.active{border-color:#00d4ff;background:#001a20}
+  .char-avatar{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .char-name{font-size:13px;color:#ccc;font-weight:500}
+  .char-role{font-size:10px;color:#555;font-family:"JetBrains Mono",monospace}
+  .add-char-btn{width:100%;background:rgba(0,212,255,.06);border:1px dashed rgba(0,212,255,.25);border-radius:10px;padding:10px;font-size:12px;color:#00d4ff;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .12s;margin-top:6px}
+  .add-char-btn:hover{background:rgba(0,212,255,.12)}
+  /* Chat area */
+  .chat-header{padding:18px 20px 14px;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:12px}
+  .chat-avatar{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;border:1.5px solid #00d4ff;background:#001a20;flex-shrink:0}
+  .chat-npc-name{font-size:16px;font-weight:600;color:#fff}
+  .chat-npc-role{font-size:11px;color:#00d4ff;font-family:"JetBrains Mono",monospace}
+  .chat-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+  .chat-body::-webkit-scrollbar{width:4px}
+  .chat-body::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
+  .msg{max-width:75%;}
+  .msg-npc{align-self:flex-start}
+  .msg-user{align-self:flex-end}
+  .msg-bubble{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6}
+  .msg-npc .msg-bubble{background:#161616;border:1px solid #222;color:#ccc;border-bottom-left-radius:4px}
+  .msg-user .msg-bubble{background:#00d4ff;color:#000;font-weight:500;border-bottom-right-radius:4px}
+  .msg-sender{font-size:10px;color:#444;font-family:"JetBrains Mono",monospace;margin-bottom:5px}
+  .msg-user .msg-sender{text-align:right}
+  .chat-input-row{padding:14px 20px;border-top:1px solid #1a1a1a;display:flex;gap:8px}
+  .chat-input{flex:1;background:#161616;border:1px solid #222;border-radius:10px;padding:11px 14px;font-size:13px;color:#fff;font-family:"DM Sans",sans-serif;outline:none;transition:border-color .15s}
+  .chat-input::placeholder{color:#333}
+  .chat-input:focus{border-color:#00d4ff}
+  .send-btn{background:#00d4ff;color:#000;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:"DM Sans",sans-serif;transition:background .15s;white-space:nowrap}
+  .send-btn:hover{background:#22e0ff}
+  /* Right panel */
   .panel-block{background:#161616;border:1px solid #1e1e1e;border-radius:10px;padding:12px;margin-bottom:10px}
   .prop-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px}
   .prop-label{color:#555}
   .prop-val{color:#aaa;font-family:"JetBrains Mono",monospace;font-size:11px}
-  .prop-input{background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;padding:5px 8px;font-size:12px;color:#ccc;font-family:"DM Sans",sans-serif;outline:none;width:100%;margin-top:6px}
-  .prop-input:focus{border-color:#FE9E17}
-  .tag-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-  .tag{background:#1e1e1e;border:1px solid #2a2a2a;border-radius:5px;padding:3px 8px;font-size:10px;color:#666;font-family:"JetBrains Mono",monospace}
-  .add-node-btn{width:100%;background:rgba(254,158,23,.08);border:1px dashed rgba(254,158,23,.3);border-radius:10px;padding:10px;font-size:12px;color:#FE9E17;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .12s}
-  .add-node-btn:hover{background:rgba(254,158,23,.15)}
+  .trait-pill{display:inline-block;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:5px;padding:3px 8px;font-size:10px;color:#666;margin:2px;font-family:"JetBrains Mono",monospace}
+  .voice-btn{width:100%;background:#111;border:1px solid #2a2a2a;border-radius:8px;padding:9px;font-size:12px;color:#888;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .12s;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:6px}
+  .voice-btn:hover{border-color:#FE9E17;color:#FE9E17}
 </style>
 </head>
 <body>
@@ -129,8 +139,8 @@
     <button class="nav-item" onclick="showComingSoon('Canvas','A node-based visual scripting canvas for your entire game world.')">Canvas <span class="nav-badge">New</span></button>
     <button class="nav-item" onclick="showComingSoon('Edit','AI-powered image and video editing tuned to your project style.')">Edit</button>
     <button class="nav-item" onclick="showComingSoon('Character','Design consistent character rosters with shared lore and visual style.')">Character</button>
-    <a href="world-builder.html" class="nav-item active">World Builder <span class="nav-badge">New</span></a>
-    <a href="npc-brain.html" class="nav-item">NPC Brain <span class="nav-badge">New</span></a>
+    <a href="world-builder.html" class="nav-item">World Builder <span class="nav-badge">New</span></a>
+    <a href="npc-brain.html" class="nav-item active">NPC Brain <span class="nav-badge">New</span></a>
     <a href="pricing.html" class="nav-item">Pricing</a>
     <button class="nav-item" onclick="showComingSoon('MCP & CLI','Connect Gamesfield to your engine via Model Context Protocol or CLI.')">MCP & CLI <span class="nav-badge">New</span></button>
     <button class="nav-item" onclick="showComingSoon('Trailers','Auto-cut cinematic trailers from your generated assets.')">Trailers</button>
@@ -149,142 +159,157 @@
 </nav>
 </header>
 
-<div class="wb-layout">
-  <!-- LEFT: REGIONS LIST -->
-  <div class="wb-sidebar">
-    <div class="ws-label">Regions</div>
+<div class="npc-layout">
 
-    <div class="region-card active" onclick="selectRegion(this,'The Ashveil')">
-      <div class="region-name"><span class="region-dot" style="background:#ff6b35"></span>The Ashveil</div>
-      <div class="region-type">STARTING ZONE · HOSTILE</div>
+  <!-- LEFT: CHARACTER ROSTER -->
+  <div class="npc-sidebar">
+    <div class="ws-label">Character Roster</div>
+
+    <div class="char-card active" onclick="selectChar(this,'Kael the Ashen','⚔️','#001a20','#ff6b35','Warrior · Protagonist','Stoic, scarred, honourable. Hides grief behind duty.')">
+      <div class="char-avatar" style="background:#1a0a0a;border:1.5px solid #ff6b35">⚔️</div>
+      <div><div class="char-name">Kael the Ashen</div><div class="char-role">WARRIOR · PROTAGONIST</div></div>
     </div>
-    <div class="region-card" onclick="selectRegion(this,'Crystalmere')">
-      <div class="region-name"><span class="region-dot" style="background:#4ec9ff"></span>Crystalmere</div>
-      <div class="region-type">MID ZONE · NEUTRAL</div>
+    <div class="char-card" onclick="selectChar(this,'Lyra Voidwhisper','🌙','#080818','#9b6dff','Mage · Companion','Sarcastic, brilliant, secretly terrified of the Voidreach.')">
+      <div class="char-avatar" style="background:#080818;border:1.5px solid #9b6dff">🌙</div>
+      <div><div class="char-name">Lyra Voidwhisper</div><div class="char-role">MAGE · COMPANION</div></div>
     </div>
-    <div class="region-card" onclick="selectRegion(this,'The Voidreach')">
-      <div class="region-name"><span class="region-dot" style="background:#9b6dff"></span>The Voidreach</div>
-      <div class="region-type">END ZONE · BOSS</div>
+    <div class="char-card" onclick="selectChar(this,'Torvan Hearthkeeper','🏹','#0a1a0a','#00d478','Ranger · Merchant','Jovial and greedy. Will betray player for the right price.')">
+      <div class="char-avatar" style="background:#0a1a0a;border:1.5px solid #00d478">🏹</div>
+      <div><div class="char-name">Torvan Hearthkeeper</div><div class="char-role">RANGER · MERCHANT</div></div>
     </div>
-    <div class="region-card" onclick="selectRegion(this,'Ember Citadel')">
-      <div class="region-name"><span class="region-dot" style="background:#FE9E17"></span>Ember Citadel</div>
-      <div class="region-type">HUB · SAFE ZONE</div>
-    </div>
-    <div class="region-card" onclick="selectRegion(this,'Sunken Atoll')">
-      <div class="region-name"><span class="region-dot" style="background:#00d478"></span>Sunken Atoll</div>
-      <div class="region-type">SIDE ZONE · MYSTERY</div>
+    <div class="char-card" onclick="selectChar(this,'The Archivist','📜','#1a1a0a','#FE9E17','Scholar · Quest Giver','Ancient, cryptic. Speaks only in riddles and half-truths.')">
+      <div class="char-avatar" style="background:#1a1a0a;border:1.5px solid #FE9E17">📜</div>
+      <div><div class="char-name">The Archivist</div><div class="char-role">SCHOLAR · QUEST GIVER</div></div>
     </div>
 
-    <button class="add-node-btn" onclick="addRegion()">+ Add Region</button>
+    <button class="add-char-btn" onclick="showComingSoon('New Character','Describe your character and AI will generate their backstory, personality traits, voice style, and dialogue tree.')">+ New Character</button>
 
-    <div style="margin-top:12px">
-      <div class="ws-label">Lore Rules</div>
-      <div class="panel-block">
-        <div style="font-size:12px;color:#666;line-height:1.6">Magic dies beyond the Ashveil. No enchantments persist past the Veil Line. Time moves slower in the Voidreach.</div>
+    <div style="margin-top:14px">
+      <div class="ws-label">Memory Context</div>
+      <div style="background:#161616;border:1px solid #1e1e1e;border-radius:8px;padding:10px;font-size:11px;color:#555;line-height:1.7">
+        World: The Shattered Expanse<br>
+        Current act: The Ashveil<br>
+        Player reputation: NEUTRAL<br>
+        Kael knows Lyra is hiding something
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTRE: CHAT INTERFACE -->
+  <div class="npc-main">
+    <div class="chat-header">
+      <div class="chat-avatar" id="chat-avatar">⚔️</div>
+      <div>
+        <div class="chat-npc-name" id="chat-name">Kael the Ashen</div>
+        <div class="chat-npc-role" id="chat-role">WARRIOR · PROTAGONIST · Inworld NPC</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button style="background:#161616;border:1px solid #2a2a2a;border-radius:8px;padding:7px 12px;font-size:11px;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif" onclick="showComingSoon('Voice Preview','Preview your NPC speaking their lines with ElevenLabs voice cloning.')">🎙 Voice preview</button>
+        <button style="background:#161616;border:1px solid #2a2a2a;border-radius:8px;padding:7px 12px;font-size:11px;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif" onclick="showComingSoon('Export to Inworld','Send this NPC directly to Inworld AI with their full personality and memory context.')">↗ Export to Inworld</button>
       </div>
     </div>
 
-    <div>
-      <div class="ws-label">World Name</div>
-      <div style="font-size:16px;font-family:'Bebas Neue',sans-serif;color:#FE9E17;letter-spacing:.05em">The Shattered Expanse</div>
+    <div class="chat-body" id="chat-body">
+      <div class="msg msg-npc">
+        <div class="msg-sender">KAEL THE ASHEN</div>
+        <div class="msg-bubble">The Ashveil doesn't forgive the slow. Keep moving or become part of the ash.</div>
+      </div>
+      <div class="msg msg-user">
+        <div class="msg-sender">PLAYER</div>
+        <div class="msg-bubble">What happened here? Who did this?</div>
+      </div>
+      <div class="msg msg-npc">
+        <div class="msg-sender">KAEL THE ASHEN</div>
+        <div class="msg-bubble">The Voidreach happened. Same thing that'll happen to us if we stand here talking instead of moving. Ask your questions when we reach the Citadel.</div>
+      </div>
+    </div>
+
+    <div class="chat-input-row">
+      <input class="chat-input" id="chat-input" placeholder="Type player dialogue to test NPC response..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="send-btn" onclick="sendMsg()">Send</button>
     </div>
   </div>
 
-  <!-- CENTRE: NODE CANVAS -->
-  <div class="wb-canvas" id="canvas">
-    <div class="canvas-grid"></div>
-    <svg class="wb-svg" id="wb-svg">
-      <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#333"/></marker></defs>
-      <line x1="260" y1="160" x2="460" y2="240" stroke="#333" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
-      <line x1="460" y1="240" x2="640" y2="160" stroke="#333" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
-      <line x1="460" y1="240" x2="360" y2="380" stroke="#333" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
-      <line x1="640" y1="160" x2="780" y2="300" stroke="#9b6dff" stroke-width="1.5" marker-end="url(#arrow)"/>
-    </svg>
-
-    <!-- Nodes -->
-    <div class="cn" style="left:160px;top:100px;background:#1a0f08;border-color:#ff6b35" onclick="selectNode('The Ashveil')">
-      <div class="cn-title" style="color:#ff6b35">The Ashveil</div>
-      <div class="cn-type">STARTING ZONE</div>
-    </div>
-    <div class="cn" style="left:360px;top:190px;background:#111;border-color:#444" onclick="selectNode('Ember Citadel')">
-      <div class="cn-title" style="color:#FE9E17">Ember Citadel</div>
-      <div class="cn-type">HUB · SAFE ZONE</div>
-    </div>
-    <div class="cn" style="left:540px;top:100px;background:#080e1a;border-color:#4ec9ff" onclick="selectNode('Crystalmere')">
-      <div class="cn-title" style="color:#4ec9ff">Crystalmere</div>
-      <div class="cn-type">MID ZONE</div>
-    </div>
-    <div class="cn" style="left:260px;top:330px;background:#0e0a1a;border-color:#9b6dff;opacity:.7" onclick="selectNode('Sunken Atoll')">
-      <div class="cn-title" style="color:#9b6dff">Sunken Atoll</div>
-      <div class="cn-type">SIDE ZONE</div>
-    </div>
-    <div class="cn" style="left:680px;top:250px;background:#0f0814;border-color:#9b6dff" onclick="selectNode('The Voidreach')">
-      <div class="cn-title" style="color:#9b6dff">The Voidreach</div>
-      <div class="cn-type">END ZONE · BOSS</div>
-    </div>
-
-    <!-- Toolbar -->
-    <div class="canvas-toolbar">
-      <button class="tb-btn active"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Select</button>
-      <div class="tb-sep"></div>
-      <button class="tb-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Add Node</button>
-      <button class="tb-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg> Connect</button>
-      <div class="tb-sep"></div>
-      <button class="tb-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom in</button>
-      <button class="tb-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom out</button>
-    </div>
-  </div>
-
-  <!-- RIGHT: NODE PROPERTIES -->
-  <div class="wb-panel">
-    <div class="ws-label">Selected Region</div>
-    <div id="node-title" style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:#ff6b35;margin-bottom:14px;letter-spacing:.03em">The Ashveil</div>
+  <!-- RIGHT: CHARACTER PROPERTIES -->
+  <div class="npc-panel">
+    <div class="ws-label">Character Profile</div>
 
     <div class="panel-block">
-      <div class="ws-label" style="margin-bottom:8px">Properties</div>
-      <div class="prop-row"><span class="prop-label">Type</span><span class="prop-val">STARTING ZONE</span></div>
-      <div class="prop-row"><span class="prop-label">Danger Level</span><span class="prop-val">HIGH</span></div>
-      <div class="prop-row"><span class="prop-label">Magic</span><span class="prop-val">DISABLED</span></div>
-      <div class="prop-row"><span class="prop-label">Climate</span><span class="prop-val">VOLCANIC ASH</span></div>
+      <div class="prop-row"><span class="prop-label">Role</span><span class="prop-val" id="prop-role">WARRIOR</span></div>
+      <div class="prop-row"><span class="prop-label">Arc</span><span class="prop-val">PROTAGONIST</span></div>
+      <div class="prop-row"><span class="prop-label">Alignment</span><span class="prop-val">LAWFUL NEUTRAL</span></div>
+      <div class="prop-row" style="margin-bottom:0"><span class="prop-label">Voice</span><span class="prop-val" style="color:#FE9E17">ElevenLabs · Adam</span></div>
     </div>
 
     <div class="panel-block">
-      <div class="ws-label" style="margin-bottom:8px">Description</div>
-      <div style="font-size:12px;color:#666;line-height:1.7">A devastated wasteland of ash and crumbled ruins. The first zone players enter. Magic does not function here — only raw strength and cunning.</div>
+      <div class="ws-label" style="margin-bottom:8px">Personality</div>
+      <div id="prop-personality" style="font-size:12px;color:#666;line-height:1.7">Stoic, scarred, honourable. Hides grief behind duty. Speaks in short, direct sentences. Never jokes. Loyal to a fault.</div>
     </div>
 
     <div class="panel-block">
-      <div class="ws-label" style="margin-bottom:8px">Tags</div>
-      <div class="tag-row">
-        <span class="tag">hostile</span><span class="tag">no-magic</span><span class="tag">tutorial</span><span class="tag">ruins</span><span class="tag">ash</span>
+      <div class="ws-label" style="margin-bottom:8px">Traits</div>
+      <div>
+        <span class="trait-pill">stoic</span>
+        <span class="trait-pill">honourable</span>
+        <span class="trait-pill">grieving</span>
+        <span class="trait-pill">tactical</span>
+        <span class="trait-pill">distrustful</span>
       </div>
     </div>
 
     <div class="panel-block">
-      <div class="ws-label" style="margin-bottom:8px">Connected To</div>
-      <div style="font-size:12px;color:#666">→ Ember Citadel<br>→ Sunken Atoll</div>
+      <div class="ws-label" style="margin-bottom:8px">Memory</div>
+      <div style="font-size:12px;color:#666;line-height:1.7">Knows the player entered via the south gate. Aware of Lyra's secrecy. Does not know the player's true motivation yet.</div>
     </div>
 
-    <button style="width:100%;background:#FE9E17;color:#0d0d0d;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px" onclick="showComingSoon('AI Region Generator','Describe your region and AI will generate lore, climate rules, enemy types, and connecting quest hooks.')">
-      ✦ Generate with AI
+    <div class="ws-label" style="margin-top:4px">Integrations</div>
+    <button class="voice-btn" onclick="showComingSoon('ElevenLabs Voice','Generate voice lines for this NPC using ElevenLabs with the selected voice profile.')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V6l12-2v12M9 18a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      ElevenLabs · Generate Voice
+    </button>
+    <button class="voice-btn" onclick="showComingSoon('Inworld AI','Push this NPC to Inworld AI as a live character with full personality and world context.')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-1a6 6 0 0112 0v1"/></svg>
+      Inworld AI · Deploy NPC
     </button>
   </div>
 </div>
 
 <script>
-function selectRegion(el, name) {
-  document.querySelectorAll('.region-card').forEach(c => c.classList.remove('active'));
+function selectChar(el, name, emoji, bg, color, role, personality) {
+  document.querySelectorAll('.char-card').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('node-title').textContent = name;
+  document.getElementById('chat-name').textContent = name;
+  document.getElementById('chat-role').textContent = role.toUpperCase() + ' · Inworld NPC';
+  document.getElementById('chat-avatar').textContent = emoji;
+  document.getElementById('chat-avatar').style.borderColor = color;
+  document.getElementById('chat-avatar').style.background = bg;
+  document.getElementById('prop-role').textContent = role.split(' · ')[0].toUpperCase();
+  document.getElementById('prop-personality').textContent = personality;
+  document.getElementById('chat-body').innerHTML = `<div class="msg msg-npc"><div class="msg-sender">${name.toUpperCase()}</div><div class="msg-bubble">...</div></div>`;
+  setTimeout(() => {
+    document.querySelector('.msg-bubble').textContent = 'Hello, traveller. What do you want?';
+  }, 600);
 }
-function selectNode(name) {
-  document.getElementById('node-title').textContent = name;
-  document.querySelectorAll('.region-card').forEach(c => {
-    c.classList.toggle('active', c.querySelector('.region-name').textContent.trim() === name);
-  });
-}
-function addRegion() {
-  showComingSoon('Add Region', 'Describe a new region and AI will generate its lore, climate, danger level, and world connections automatically.');
+
+function sendMsg() {
+  const input = document.getElementById('chat-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const body = document.getElementById('chat-body');
+  const charName = document.getElementById('chat-name').textContent;
+  body.innerHTML += `<div class="msg msg-user"><div class="msg-sender">PLAYER</div><div class="msg-bubble">${val}</div></div>`;
+  input.value = '';
+  body.scrollTop = body.scrollHeight;
+  const typing = document.createElement('div');
+  typing.className = 'msg msg-npc';
+  typing.innerHTML = `<div class="msg-sender">${charName.toUpperCase()}</div><div class="msg-bubble" style="color:#444">typing...</div>`;
+  body.appendChild(typing);
+  body.scrollTop = body.scrollHeight;
+  setTimeout(() => {
+    typing.querySelector('.msg-bubble').style.color = '';
+    typing.querySelector('.msg-bubble').textContent = 'That is a matter for another time. Focus on what is ahead of us.';
+    body.scrollTop = body.scrollHeight;
+  }, 1200);
 }
 </script>
 
