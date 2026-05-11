@@ -1,743 +1,637 @@
 <!DOCTYPE html>
+<!-- Gamesfield · Onboarding · build: 2026-05-11 · v0.1 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Get Started — Gamesfield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;border:none;outline:none;font-family:inherit}
-input{font-family:inherit;outline:none}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{background:#0d0d0d;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;display:flex;height:100vh}
 
-:root{
-  --bg:#0a0b0f;
-  --surface:#13151c;
-  --surface2:#1a1d27;
-  --surface3:#21253200;
-  --sep:rgba(255,255,255,0.07);
-  --sep2:rgba(255,255,255,0.12);
-  --muted:rgba(255,255,255,0.4);
-  --brand:#FE9E17;
-  --accent:#d1fe17;
-  --purple:#9b6dff;
-  --cyan:#00d4ff;
-  --green:#3ecf8e;
-  --pink:#ff4d8b;
-}
+  /* ── LAYOUT ── */
+  .ob-left{
+    width:420px;flex-shrink:0;
+    background:#0a0a0a;
+    border-right:1px solid #1a1a1a;
+    display:flex;flex-direction:column;
+    padding:40px 36px;
+    position:relative;overflow:hidden;
+  }
+  .ob-right{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    background:#0d0d0d;position:relative;overflow:hidden;
+  }
 
-/* ── LAYOUT ── */
-.shell{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  height:100vh;
-  background:var(--bg);
-  color:#fff;
-}
+  /* Left panel background glow */
+  .ob-left::before{
+    content:'';position:absolute;
+    width:300px;height:300px;border-radius:50%;
+    background:radial-gradient(circle,rgba(254,158,23,.08) 0%,transparent 70%);
+    bottom:-80px;left:-60px;pointer-events:none;
+  }
 
-/* ── LEFT PANEL — branding ── */
-.left{
-  position:relative;overflow:hidden;
-  background:linear-gradient(160deg,#0d0f1a 0%,#0a0b0f 60%,#0f0a14 100%);
-  display:flex;flex-direction:column;padding:32px;
-}
-/* Animated gradient orbs */
-.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:drift 8s ease-in-out infinite alternate}
-.orb1{width:400px;height:400px;background:rgba(254,158,23,.18);top:-100px;left:-100px;animation-delay:0s}
-.orb2{width:300px;height:300px;background:rgba(155,109,255,.14);bottom:50px;right:-80px;animation-delay:-3s}
-.orb3{width:250px;height:250px;background:rgba(0,212,255,.1);top:40%;left:30%;animation-delay:-5s}
-@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(30px,20px) scale(1.08)}}
+  /* ── LOGO ── */
+  .ob-logo{display:flex;align-items:center;gap:10px;margin-bottom:48px}
+  .ob-logo-mark{width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0}
+  .ob-logo-mark svg{width:32px;height:32px;display:block}
+  .ob-logo-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.04em}
+  .ob-logo-name span{color:#FE9E17}
 
-/* Dot grid */
-.left::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
-  background-size:32px 32px;
-}
+  /* ── STEP TRACKER ── */
+  .step-tracker{display:flex;flex-direction:column;gap:0;margin-bottom:48px}
+  .step-row{display:flex;align-items:flex-start;gap:14px;position:relative}
+  .step-row:not(:last-child)::after{
+    content:'';position:absolute;left:15px;top:32px;
+    width:1px;height:calc(100% + 8px);
+    background:linear-gradient(to bottom,#2a2a2a,transparent);
+  }
+  .step-dot{
+    width:30px;height:30px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;
+    transition:all .3s;margin-top:2px;
+  }
+  .step-dot.done{background:#FE9E17;color:#0d0d0d}
+  .step-dot.active{background:#fff;color:#0d0d0d;box-shadow:0 0 0 3px rgba(255,255,255,.15)}
+  .step-dot.pending{background:#1e1e1e;border:1px solid #2a2a2a;color:#444}
+  .step-info{padding-bottom:20px}
+  .step-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace;margin-bottom:3px;transition:color .3s}
+  .step-label.active{color:#fff}
+  .step-label.done{color:#FE9E17}
+  .step-label.pending{color:#333}
+  .step-desc{font-size:12px;color:#444;line-height:1.4;transition:color .3s}
+  .step-desc.active{color:#666}
 
-.left-logo{position:relative;z-index:2;display:flex;align-items:center;gap:10px;margin-bottom:auto}
-.left-logo-mark{width:36px;height:36px;border-radius:9px;overflow:hidden}
-.left-logo-mark svg{width:36px;height:36px;display:block}
-.left-logo-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.05em}
-.left-logo-name span{color:var(--brand)}
+  /* ── LEFT FOOTER ── */
+  .ob-left-footer{margin-top:auto;font-size:11px;color:#2a2a2a;font-family:'JetBrains Mono',monospace}
+  .ob-left-footer a{color:#333;text-decoration:underline}
+  .ob-left-footer a:hover{color:#666}
 
-.left-content{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0 20px}
-.left-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,4vw,56px);line-height:.95;letter-spacing:.01em;margin-bottom:20px}
-.left-headline span{color:var(--brand)}
-.left-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:340px;font-weight:300;margin-bottom:32px}
+  /* ── RIGHT PANEL — FORM CARDS ── */
+  .form-card{
+    width:100%;max-width:480px;padding:0 40px;
+    display:none;animation:fadeUp .3s cubic-bezier(.22,1,.36,1);
+  }
+  .form-card.active{display:block}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-/* Social proof / feature pills */
-.feature-pills{display:flex;flex-direction:column;gap:10px}
-.feature-pill{
-  display:flex;align-items:center;gap:12px;padding:12px 16px;
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
-  border-radius:12px;backdrop-filter:blur(8px);
-}
-.fp-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.fp-text{font-size:13px;color:rgba(255,255,255,.65);line-height:1.4}
-.fp-text strong{color:#fff;font-weight:600}
+  .form-eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:#FE9E17;
+    margin-bottom:14px;display:flex;align-items:center;gap:8px;
+  }
+  .form-eyebrow::before{content:'';width:20px;height:1px;background:#FE9E17}
+  .form-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:.02em;
+    line-height:1;margin-bottom:10px;color:#fff}
+  .form-sub{font-size:14px;color:#555;margin-bottom:36px;line-height:1.6}
 
-/* Testimonial */
-.left-footer{position:relative;z-index:2;margin-top:32px}
-.testimonial{padding:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px}
-.testimonial-text{font-size:13px;color:rgba(255,255,255,.55);line-height:1.6;font-style:italic;margin-bottom:10px}
-.testimonial-author{display:flex;align-items:center;gap:8px}
-.testimonial-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0d0d0d;background:var(--brand)}
-.testimonial-name{font-size:11px;color:rgba(255,255,255,.4);font-family:'JetBrains Mono',monospace}
+  /* Inputs */
+  .field{margin-bottom:18px}
+  .field-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:#444;font-family:'JetBrains Mono',monospace;margin-bottom:8px;display:block}
+  .field-input{
+    width:100%;background:#111;border:1px solid #222;border-radius:12px;
+    padding:14px 16px;font-size:14px;color:#fff;font-family:'DM Sans',sans-serif;
+    outline:none;transition:border-color .15s,box-shadow .15s;
+  }
+  .field-input::placeholder{color:#333}
+  .field-input:focus{border-color:#FE9E17;box-shadow:0 0 0 3px rgba(254,158,23,.08)}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-/* ── RIGHT PANEL — form ── */
-.right{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:32px;overflow-y:auto;background:var(--bg);
-  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.07) transparent;
-}
+  /* Password strength */
+  .pw-strength{display:flex;gap:4px;margin-top:8px}
+  .pw-bar{height:3px;flex:1;border-radius:2px;background:#1e1e1e;transition:background .3s}
+  .pw-bar.weak{background:#ff4444}
+  .pw-bar.medium{background:#FE9E17}
+  .pw-bar.strong{background:#00d478}
 
-/* Step container */
-.step{display:none;width:100%;max-width:420px;animation:stepIn .3s ease}
-.step.active{display:block}
-@keyframes stepIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  /* Style selector */
+  .style-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px}
+  .style-opt{
+    border:1.5px solid #1e1e1e;border-radius:12px;overflow:hidden;
+    cursor:pointer;transition:all .2s;position:relative;aspect-ratio:4/3;
+    display:flex;align-items:flex-end;
+  }
+  .style-opt:hover{border-color:#444;transform:translateY(-2px)}
+  .style-opt.selected{border-color:#FE9E17;box-shadow:0 0 0 2px rgba(254,158,23,.2)}
+  .style-opt-bg{position:absolute;inset:0}
+  .style-opt-label{
+    position:relative;z-index:1;width:100%;padding:8px 10px;
+    background:linear-gradient(transparent,rgba(0,0,0,.9));
+    font-size:11px;font-weight:600;color:#fff;font-family:'JetBrains Mono',monospace;
+    letter-spacing:.05em;text-transform:uppercase;
+  }
+  .style-opt-check{
+    position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;
+    background:#FE9E17;display:none;align-items:center;justify-content:center;z-index:2;
+  }
+  .style-opt.selected .style-opt-check{display:flex}
 
-/* Progress bar */
-.progress-wrap{margin-bottom:32px}
-.progress-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.progress-step-label{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;color:var(--muted)}
-.progress-count{font-size:11px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.25)}
-.progress-bar-track{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
-.progress-bar-fill{height:100%;background:var(--brand);border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+  /* Tool picker */
+  .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tool-opt{
+    border:1.5px solid #1e1e1e;border-radius:12px;padding:14px;
+    cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px;
+    position:relative;
+  }
+  .tool-opt:hover{border-color:#2a2a2a;background:#111}
+  .tool-opt.selected{border-color:#FE9E17;background:#1a1000}
+  .tool-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;
+    justify-content:center;font-size:18px;flex-shrink:0}
+  .tool-name{font-size:13px;font-weight:600;color:#ccc;margin-bottom:2px}
+  .tool-cat{font-size:10px;color:#444;font-family:'JetBrains Mono',monospace;text-transform:uppercase}
+  .tool-check{
+    position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;
+    background:#FE9E17;display:none;align-items:center;justify-content:center;
+  }
+  .tool-opt.selected .tool-check{display:flex}
+  .tool-note{font-size:11px;color:#333;margin-top:10px;font-family:'JetBrains Mono',monospace}
 
-/* Step titles */
-.step-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.02em;margin-bottom:6px;line-height:1}
-.step-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.5}
+  /* World name input with suggestion chips */
+  .name-suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .name-chip{
+    background:#161616;border:1px solid #2a2a2a;border-radius:6px;
+    padding:5px 12px;font-size:12px;color:#555;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;transition:all .12s;
+  }
+  .name-chip:hover{border-color:#FE9E17;color:#FE9E17}
 
-/* Form fields */
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,.5);margin-bottom:6px;letter-spacing:.02em}
-.field-input{
-  width:100%;height:46px;padding:0 14px;
-  background:var(--surface);border:1px solid var(--sep2);border-radius:10px;
-  color:#fff;font-size:14px;transition:border-color .15s;
-}
-.field-input:focus{border-color:rgba(254,158,23,.5);box-shadow:0 0 0 3px rgba(254,158,23,.08)}
-.field-input::placeholder{color:rgba(255,255,255,.2)}
+  /* Welcome screen */
+  .welcome-icon{
+    width:80px;height:80px;border-radius:20px;background:#1a1000;
+    border:1.5px solid #FE9E17;display:flex;align-items:center;justify-content:center;
+    font-size:40px;margin-bottom:24px;
+    animation:popIn .5s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes popIn{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+  .welcome-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:28px 0}
+  .welcome-stat{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:14px;text-align:center}
+  .welcome-stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#FE9E17;line-height:1}
+  .welcome-stat-label{font-size:10px;color:#444;font-family:'JetBrains Mono',monospace;
+    text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
 
-/* SSO buttons */
-.sso-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
-.sso-btn{
-  height:46px;border-radius:10px;border:1px solid var(--sep2);
-  background:var(--surface);color:#fff;font-size:13px;font-weight:500;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  cursor:pointer;transition:all .15s;
-}
-.sso-btn:hover{border-color:rgba(255,255,255,.22);background:var(--surface2)}
-.sso-icon{width:18px;height:18px;flex-shrink:0}
+  /* CTA button */
+  .ob-btn{
+    width:100%;background:#FE9E17;color:#0d0d0d;border:none;border-radius:12px;
+    padding:16px;font-size:15px;font-weight:700;cursor:pointer;
+    font-family:'DM Sans',sans-serif;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;
+  }
+  .ob-btn:hover{background:#ffb040;transform:translateY(-1px);box-shadow:0 8px 24px rgba(254,158,23,.2)}
+  .ob-btn:active{transform:none}
+  .ob-btn-secondary{
+    width:100%;background:transparent;color:#444;border:1px solid #222;border-radius:12px;
+    padding:13px;font-size:13px;font-weight:500;cursor:pointer;
+    font-family:'DM Sans',sans-serif;transition:all .15s;margin-top:10px;
+  }
+  .ob-btn-secondary:hover{border-color:#333;color:#888}
 
-.divider{display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.divider-line{flex:1;height:1px;background:var(--sep)}
-.divider-text{font-size:11px;color:rgba(255,255,255,.25);white-space:nowrap;font-family:'JetBrains Mono',monospace}
+  /* Social auth */
+  .divider{display:flex;align-items:center;gap:12px;margin:24px 0}
+  .divider-line{flex:1;height:1px;background:#1e1e1e}
+  .divider-text{font-size:11px;color:#333;font-family:'JetBrains Mono',monospace}
+  .social-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .social-btn{
+    background:#111;border:1px solid #222;border-radius:10px;padding:12px;
+    font-size:13px;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif;
+    display:flex;align-items:center;justify-content:center;gap:8px;transition:all .12s;
+  }
+  .social-btn:hover{border-color:#333;color:#aaa}
 
-/* CTA button */
-.cta-btn{
-  width:100%;height:48px;border-radius:12px;border:none;cursor:pointer;
-  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
-  background:radial-gradient(circle at 42% 100%,rgba(255,255,255,.5) 0%,transparent 100%),
-             linear-gradient(90deg,#FE9E17 0%,#ffb830 100%);
-  color:#131517;box-shadow:inset 0 -3px rgba(0,0,0,.4);
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  transition:opacity .15s;margin-top:6px;
-}
-.cta-btn:hover{opacity:.9}
-.cta-btn:active{opacity:.8;transform:translateY(1px)}
-.cta-btn:disabled{opacity:.4;cursor:not-allowed}
+  /* Right panel background visuals */
+  .ob-right-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .ob-right-bg::before{
+    content:'';position:absolute;
+    width:500px;height:500px;border-radius:50%;
+    background:radial-gradient(circle,rgba(254,158,23,.04) 0%,transparent 65%);
+    top:50%;left:50%;transform:translate(-50%,-50%);
+  }
+  .ob-grid{
+    position:absolute;inset:0;
+    background-image:radial-gradient(circle,#1e1e1e 1px,transparent 1px);
+    background-size:32px 32px;opacity:.3;
+  }
 
-.back-btn{
-  display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);
-  background:none;border:none;cursor:pointer;margin-bottom:20px;
-  transition:color .12s;padding:0;
-}
-.back-btn:hover{color:#fff}
+  /* Progress bar at top */
+  .ob-progress{
+    position:fixed;top:0;left:0;right:0;height:2px;
+    background:#111;z-index:999;
+  }
+  .ob-progress-fill{
+    height:100%;background:#FE9E17;
+    transition:width .4s cubic-bezier(.22,1,.36,1);
+  }
 
-.terms{font-size:11px;color:rgba(255,255,255,.2);text-align:center;margin-top:14px;line-height:1.6}
-.terms a{color:rgba(255,255,255,.35);transition:color .12s}
-.terms a:hover{color:#fff}
-
-/* ── STEP 2: USE CASE ── */
-.usecase-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
-.usecase-card{
-  padding:16px 14px;border-radius:12px;border:1px solid var(--sep2);
-  background:var(--surface);cursor:pointer;transition:all .15s;
-  text-align:left;
-}
-.usecase-card:hover{border-color:rgba(255,255,255,.22);background:var(--surface2)}
-.usecase-card.selected{border-color:rgba(254,158,23,.5);background:rgba(254,158,23,.07);box-shadow:0 0 0 3px rgba(254,158,23,.1)}
-.uc-icon{font-size:22px;margin-bottom:8px}
-.uc-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px}
-.uc-sub{font-size:11px;color:var(--muted);line-height:1.4}
-
-/* ── STEP 3: GAME TYPE ── */
-.genre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
-.genre-card{
-  aspect-ratio:1;border-radius:12px;border:1px solid var(--sep2);
-  background:var(--surface);cursor:pointer;transition:all .15s;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  text-align:center;padding:12px;
-}
-.genre-card:hover{border-color:rgba(255,255,255,.22);background:var(--surface2)}
-.genre-card.selected{border-color:rgba(254,158,23,.5);background:rgba(254,158,23,.07);box-shadow:0 0 0 3px rgba(254,158,23,.1)}
-.gc-icon{font-size:24px}
-.gc-name{font-size:11px;font-weight:600;color:#ddd}
-
-/* ── STEP 4: STYLE LOCK ── */
-.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.style-card{
-  border-radius:12px;border:1px solid var(--sep2);
-  background:var(--surface);cursor:pointer;transition:all .15s;overflow:hidden;
-}
-.style-card:hover{border-color:rgba(255,255,255,.22)}
-.style-card.selected{border-color:rgba(254,158,23,.5);box-shadow:0 0 0 3px rgba(254,158,23,.1)}
-.sc-preview{height:80px;display:flex;align-items:center;justify-content:center;font-size:32px}
-.sc-info{padding:8px 12px 10px}
-.sc-name{font-size:12px;font-weight:600;color:#fff}
-.sc-sub{font-size:10px;color:var(--muted);margin-top:2px}
-
-/* ── STEP 5: PLAN ── */
-.plan-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
-.plan-card{
-  padding:16px 18px;border-radius:12px;border:1px solid var(--sep2);
-  background:var(--surface);cursor:pointer;transition:all .15s;
-  display:flex;align-items:center;gap:16px;
-}
-.plan-card:hover{border-color:rgba(255,255,255,.22);background:var(--surface2)}
-.plan-card.selected{border-color:rgba(254,158,23,.5);background:rgba(254,158,23,.05);box-shadow:0 0 0 3px rgba(254,158,23,.1)}
-.plan-card.featured{border-color:rgba(254,158,23,.3);background:rgba(254,158,23,.04)}
-.plan-radio{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.plan-card.selected .plan-radio{border-color:var(--brand);background:var(--brand)}
-.plan-card.selected .plan-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:#0d0d0d}
-.plan-info{flex:1}
-.plan-name{font-size:14px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px}
-.plan-badge{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:4px;background:rgba(254,158,23,.15);color:var(--brand);font-weight:700;transform:skewX(-6deg);display:inline-block}
-.plan-desc{font-size:12px;color:var(--muted);margin-top:2px}
-.plan-price{text-align:right;flex-shrink:0}
-.plan-price-main{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em}
-.plan-price-sub{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-
-/* ── SUCCESS ── */
-.success-wrap{text-align:center;padding:20px 0}
-.success-icon{
-  width:72px;height:72px;border-radius:20px;margin:0 auto 20px;
-  background:rgba(254,158,23,.12);border:1px solid rgba(254,158,23,.25);
-  display:flex;align-items:center;justify-content:center;font-size:32px;
-  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes popIn{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
-.success-title{font-family:'Bebas Neue',sans-serif;font-size:36px;margin-bottom:8px;letter-spacing:.02em}
-.success-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px}
-.success-summary{background:var(--surface);border:1px solid var(--sep2);border-radius:12px;padding:16px;margin-bottom:24px;text-align:left}
-.ss-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--sep);font-size:12px}
-.ss-row:last-child{border-bottom:none}
-.ss-label{color:var(--muted)}
-.ss-val{color:#fff;font-weight:500;font-family:'JetBrains Mono',monospace;font-size:11px}
-.credits-pill{
-  display:inline-flex;align-items:center;gap:6px;padding:6px 14px;
-  background:rgba(254,158,23,.1);border:1px solid rgba(254,158,23,.2);
-  border-radius:20px;font-size:12px;color:var(--brand);font-weight:600;margin-bottom:20px;
-}
+  /* Responsive */
+  @media(max-width:768px){
+    .ob-left{display:none}
+    .ob-right{padding:20px}
+    .form-card{padding:0 20px}
+    .form-title{font-size:36px}
+  }
 </style>
 </head>
 <body>
-<div class="shell">
 
-<!-- ── LEFT BRANDING PANEL ── -->
-<div class="left">
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
+<div class="ob-progress">
+  <div class="ob-progress-fill" id="progress-fill" style="width:20%"></div>
+</div>
 
-  <div class="left-logo">
-    <div class="left-logo-mark">
-      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="1200" height="1200" fill="#FE9E17"/>
-        <path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/>
-        <path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/>
-      </svg>
+<!-- LEFT: Step tracker -->
+<div class="ob-left">
+  <div class="ob-logo">
+    <div class="ob-logo-mark">
+      <svg viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#cn)"><path d="M0 0H138.534H1061.74H1200V91.0658V1107.76V1200H1061.76H136.868H0V1107.12V93.4061V0Z" fill="#FE9E17"/><path d="M0 0H138.534C127.116 2.23825 117.439 3.0593 105.855 5.87918C69.2136 14.9917 38.2311 33.7011 18.6367 58.548C6.31766 74.2225 7.79364 78.4904 0 93.4061V0Z" fill="#FEFEFE"/><path d="M0 1107.12C3.77494 1115.02 5.67412 1121.69 10.2967 1129.62C25.8521 1155.69 53.3621 1176.76 87.8739 1189.03C111.391 1197.33 115.827 1195.38 136.868 1200H0V1107.12Z" fill="#FEFEFE"/><path d="M1061.76 1200C1081.56 1196.09 1087.82 1197.09 1108.72 1190.21C1144.47 1178.51 1173.12 1157.32 1189.14 1130.75C1193.92 1122.7 1195.92 1115.61 1200 1107.76V1200H1061.76Z" fill="#FEFEFE"/><path d="M1061.74 0H1200V91.0658C1199.03 89.3496 1198.31 87.3369 1197.57 85.5334C1193.42 75.3779 1188.3 65.891 1180.9 56.7834C1160.7 32.2772 1129.4 13.996 1092.67 5.2643C1082.76 2.92089 1071.99 1.8798 1061.74 0Z" fill="#FEFEFE"/><path d="M813.434 133.276C858.906 132.375 901.758 137.954 944.068 151.25C1044.8 182.913 1089.87 270.581 1047.16 345.107C1029.26 376.34 989.353 402.362 946.25 414.152C837.85 443.801 719.129 409.308 621.315 373.342C589.869 361.685 561.238 349.905 529.038 339.162C509.938 360.769 486.984 398.562 474.452 422.837C421.421 525.555 385.36 651.135 386.834 761.268C412.018 771.445 449.757 779.426 477.817 783.346C543.775 792.551 616.197 787.447 677.541 766.775C726.36 750.328 773.814 722.373 799.738 686.818C724.665 703.676 602.402 715.295 546.881 662.103C502.285 619.371 528.853 562.764 582.462 532.705C657.072 490.87 760.382 479.753 851.411 486.847C916.364 492.141 976.458 514.492 1016.54 553.113C1054.52 590.051 1071.93 645.645 1076.1 691.406C1085.65 796.219 1052.91 913.787 960.212 994.869C892.505 1054.94 795.147 1092.03 690.269 1097.71C600.287 1102.93 508.506 1084.96 439.836 1040.33C346.068 979.389 308.547 892.353 299.479 802.6C254.12 781.031 215.36 752.566 185.725 719.062C119.719 642.867 113.815 544.823 139.161 458.325C159.414 389.212 206.064 319.938 287.697 280.679C337.048 256.944 395.601 247.373 453.611 252.944C467.988 254.325 481.472 256.642 495.614 258.932C502.257 254.104 513.69 243.216 520.893 237.388C600.672 172.835 695.404 136.892 813.434 133.276Z" fill="#151515"/><path d="M789.779 551.619C824.225 550.559 861.041 553.39 893.023 563.253C927.422 573.859 952.96 595.506 965.925 621.521C1004.25 698.42 990.271 808.939 947.914 883.142C914.472 941.719 853.428 992.525 773.835 1015.62C705.348 1035.48 623.084 1038.62 555.216 1016.25C484.047 992.789 443.392 948.844 415.949 896.613C407.026 878.894 398.537 854.853 395.13 836.139C457.669 850.594 511.635 857.449 577.931 853.476C681.204 847.289 776.939 814.002 844.591 754.658C874.014 728.853 911.419 686.039 908.547 650.098C907.487 636.896 897.073 618.627 882.804 610.441C856.834 594.891 833.925 602.824 807.414 612.586C775.512 624.322 738.879 630.949 703.307 633.105C677.628 634.307 642.983 635.643 621.32 623.812C607.621 616.336 616.657 599.777 626.11 592.658C666.702 562.09 735.059 553.878 789.779 551.619Z" fill="#FE9E17"/><path d="M815.498 200.074C839.914 199.676 864.267 202.033 887.741 207.066C917.69 213.657 946.171 226.808 960.989 247.762C985.075 281.82 976.073 329.854 926.543 348.107C875.49 366.92 814.116 357.909 762.66 345.922C712.004 333.498 665.022 315.618 617.556 297.741C605.983 293.382 594.496 289.247 583.222 284.439C584.657 283.133 586.145 281.86 587.685 280.622C650.576 230.055 722.933 202.679 815.498 200.074Z" fill="#FE9E17"/><path d="M407.882 318.402C417.061 317.344 432.831 318.367 442.039 319.061C375.943 407.657 335.885 516.179 313.46 615.809C306.921 644.865 299.879 687.006 298.797 716.549C288.889 709.898 282.362 704.156 274.173 696.404C239.942 662.408 222.033 625.377 216.434 583.093C203.646 486.527 250.36 330.539 407.882 318.402Z" fill="#FE9E17"/></g><defs><clipPath id="cn"><rect width="1200" height="1200" fill="white"/></clipPath></defs></svg>
     </div>
-    <span class="left-logo-name">Games<span>field</span></span>
+    <span class="ob-logo-name">Games<span>field</span></span>
   </div>
 
-  <div class="left-content">
-    <!-- Content changes per step -->
-    <div id="left-step-1">
-      <div class="left-headline">Build your<br>game world<br><span>with AI</span></div>
-      <p class="left-sub">The only platform that keeps your art style, characters, and world lore consistent across every AI tool you use.</p>
-      <div class="feature-pills">
-        <div class="feature-pill">
-          <div class="fp-icon" style="background:rgba(62,207,142,.1)">🎨</div>
-          <div class="fp-text"><strong>Style Lock</strong> — generate art that always matches your game</div>
-        </div>
-        <div class="feature-pill">
-          <div class="fp-icon" style="background:rgba(155,109,255,.1)">🤖</div>
-          <div class="fp-text"><strong>NPC Brain</strong> — reactive characters with real memory</div>
-        </div>
-        <div class="feature-pill">
-          <div class="fp-icon" style="background:rgba(254,158,23,.1)">⚡</div>
-          <div class="fp-text"><strong>23+ tools</strong> — one credit, zero context switching</div>
-        </div>
+  <div class="step-tracker" id="step-tracker">
+    <div class="step-row">
+      <div class="step-dot active" id="dot-1">1</div>
+      <div class="step-info">
+        <div class="step-label active" id="label-1">Create Account</div>
+        <div class="step-desc active" id="desc-1">Set up your login</div>
       </div>
     </div>
-    <div id="left-step-2" style="display:none">
-      <div class="left-headline">Made for<br>every type<br><span>of dev</span></div>
-      <p class="left-sub">Solo indie or small studio — Gamesfield adapts to how you build games.</p>
+    <div class="step-row">
+      <div class="step-dot pending" id="dot-2">2</div>
+      <div class="step-info">
+        <div class="step-label pending" id="label-2">Name Your World</div>
+        <div class="step-desc" id="desc-2">Give your game project an identity</div>
+      </div>
     </div>
-    <div id="left-step-3" style="display:none">
-      <div class="left-headline">Your game.<br>Your<br><span>style.</span></div>
-      <p class="left-sub">Tell us what you're building and every generation will feel native to your world.</p>
+    <div class="step-row">
+      <div class="step-dot pending" id="dot-3">3</div>
+      <div class="step-info">
+        <div class="step-label pending" id="label-3">Choose Art Style</div>
+        <div class="step-desc" id="desc-3">Lock in your visual direction</div>
+      </div>
     </div>
-    <div id="left-step-4" style="display:none">
-      <div class="left-headline">Set it<br>once. Use<br><span>everywhere.</span></div>
-      <p class="left-sub">Style Lock means Midjourney, Scenario, and Meshy all produce art that feels like one consistent game.</p>
+    <div class="step-row">
+      <div class="step-dot pending" id="dot-4">4</div>
+      <div class="step-info">
+        <div class="step-label pending" id="label-4">Pick Your Tools</div>
+        <div class="step-desc" id="desc-4">Choose which AI tools to enable</div>
+      </div>
     </div>
-    <div id="left-step-5" style="display:none">
-      <div class="left-headline">Start<br>building<br><span>today.</span></div>
-      <p class="left-sub">Your first 50 credits are free. No credit card required on the free plan.</p>
+    <div class="step-row">
+      <div class="step-dot pending" id="dot-5">✓</div>
+      <div class="step-info">
+        <div class="step-label pending" id="label-5">You're In</div>
+        <div class="step-desc" id="desc-5">Start building your game</div>
+      </div>
     </div>
   </div>
 
-  <div class="left-footer">
-    <div class="testimonial">
-      <div class="testimonial-text">"Gamesfield cut my asset pipeline from 3 days to an afternoon. The style lock feature is the whole game."</div>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">M</div>
-        <div class="testimonial-name">mattdev — Wishlist: 12,400 · Steam Early Access</div>
-      </div>
-    </div>
+  <div class="ob-left-footer">
+    Already have an account? <a href="index.html">Sign in</a><br><br>
+    © 2026 Gamesfield &nbsp;·&nbsp; 2026-05-11 · v0.1
   </div>
 </div>
 
-<!-- ── RIGHT FORM PANEL ── -->
-<div class="right">
+<!-- RIGHT: Form area -->
+<div class="ob-right">
+  <div class="ob-right-bg">
+    <div class="ob-grid"></div>
+  </div>
 
-  <!-- STEP 1: Sign Up -->
-  <div class="step active" id="step-1">
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span class="progress-step-label">Create account</span>
-        <span class="progress-count">1 / 5</span>
-      </div>
-      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:20%"></div></div>
-    </div>
+  <!-- STEP 1: Create Account -->
+  <div class="form-card active" id="step-1">
+    <div class="form-eyebrow">Step 1 of 5</div>
+    <div class="form-title">Create Account</div>
+    <div class="form-sub">Join 2,400+ indie devs building games with AI. Free to start — no credit card needed.</div>
 
-    <div class="step-title">Get started free</div>
-    <div class="step-sub">Join 2,400+ indie devs already building with AI</div>
-
-    <!-- SSO -->
-    <div class="sso-row">
-      <button class="sso-btn" onclick="nextStep(1)">
-        <svg class="sso-icon" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        Continue with Google
+    <div class="social-row">
+      <button class="social-btn" onclick="nextStep()">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Google
       </button>
-      <button class="sso-btn" onclick="nextStep(1)">
-        <svg class="sso-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        Continue with GitHub
+      <button class="social-btn" onclick="nextStep()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
       </button>
     </div>
 
     <div class="divider">
       <div class="divider-line"></div>
-      <span class="divider-text">or sign up with email</span>
+      <div class="divider-text">or continue with email</div>
       <div class="divider-line"></div>
     </div>
 
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">First name</label>
+        <input class="field-input" type="text" placeholder="Kael" id="fname"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Last name</label>
+        <input class="field-input" type="text" placeholder="Ashveil" id="lname"/>
+      </div>
+    </div>
     <div class="field">
-      <label>Email address</label>
-      <input class="field-input" type="email" placeholder="you@studio.com" id="email-input">
+      <label class="field-label">Email</label>
+      <input class="field-input" type="email" placeholder="you@studio.com" id="email"/>
     </div>
     <div class="field">
-      <label>Password</label>
-      <input class="field-input" type="password" placeholder="Min. 8 characters" id="pw-input">
-    </div>
-
-    <button class="cta-btn" onclick="nextStep(1)">
-      Create free account
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-
-    <div class="terms">
-      By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<br>
-      Already have an account? <a href="index.html" style="color:var(--brand)">Sign in</a>
-    </div>
-  </div>
-
-  <!-- STEP 2: What kind of dev? -->
-  <div class="step" id="step-2">
-    <button class="back-btn" onclick="prevStep(2)">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Back
-    </button>
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span class="progress-step-label">About you</span>
-        <span class="progress-count">2 / 5</span>
-      </div>
-      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:40%"></div></div>
-    </div>
-    <div class="step-title">What describes you best?</div>
-    <div class="step-sub">We'll personalise your workspace to match how you build games.</div>
-
-    <div class="usecase-grid">
-      <div class="usecase-card" onclick="selectCard(this,'usecase')">
-        <div class="uc-icon">🎮</div>
-        <div class="uc-name">Solo indie dev</div>
-        <div class="uc-sub">Building your game alone, wearing every hat</div>
-      </div>
-      <div class="usecase-card" onclick="selectCard(this,'usecase')">
-        <div class="uc-icon">👥</div>
-        <div class="uc-name">Small studio</div>
-        <div class="uc-sub">Team of 2–10, shipping commercially</div>
-      </div>
-      <div class="usecase-card" onclick="selectCard(this,'usecase')">
-        <div class="uc-icon">🎓</div>
-        <div class="uc-name">Student / hobbyist</div>
-        <div class="uc-sub">Learning game dev, building for fun</div>
-      </div>
-      <div class="usecase-card" onclick="selectCard(this,'usecase')">
-        <div class="uc-icon">🏢</div>
-        <div class="uc-name">Game studio</div>
-        <div class="uc-sub">Mid-size or larger team, enterprise needs</div>
+      <label class="field-label">Password</label>
+      <input class="field-input" type="password" placeholder="Min. 8 characters" id="password" oninput="updateStrength(this.value)"/>
+      <div class="pw-strength">
+        <div class="pw-bar" id="pw1"></div>
+        <div class="pw-bar" id="pw2"></div>
+        <div class="pw-bar" id="pw3"></div>
+        <div class="pw-bar" id="pw4"></div>
       </div>
     </div>
 
-    <button class="cta-btn" id="step2-btn" onclick="nextStep(2)" disabled>
+    <button class="ob-btn" onclick="nextStep()">
       Continue
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
+    <div style="font-size:11px;color:#2a2a2a;text-align:center;margin-top:14px;font-family:'JetBrains Mono',monospace">
+      By continuing you agree to our <a href="#" style="color:#333;text-decoration:underline">Terms</a> and <a href="#" style="color:#333;text-decoration:underline">Privacy Policy</a>
+    </div>
   </div>
 
-  <!-- STEP 3: Game genre -->
-  <div class="step" id="step-3">
-    <button class="back-btn" onclick="prevStep(3)">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Back
-    </button>
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span class="progress-step-label">Your game</span>
-        <span class="progress-count">3 / 5</span>
-      </div>
-      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:60%"></div></div>
-    </div>
-    <div class="step-title">What are you building?</div>
-    <div class="step-sub">Pick up to 2 genres. This helps us tune art and audio generation.</div>
+  <!-- STEP 2: Name Your World -->
+  <div class="form-card" id="step-2">
+    <div class="form-eyebrow">Step 2 of 5</div>
+    <div class="form-title">Name Your World</div>
+    <div class="form-sub">This becomes your Project Memory anchor — every AI tool will know this world by name.</div>
 
-    <div class="genre-grid">
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">⚔️</div><div class="gc-name">RPG / Fantasy</div>
-      </div>
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">🚀</div><div class="gc-name">Sci-Fi</div>
-      </div>
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">💀</div><div class="gc-name">Horror</div>
-      </div>
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">🏃</div><div class="gc-name">Platformer</div>
-      </div>
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">🎲</div><div class="gc-name">Roguelike</div>
-      </div>
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">🌆</div><div class="gc-name">Open World</div>
-      </div>
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">🟩</div><div class="gc-name">Pixel / Retro</div>
-      </div>
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">🧩</div><div class="gc-name">Puzzle</div>
-      </div>
-      <div class="genre-card" onclick="selectGenre(this)">
-        <div class="gc-icon">⚡</div><div class="gc-name">Action</div>
-      </div>
+    <div class="field">
+      <label class="field-label">World Name</label>
+      <input class="field-input" type="text" placeholder="e.g. The Shattered Expanse" id="world-name" style="font-size:18px;padding:16px"/>
+    </div>
+    <div class="name-suggestions">
+      <span class="name-chip" onclick="setWorldName('The Shattered Expanse')">The Shattered Expanse</span>
+      <span class="name-chip" onclick="setWorldName('Ember Citadel')">Ember Citadel</span>
+      <span class="name-chip" onclick="setWorldName('Voidreach')">Voidreach</span>
+      <span class="name-chip" onclick="setWorldName('Crystalmere')">Crystalmere</span>
+      <span class="name-chip" onclick="setWorldName('Ironhaven')">Ironhaven</span>
+      <span class="name-chip" onclick="setWorldName('The Ashveil')">The Ashveil</span>
     </div>
 
-    <button class="cta-btn" id="step3-btn" onclick="nextStep(3)" disabled>
+    <div class="field" style="margin-top:24px">
+      <label class="field-label">Genre (optional)</label>
+      <select class="field-input" style="cursor:pointer">
+        <option value="" disabled selected style="color:#333">Select a genre...</option>
+        <option>Dark Fantasy RPG</option>
+        <option>Sci-Fi / Cyberpunk</option>
+        <option>Horror / Survival</option>
+        <option>Platformer / Indie</option>
+        <option>Strategy / RTS</option>
+        <option>Roguelike / Dungeon</option>
+        <option>Open World / Adventure</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <button class="ob-btn" onclick="nextStep()">
       Continue
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
+    <button class="ob-btn-secondary" onclick="prevStep()">← Back</button>
   </div>
 
-  <!-- STEP 4: Art Style Lock -->
-  <div class="step" id="step-4">
-    <button class="back-btn" onclick="prevStep(4)">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Back
-    </button>
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span class="progress-step-label">Style Lock</span>
-        <span class="progress-count">4 / 5</span>
-      </div>
-      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:80%"></div></div>
-    </div>
-    <div class="step-title">Pick your art style</div>
-    <div class="step-sub">This becomes your Style Lock — every generation will match it. You can change it anytime.</div>
+  <!-- STEP 3: Art Style -->
+  <div class="form-card" id="step-3">
+    <div class="form-eyebrow">Step 3 of 5</div>
+    <div class="form-title">Choose Art Style</div>
+    <div class="form-sub">This locks your visual direction across every AI tool. You can change it later.</div>
 
     <div class="style-grid">
-      <div class="style-card" onclick="selectCard(this,'style')">
-        <div class="sc-preview" style="background:linear-gradient(135deg,#1a0f2e,#2e1a3e)">🎨</div>
-        <div class="sc-info"><div class="sc-name">Painterly</div><div class="sc-sub">Dark Souls, Hollow Knight vibes</div></div>
+      <div class="style-opt selected" onclick="selectStyle(this)">
+        <div class="style-opt-bg" style="background:linear-gradient(135deg,#1a0a0a,#3a1a0a,#0a0a1a)"></div>
+        <div class="style-opt-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="style-opt-label">Dark Fantasy</div>
       </div>
-      <div class="style-card" onclick="selectCard(this,'style')">
-        <div class="sc-preview" style="background:linear-gradient(135deg,#0a1a10,#1a3020)">🟩</div>
-        <div class="sc-info"><div class="sc-name">Pixel Art</div><div class="sc-sub">Stardew, Celeste, retro indie</div></div>
+      <div class="style-opt" onclick="selectStyle(this)">
+        <div class="style-opt-bg" style="background:linear-gradient(135deg,#0a0a2a,#1a0a3a,#0a1a2a)"></div>
+        <div class="style-opt-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="style-opt-label">Sci-Fi</div>
       </div>
-      <div class="style-card" onclick="selectCard(this,'style')">
-        <div class="sc-preview" style="background:linear-gradient(135deg,#08082a,#10103a)">✨</div>
-        <div class="sc-info"><div class="sc-name">Photorealistic</div><div class="sc-sub">Cinematic, high-fidelity renders</div></div>
+      <div class="style-opt" onclick="selectStyle(this)">
+        <div class="style-opt-bg" style="background:linear-gradient(135deg,#0a1a0a,#1a2a1a,#0a0a0a)"></div>
+        <div class="style-opt-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="style-opt-label">Pixel Art</div>
       </div>
-      <div class="style-card" onclick="selectCard(this,'style')">
-        <div class="sc-preview" style="background:linear-gradient(135deg,#1a1a08,#2a2a10)">✏️</div>
-        <div class="sc-info"><div class="sc-name">Concept Art</div><div class="sc-sub">Loose sketchy, pre-production</div></div>
+      <div class="style-opt" onclick="selectStyle(this)">
+        <div class="style-opt-bg" style="background:linear-gradient(135deg,#2a1a0a,#3a2a0a,#1a1a0a)"></div>
+        <div class="style-opt-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="style-opt-label">Painterly</div>
       </div>
-      <div class="style-card" onclick="selectCard(this,'style')">
-        <div class="sc-preview" style="background:linear-gradient(135deg,#1a0810,#2a1020)">🌊</div>
-        <div class="sc-info"><div class="sc-name">Anime / Cel</div><div class="sc-sub">Flat colour, manga-inspired</div></div>
+      <div class="style-opt" onclick="selectStyle(this)">
+        <div class="style-opt-bg" style="background:linear-gradient(135deg,#0a1a2a,#0a2a3a,#1a0a2a)"></div>
+        <div class="style-opt-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="style-opt-label">Cel Shaded</div>
       </div>
-      <div class="style-card" onclick="selectCard(this,'style')">
-        <div class="sc-preview" style="background:linear-gradient(135deg,#0f0a14,#180f24)">🤖</div>
-        <div class="sc-info"><div class="sc-name">Sci-Fi / Neon</div><div class="sc-sub">Cyberpunk, glowing edges</div></div>
+      <div class="style-opt" onclick="selectStyle(this)">
+        <div class="style-opt-bg" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a,#0a0a0a)"></div>
+        <div class="style-opt-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="style-opt-label">Minimalist</div>
       </div>
     </div>
 
-    <button class="cta-btn" id="step4-btn" onclick="nextStep(4)" disabled>
-      Lock in my style
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <button class="ob-btn" onclick="nextStep()">
+      Lock Style & Continue
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
-    <div class="terms">You can upload your own reference art instead — <a href="#" style="color:var(--brand)">Skip to upload →</a></div>
+    <button class="ob-btn-secondary" onclick="prevStep()">← Back</button>
   </div>
 
-  <!-- STEP 5: Choose plan -->
-  <div class="step" id="step-5">
-    <button class="back-btn" onclick="prevStep(5)">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Back
+  <!-- STEP 4: Pick Tools -->
+  <div class="form-card" id="step-4">
+    <div class="form-eyebrow">Step 4 of 5</div>
+    <div class="form-title">Pick Your Tools</div>
+    <div class="form-sub">Choose which AI tools to enable. All included in your plan — switch anytime.</div>
+
+    <div class="tool-grid">
+      <div class="tool-opt selected" onclick="toggleTool(this)">
+        <div class="tool-icon" style="background:#1a1000">🎨</div>
+        <div>
+          <div class="tool-name">Art Gen</div>
+          <div class="tool-cat">Image · Flux</div>
+        </div>
+        <div class="tool-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="tool-opt selected" onclick="toggleTool(this)">
+        <div class="tool-icon" style="background:#001a10">◈</div>
+        <div>
+          <div class="tool-name">Meshy 3D</div>
+          <div class="tool-cat">3D · Assets</div>
+        </div>
+        <div class="tool-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="tool-opt selected" onclick="toggleTool(this)">
+        <div class="tool-icon" style="background:#001a20">🎙</div>
+        <div>
+          <div class="tool-name">ElevenLabs</div>
+          <div class="tool-cat">Audio · Voice</div>
+        </div>
+        <div class="tool-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="tool-opt" onclick="toggleTool(this)">
+        <div class="tool-icon" style="background:#001020">🧠</div>
+        <div>
+          <div class="tool-name">Inworld NPC</div>
+          <div class="tool-cat">NPC · Brain</div>
+        </div>
+        <div class="tool-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="tool-opt" onclick="toggleTool(this)">
+        <div class="tool-icon" style="background:#1a0010">🎬</div>
+        <div>
+          <div class="tool-name">Trailer Studio</div>
+          <div class="tool-cat">Video · Kling</div>
+        </div>
+        <div class="tool-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="tool-opt" onclick="toggleTool(this)">
+        <div class="tool-icon" style="background:#1a1a00">🎵</div>
+        <div>
+          <div class="tool-name">AIVA Music</div>
+          <div class="tool-cat">Audio · OST</div>
+        </div>
+        <div class="tool-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+    </div>
+    <div class="tool-note">Free tier: 3 tools included · <a href="pricing.html" style="color:#FE9E17;text-decoration:none">Upgrade for all tools →</a></div>
+
+    <button class="ob-btn" onclick="nextStep()">
+      Activate Tools & Continue
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span class="progress-step-label">Choose plan</span>
-        <span class="progress-count">5 / 5</span>
-      </div>
-      <div class="progress-bar-track"><div class="progress-bar-fill" style="width:100%"></div></div>
-    </div>
-    <div class="step-title">Start building</div>
-    <div class="step-sub">Start free. Upgrade when you're ready to ship.</div>
+    <button class="ob-btn-secondary" onclick="prevStep()">← Back</button>
+  </div>
 
-    <div class="plan-grid">
-      <div class="plan-card selected" onclick="selectPlan(this)" id="plan-free">
-        <div class="plan-radio"></div>
-        <div class="plan-info">
-          <div class="plan-name">Indie <span style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-weight:400">Free forever</span></div>
-          <div class="plan-desc">50 credits/mo · 3 tool integrations · 1 project</div>
-        </div>
-        <div class="plan-price">
-          <div class="plan-price-main">$0</div>
-          <div class="plan-price-sub">/month</div>
-        </div>
+  <!-- STEP 5: Welcome -->
+  <div class="form-card" id="step-5">
+    <div class="welcome-icon">🎮</div>
+    <div class="form-eyebrow">You're all set</div>
+    <div class="form-title">Welcome to Gamesfield</div>
+    <div class="form-sub">Your Project Memory is live. Every tool now knows your world — time to build something.</div>
+
+    <div class="welcome-stat-row">
+      <div class="welcome-stat">
+        <div class="welcome-stat-val">480</div>
+        <div class="welcome-stat-label">Credits</div>
       </div>
-      <div class="plan-card featured" onclick="selectPlan(this)" id="plan-studio">
-        <div class="plan-radio"></div>
-        <div class="plan-info">
-          <div class="plan-name">Studio <span class="plan-badge">Popular</span></div>
-          <div class="plan-desc">600 credits/mo · All 23 tools · 5 projects · Engine export</div>
-        </div>
-        <div class="plan-price">
-          <div class="plan-price-main" style="color:var(--brand)">$49</div>
-          <div class="plan-price-sub">/month</div>
-        </div>
+      <div class="welcome-stat">
+        <div class="welcome-stat-val" id="tool-count">3</div>
+        <div class="welcome-stat-label">Tools Active</div>
       </div>
-      <div class="plan-card" onclick="selectPlan(this)" id="plan-team">
-        <div class="plan-radio"></div>
-        <div class="plan-info">
-          <div class="plan-name">Team</div>
-          <div class="plan-desc">2,500 credits/mo · Shared memory · API access · Webhooks</div>
-        </div>
-        <div class="plan-price">
-          <div class="plan-price-main">$149</div>
-          <div class="plan-price-sub">/month</div>
-        </div>
+      <div class="welcome-stat">
+        <div class="welcome-stat-val">1</div>
+        <div class="welcome-stat-label">World</div>
       </div>
     </div>
 
-    <button class="cta-btn" onclick="nextStep(5)">
+    <div style="background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:16px;margin-bottom:4px">
+      <div style="font-size:10px;color:#444;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Project Memory · Locked</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#888">
+        <span style="color:#FE9E17">◈</span>
+        World: <span id="world-display" style="color:#ccc;font-weight:600">The Shattered Expanse</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#888;margin-top:6px">
+        <span style="color:#FE9E17">◈</span>
+        Style: <span style="color:#ccc;font-weight:600" id="style-display">Dark Fantasy</span>
+      </div>
+    </div>
+
+    <button class="ob-btn" onclick="window.location.href='index.html'" style="margin-top:20px">
       Enter Gamesfield
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.766 3.581c-.677-.576-1.714-.048-1.645.838l.29 3.751-3.205 1.97c-.758.466-.58 1.615.285 1.824l2.803.677-7.078 7.077a.75.75 0 001.06 1.06l7.077-7.077.678 2.803c.209.865 1.358 1.043 1.824.285l1.97-3.205 3.751.29c.886.069 1.414-.968.838-1.645L16.79 9.63l1.435-3.473a.75.75 0 00-1.108-.898l-3.02 2.06z"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
-    <div class="terms">No credit card required on the free plan. Cancel anytime.</div>
   </div>
 
-  <!-- STEP 6: Success -->
-  <div class="step" id="step-6">
-    <div class="success-wrap">
-      <div class="success-icon">🎮</div>
-      <div class="success-title">You're in, dev.</div>
-      <div class="success-sub">Your world is ready to build.<br>Your style lock is active across all tools.</div>
-
-      <div class="credits-pill">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite"></div>
-        <span id="credits-amount">50</span> credits loaded and ready
-      </div>
-
-      <div class="success-summary" id="success-summary">
-        <div class="ss-row"><span class="ss-label">Dev type</span><span class="ss-val" id="ss-devtype">—</span></div>
-        <div class="ss-row"><span class="ss-label">Genre</span><span class="ss-val" id="ss-genre">—</span></div>
-        <div class="ss-row"><span class="ss-label">Art style</span><span class="ss-val" id="ss-style">—</span></div>
-        <div class="ss-row"><span class="ss-label">Plan</span><span class="ss-val" id="ss-plan">Indie (Free)</span></div>
-        <div class="ss-row"><span class="ss-label">Credits</span><span class="ss-val" id="ss-credits">50 / month</span></div>
-      </div>
-
-      <button class="cta-btn" onclick="window.location.href='world-builder.html'" style="margin-bottom:10px">
-        🌍 Open World Builder
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button onclick="window.location.href='generate-art.html'" style="width:100%;height:46px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.6);font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s" onmouseover="this.style.borderColor='rgba(255,255,255,.25)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,.12)';this.style.color='rgba(255,255,255,.6)'">
-        🎨 Generate first art instead
-      </button>
-    </div>
-  </div>
-
-</div><!-- /right -->
-</div><!-- /shell -->
-
-<style>
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-</style>
+</div>
 
 <script>
-// ── STATE ──
-let state = {
-  currentStep: 1,
-  devType: null,
-  genres: [],
-  artStyle: null,
-  plan: 'free',
-};
+let currentStep = 1;
+const totalSteps = 5;
+let selectedStyle = 'Dark Fantasy';
+let selectedToolCount = 3;
 
-// ── NAVIGATION ──
-function nextStep(from) {
-  // Validation
-  if(from === 1) {
-    const email = document.getElementById('email-input').value;
-    const pw = document.getElementById('pw-input').value;
-    // Allow SSO path (no validation needed) or basic email check
-    if(!email && !state.sso) {
-      shake('email-input'); return;
+function updateTracker() {
+  for (let i = 1; i <= totalSteps; i++) {
+    const dot = document.getElementById('dot-' + i);
+    const label = document.getElementById('label-' + i);
+    const desc = document.getElementById('desc-' + i);
+    if (i < currentStep) {
+      dot.className = 'step-dot done';
+      dot.textContent = '✓';
+      label.className = 'step-label done';
+      if (desc) desc.className = 'step-desc';
+    } else if (i === currentStep) {
+      dot.className = 'step-dot active';
+      dot.textContent = i === 5 ? '✓' : i;
+      label.className = 'step-label active';
+      if (desc) desc.className = 'step-desc active';
+    } else {
+      dot.className = 'step-dot pending';
+      dot.textContent = i === 5 ? '✓' : i;
+      label.className = 'step-label pending';
+      if (desc) desc.className = 'step-desc';
     }
   }
-
-  goToStep(from + 1);
+  // Progress bar
+  document.getElementById('progress-fill').style.width = (currentStep / totalSteps * 100) + '%';
 }
 
-function prevStep(from) { goToStep(from - 1); }
-
-function goToStep(n) {
-  // Hide current
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  // Update left panel content
-  document.querySelectorAll('[id^="left-step-"]').forEach(s => s.style.display = 'none');
-  const leftStep = document.getElementById(`left-step-${Math.min(n,5)}`);
-  if(leftStep) leftStep.style.display = 'block';
-  // Show new step
-  const nextEl = document.getElementById(`step-${n}`);
-  if(nextEl) nextEl.classList.add('active');
-  state.currentStep = n;
-  // Populate success if step 6
-  if(n === 6) populateSuccess();
-}
-
-// ── CARD SELECTION ──
-function selectCard(el, group) {
-  const parent = el.closest('.usecase-grid, .style-grid, .plan-grid');
-  parent.querySelectorAll(`.usecase-card, .style-card`).forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-
-  if(group === 'usecase') {
-    state.devType = el.querySelector('.uc-name').textContent;
-    document.getElementById('step2-btn').disabled = false;
-  }
-  if(group === 'style') {
-    state.artStyle = el.querySelector('.sc-name').textContent;
-    document.getElementById('step4-btn').disabled = false;
-  }
-}
-
-// ── GENRE MULTI-SELECT (max 2) ──
-function selectGenre(el) {
-  const name = el.querySelector('.gc-name').textContent;
-  if(el.classList.contains('selected')) {
-    el.classList.remove('selected');
-    state.genres = state.genres.filter(g => g !== name);
-  } else {
-    if(state.genres.length >= 2) {
-      // Deselect first
-      const firstSelected = document.querySelector('.genre-card.selected');
-      if(firstSelected) {
-        firstSelected.classList.remove('selected');
-        state.genres.shift();
-      }
+function nextStep() {
+  if (currentStep < totalSteps) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    currentStep++;
+    document.getElementById('step-' + currentStep).classList.add('active');
+    updateTracker();
+    // Update welcome screen
+    if (currentStep === 5) {
+      const wn = document.getElementById('world-name');
+      if (wn && wn.value) document.getElementById('world-display').textContent = wn.value;
+      document.getElementById('style-display').textContent = selectedStyle;
+      document.getElementById('tool-count').textContent = selectedToolCount;
     }
-    el.classList.add('selected');
-    state.genres.push(name);
   }
-  document.getElementById('step3-btn').disabled = state.genres.length === 0;
 }
 
-// ── PLAN SELECTION ──
-function selectPlan(el) {
-  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+function prevStep() {
+  if (currentStep > 1) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    currentStep--;
+    document.getElementById('step-' + currentStep).classList.add('active');
+    updateTracker();
+  }
+}
+
+function updateStrength(val) {
+  const bars = ['pw1','pw2','pw3','pw4'];
+  bars.forEach(b => { document.getElementById(b).className = 'pw-bar'; });
+  if (val.length >= 4) document.getElementById('pw1').classList.add('weak');
+  if (val.length >= 6) document.getElementById('pw2').classList.add('medium');
+  if (val.length >= 8) document.getElementById('pw3').classList.add('medium');
+  if (val.length >= 12) document.getElementById('pw4').classList.add('strong');
+}
+
+function setWorldName(name) {
+  document.getElementById('world-name').value = name;
+}
+
+function selectStyle(el) {
+  document.querySelectorAll('.style-opt').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
-  const planId = el.id.replace('plan-','');
-  state.plan = planId;
-  const credits = {free:'50',studio:'600',team:'2,500'};
-  document.getElementById('credits-amount').textContent = credits[planId] || '50';
+  selectedStyle = el.querySelector('.style-opt-label').textContent;
 }
 
-// ── SUCCESS SUMMARY ──
-function populateSuccess() {
-  const planNames = {free:'Indie (Free)',studio:'Studio · $49/mo',team:'Team · $149/mo'};
-  const credits = {free:'50 / month',studio:'600 / month',team:'2,500 / month'};
-  document.getElementById('ss-devtype').textContent = state.devType || '—';
-  document.getElementById('ss-genre').textContent = state.genres.join(' + ') || '—';
-  document.getElementById('ss-style').textContent = state.artStyle || '—';
-  document.getElementById('ss-plan').textContent = planNames[state.plan] || 'Indie (Free)';
-  document.getElementById('ss-credits').textContent = credits[state.plan] || '50 / month';
-  document.getElementById('credits-amount').textContent = credits[state.plan]?.split(' ')[0] || '50';
+function toggleTool(el) {
+  el.classList.toggle('selected');
+  selectedToolCount = document.querySelectorAll('.tool-opt.selected').length;
 }
-
-// ── SHAKE ANIMATION ──
-function shake(id) {
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.style.animation = 'shake .3s ease';
-  el.style.borderColor = 'rgba(255,77,77,.5)';
-  setTimeout(()=>{ el.style.animation=''; el.style.borderColor=''; }, 400);
-}
-
-// ── KEYBOARD ──
-document.addEventListener('keydown', e => {
-  if(e.key === 'Enter' && state.currentStep < 6) {
-    const btn = document.querySelector(`#step-${state.currentStep} .cta-btn:not([disabled])`);
-    if(btn) btn.click();
-  }
-});
-
-// ── SHAKE KEYFRAME ──
-const s = document.createElement('style');
-s.textContent = '@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}';
-document.head.appendChild(s);
-
-// SSO flow bypass
-document.querySelectorAll('.sso-btn').forEach(btn => {
-  btn.addEventListener('click', () => { state.sso = true; });
-});
 </script>
 </body>
 </html>
