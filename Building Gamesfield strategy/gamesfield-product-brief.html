@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!-- Gamesfield · Product Feature Brief · build: 2026-05-12 · v0.1 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gamesfield — Product Feature Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;padding:60px 40px;max-width:960px;margin:0 auto}
+.cover{text-align:center;padding:80px 0 60px;border-bottom:1px solid #1e1e1e;margin-bottom:60px}
+.cover-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#FE9E17;margin-bottom:16px}
+.cover-title{font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:.02em;line-height:1;margin-bottom:16px}
+.cover-title span{color:#FE9E17}
+.cover-sub{font-size:16px;color:#555;line-height:1.7;max-width:560px;margin:0 auto 24px}
+.cover-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:#333;letter-spacing:.08em}
+.section{margin-bottom:60px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#FE9E17;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:#1e1e1e}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.02em;color:#fff;margin-bottom:6px}
+.section-sub{font-size:14px;color:#555;line-height:1.7;margin-bottom:28px}
+.pm-card{background:linear-gradient(135deg,#1a1000,#0d0d0d);border:1px solid rgba(254,158,23,.2);border-radius:16px;padding:32px;margin-bottom:32px}
+.pm-title{font-family:'Bebas Neue',sans-serif;font-size:42px;color:#FE9E17;letter-spacing:.02em;margin-bottom:8px}
+.pm-tagline{font-size:15px;color:#ccc;line-height:1.6;margin-bottom:20px}
+.pm-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.pm-pill{background:rgba(254,158,23,.08);border:1px solid rgba(254,158,23,.15);border-radius:6px;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#FE9E17;letter-spacing:.06em}
+.pm-body{font-size:14px;color:#666;line-height:1.8;margin-bottom:16px}
+.pm-analogy{background:#111;border:1px solid #222;border-radius:10px;padding:16px;font-size:13px;color:#888;line-height:1.6;font-family:'JetBrains Mono',monospace}
+.pm-analogy strong{color:#FE9E17}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.tool-card{background:#111;border:1px solid #1e1e1e;border-radius:14px;padding:24px}
+.tool-card-wide{background:#111;border:1px solid #1e1e1e;border-radius:14px;padding:24px;margin-bottom:16px}
+.tool-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.tool-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.tool-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;color:#fff}
+.tool-desc{font-size:13px;color:#666;line-height:1.7;margin-bottom:14px}
+.tool-features{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.tool-card-wide .tool-features{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tool-features li{font-size:12px;color:#555;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.tool-features li::before{content:'-->';color:#FE9E17;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:2px}
+.tool-powered{font-family:'JetBrains Mono',monospace;font-size:10px;color:#333;letter-spacing:.06em;display:flex;align-items:center;gap:6px;padding-top:12px;border-top:1px solid #1a1a1a;flex-wrap:wrap}
+.tool-powered span{color:#555}
+.tool-credits{margin-left:auto;background:#1a1a1a;border-radius:4px;padding:2px 8px;font-size:10px;color:#444}
+.badge-soon{background:rgba(209,254,23,.08);border:1px solid rgba(209,254,23,.15);color:#d1fe17;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:4px}
+.badge-live{background:rgba(0,212,120,.08);border:1px solid rgba(0,212,120,.15);color:#00d478;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:4px}
+.tool-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+.credit-table{width:100%;border-collapse:collapse;margin-top:8px}
+.credit-table th{background:#111;border:1px solid #1e1e1e;padding:10px 14px;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#444;text-align:left}
+.credit-table td{border:1px solid #1a1a1a;padding:10px 14px;font-size:13px;color:#666}
+.credit-table tr:hover td{background:#0f0f0f}
+.hl{color:#FE9E17;font-weight:600}
+.doc-footer{border-top:1px solid #1e1e1e;padding-top:24px;margin-top:60px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:#2a2a2a}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-eyebrow">Product Feature Brief · v0.1 · May 2026</div>
+  <div class="cover-title">GAMES<span>FIELD</span></div>
+  <div class="cover-sub">The AI workspace for indie game developers. One platform. 23+ tools. One game world that stays consistent across all of them.</div>
+  <div class="cover-meta">Confidential · Internal use only · tkhdwyer82/Gamesfield-mvp</div>
+</div>
+
+<div class="section">
+  <div class="section-label">Core Concept</div>
+  <div class="section-title">Project Memory</div>
+  <div class="section-sub">The engine that makes Gamesfield different from every other AI tool.</div>
+  <div class="pm-card">
+    <div class="pm-title">Project Memory</div>
+    <div class="pm-tagline">A locked context object that every AI tool in Gamesfield reads automatically. Set it once — every generation respects it forever.</div>
+    <div class="pm-pills">
+      <div class="pm-pill">Art Style</div><div class="pm-pill">Colour Palette</div><div class="pm-pill">Character Roster</div>
+      <div class="pm-pill">World Name</div><div class="pm-pill">Lore Rules</div><div class="pm-pill">Tone &amp; Atmosphere</div>
+      <div class="pm-pill">Genre</div><div class="pm-pill">Target Platform</div>
+    </div>
+    <div class="pm-body">Without Project Memory, every AI tool is stateless. You generate a character in Scenario, a 3D asset in Meshy, a voice line in ElevenLabs — and they all look like they came from different games. You re-prompt each tool manually. Project Memory eliminates this. Define your world once and every tool inherits it automatically.</div>
+    <div class="pm-analogy"><strong>Best analogy:</strong> Think of the instructions panel in a Claude Project. Every conversation inherits those instructions — you never re-explain yourself. Project Memory is exactly that, but for your game. Every AI tool in Gamesfield reads from it the same way.</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Platform Tools</div>
+  <div class="section-title">The Full Toolset</div>
+  <div class="section-sub">Every tool reads from Project Memory. No re-prompting. No style drift.</div>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon" style="background:#1a1000">🎨</div>
+        <div>
+          <div class="tool-name">Game Art Gen</div>
+          <span class="tool-tag" style="background:rgba(254,158,23,.1);color:#FE9E17">Image</span><span class="badge-live">Live</span>
+        </div>
+      </div>
+      <div class="tool-desc">Production-ready game art, character concepts, item sprites, and environment art — locked to your art style via Project Memory.</div>
+      <ul class="tool-features">
+        <li>Character art, portraits, full-body renders</li>
+        <li>Environment concepts and biome art</li>
+        <li>Item, weapon, and prop design</li>
+        <li>UI elements, icons, splash screens</li>
+        <li>Style-locked — every output matches your game</li>
+      </ul>
+      <div class="tool-powered"><span>Powered by</span> Flux Pro · Midjourney · Scenario<div class="tool-credits">4 credits/gen</div></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon" style="background:#001a10">◈</div>
+        <div>
+          <div class="tool-name">3D Asset Studio</div>
+          <span class="tool-tag" style="background:rgba(0,212,120,.1);color:#00d478">3D</span><span class="badge-soon">Soon</span>
+        </div>
+      </div>
+      <div class="tool-desc">Game-ready 3D meshes, props, environments, and characters. Export to Unity, Unreal, or Godot with correct topology and UVs.</div>
+      <ul class="tool-features">
+        <li>Text-to-3D mesh in under 60 seconds</li>
+        <li>PBR textures in your art style</li>
+        <li>Export: .glb, .fbx, .obj — engine ready</li>
+        <li>Rigged character meshes for animation</li>
+        <li>Consistent style via Project Memory</li>
+      </ul>
+      <div class="tool-powered"><span>Powered by</span> Meshy · Tripo3D<div class="tool-credits">8 credits/gen</div></div>
+    </div>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon" style="background:#001020">🧠</div>
+        <div>
+          <div class="tool-name">NPC Brain</div>
+          <span class="tool-tag" style="background:rgba(155,109,255,.1);color:#9b6dff">NPC</span><span class="badge-live">Live</span>
+        </div>
+      </div>
+      <div class="tool-desc">NPCs with real memory, personality, and reactive dialogue. Characters that remember the player, adapt to story events, and never break immersion.</div>
+      <ul class="tool-features">
+        <li>Character roster with persistent memory</li>
+        <li>Personality, backstory, motivation profiles</li>
+        <li>Reactive dialogue — responds to world events</li>
+        <li>Export to Inworld AI as a live character</li>
+        <li>Voice line generation via ElevenLabs</li>
+      </ul>
+      <div class="tool-powered"><span>Powered by</span> Inworld AI · ElevenLabs<div class="tool-credits">5 credits/gen</div></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon" style="background:#0a1a0a">🌍</div>
+        <div>
+          <div class="tool-name">World Builder</div>
+          <span class="tool-tag" style="background:rgba(0,212,255,.1);color:#00d4ff">World</span><span class="badge-live">Live</span>
+        </div>
+      </div>
+      <div class="tool-desc">Node-based world canvas for regions, lore, and world structure. AI fills the gaps — climate, danger levels, quests, and faction relationships.</div>
+      <ul class="tool-features">
+        <li>Visual node canvas for region mapping</li>
+        <li>AI lore generation per region or biome</li>
+        <li>World rules engine — magic, time, physics</li>
+        <li>Character placement across regions</li>
+        <li>Export world bible as PDF or JSON</li>
+      </ul>
+      <div class="tool-powered"><span>Powered by</span> Claude · Promethean AI<div class="tool-credits">3 credits/gen</div></div>
+    </div>
+  </div>
+
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon" style="background:#1a1a00">🎵</div>
+        <div>
+          <div class="tool-name">Audio Studio</div>
+          <span class="tool-tag" style="background:rgba(254,200,23,.1);color:#fec817">Audio</span><span class="badge-soon">Soon</span>
+        </div>
+      </div>
+      <div class="tool-desc">Adaptive game music and SFX matched to your world's tone. OSTs, ambient tracks, combat music, and voice lines — all consistent with your game's atmosphere.</div>
+      <ul class="tool-features">
+        <li>OST composition — any genre, any mood</li>
+        <li>Adaptive music responding to game state</li>
+        <li>SFX packs matched to world theme</li>
+        <li>NPC voice acting — multi-character, one script</li>
+        <li>Stems exported for engine integration</li>
+      </ul>
+      <div class="tool-powered"><span>Powered by</span> AIVA · ElevenLabs · Suno<div class="tool-credits">6 credits/gen</div></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon" style="background:#1a000a">🎬</div>
+        <div>
+          <div class="tool-name">Trailer Studio</div>
+          <span class="tool-tag" style="background:rgba(255,77,139,.1);color:#ff4d8b">Video</span><span class="badge-soon">Soon</span>
+        </div>
+      </div>
+      <div class="tool-desc">Auto-cut cinematic game trailers from your generated assets. AI handles pacing, music sync, and titles — export at 4K for Steam, YouTube, and TikTok.</div>
+      <ul class="tool-features">
+        <li>AI video generation from text descriptions</li>
+        <li>Auto-edit with cinematic pacing</li>
+        <li>Music sync from your Audio Studio tracks</li>
+        <li>Title cards and text overlays</li>
+        <li>Export 4K for Steam, YouTube, TikTok</li>
+      </ul>
+      <div class="tool-powered"><span>Powered by</span> Kling AI · Higgsfield · Runway<div class="tool-credits">12 credits/gen</div></div>
+    </div>
+  </div>
+
+  <div class="tool-card-wide">
+    <div class="tool-header">
+      <div class="tool-icon" style="background:#0a0a1a">⚡</div>
+      <div>
+        <div class="tool-name">MCP &amp; CLI Access</div>
+        <span class="tool-tag" style="background:rgba(209,254,23,.1);color:#d1fe17">Developer</span><span class="badge-soon">Soon</span>
+      </div>
+    </div>
+    <div class="tool-desc">Connect Gamesfield directly to your game engine via Model Context Protocol or CLI. Project Memory travels with every API call.</div>
+    <ul class="tool-features">
+      <li>MCP server — Unity, Unreal, Godot plugins</li>
+      <li>REST API with full Project Memory context</li>
+      <li>CLI tool for batch asset generation</li>
+      <li>Webhook triggers on game events</li>
+      <li>SDK for Python, Node.js, C# (Unity)</li>
+      <li>Rate limits scale with plan tier</li>
+    </ul>
+    <div class="tool-powered"><span>Powered by</span> Anthropic MCP · fal.ai · Supabase<div class="tool-credits">API rate: plan-dependent</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Credit System</div>
+  <div class="section-title">How Credits Work</div>
+  <div class="section-sub">Every generation costs credits. Credits reset monthly with your plan, or top up anytime at $10 per 100.</div>
+  <table class="credit-table">
+    <thead><tr><th>Tool</th><th>Action</th><th>Credits</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Game Art Gen</td><td>1 image (1024x1024)</td><td class="hl">4</td><td>4 variations = 4 credits each</td></tr>
+      <tr><td>Game Art Gen</td><td>Upscale to 4K</td><td class="hl">2</td><td>Per image</td></tr>
+      <tr><td>3D Asset Studio</td><td>1 mesh generation</td><td class="hl">8</td><td>Includes PBR textures</td></tr>
+      <tr><td>3D Asset Studio</td><td>Rigging</td><td class="hl">4</td><td>Additional per asset</td></tr>
+      <tr><td>NPC Brain</td><td>Character generation</td><td class="hl">5</td><td>Includes personality + backstory</td></tr>
+      <tr><td>NPC Brain</td><td>Dialogue (50 lines)</td><td class="hl">3</td><td>Per batch</td></tr>
+      <tr><td>NPC Brain</td><td>Voice line (ElevenLabs)</td><td class="hl">2</td><td>Per line</td></tr>
+      <tr><td>World Builder</td><td>Region generation</td><td class="hl">3</td><td>Lore + climate + connections</td></tr>
+      <tr><td>Audio Studio</td><td>Music track (2 min)</td><td class="hl">6</td><td>Stems included</td></tr>
+      <tr><td>Audio Studio</td><td>SFX pack (20 sounds)</td><td class="hl">4</td><td>Per pack</td></tr>
+      <tr><td>Trailer Studio</td><td>60-second trailer</td><td class="hl">12</td><td>Video generation + edit</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-label">Pricing</div>
+  <div class="section-title">Plans &amp; Access</div>
+  <div class="section-sub">One subscription replaces $165-380/mo of fragmented AI tools.</div>
+  <table class="credit-table">
+    <thead><tr><th>Tier</th><th>Price</th><th>Credits/mo</th><th>Tools</th><th>Target</th></tr></thead>
+    <tbody>
+      <tr><td class="hl">Free</td><td>$0</td><td>50</td><td>3 core tools</td><td>Game jam trial, evaluation</td></tr>
+      <tr><td class="hl">Indie</td><td>$49/mo</td><td>500</td><td>All core tools</td><td>Solo devs, hobbyists</td></tr>
+      <tr><td class="hl">Studio</td><td>$149/mo</td><td>2,000</td><td>All tools + priority</td><td>Small teams 2-5 devs</td></tr>
+      <tr><td class="hl">Team</td><td>$299/mo</td><td>5,000</td><td>All tools + API</td><td>Studios 5-20 devs</td></tr>
+      <tr><td class="hl">Enterprise</td><td>Custom</td><td>Unlimited</td><td>White-label + SLA</td><td>AA studios, edu platforms</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="doc-footer">
+  <div>Gamesfield · Product Feature Brief · v0.1 · May 2026</div>
+  <div>Confidential · 2026-05-12 · v0.1</div>
+</div>
+
+</body>
+</html>

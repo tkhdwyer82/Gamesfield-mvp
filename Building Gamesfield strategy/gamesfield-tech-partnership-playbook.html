@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<!-- Gamesfield · Technical & Partnership Playbook · build: 2026-05-12 · v0.1 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gamesfield — Technical & Partnership Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d0d;color:#fff;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;padding:60px 40px;max-width:960px;margin:0 auto}
+.cover{text-align:center;padding:80px 0 60px;border-bottom:1px solid #1e1e1e;margin-bottom:60px}
+.cover-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#d1fe17;margin-bottom:16px}
+.cover-title{font-family:'Bebas Neue',sans-serif;font-size:60px;letter-spacing:.02em;line-height:1;margin-bottom:16px;color:#fff}
+.cover-title span{color:#FE9E17}
+.cover-sub{font-size:15px;color:#555;line-height:1.7;max-width:600px;margin:0 auto 24px}
+.cover-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:#333}
+.section{margin-bottom:60px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#FE9E17;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:#1e1e1e}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.02em;color:#fff;margin-bottom:6px}
+.section-sub{font-size:14px;color:#555;line-height:1.7;margin-bottom:28px}
+/* Stack diagram */
+.stack{display:flex;flex-direction:column;gap:3px;margin-bottom:32px}
+.stack-layer{border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:16px}
+.stack-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;width:120px;flex-shrink:0}
+.stack-items{display:flex;flex-wrap:wrap;gap:8px;flex:1}
+.stack-chip{font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;white-space:nowrap}
+.stack-note{font-size:11px;color:#444;font-family:'JetBrains Mono',monospace;margin-left:auto;white-space:nowrap}
+/* API cards */
+.api-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.api-card{background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:20px}
+.api-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.api-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.api-name{font-weight:700;color:#fff;font-size:14px}
+.api-category{font-family:'JetBrains Mono',monospace;font-size:9px;color:#555;letter-spacing:.08em;text-transform:uppercase}
+.api-desc{font-size:12px;color:#555;line-height:1.6;margin-bottom:10px}
+.api-details{display:flex;flex-direction:column;gap:5px}
+.api-row{display:flex;justify-content:space-between;font-size:11px;font-family:'JetBrains Mono',monospace}
+.api-row-label{color:#444}
+.api-row-val{color:#888}
+.api-row-val.amber{color:#FE9E17}
+.api-row-val.green{color:#00d478}
+.api-row-val.red{color:#ff4d4d}
+/* Partnership table */
+.p-table{width:100%;border-collapse:collapse;margin-bottom:24px}
+.p-table th{background:#111;border:1px solid #1e1e1e;padding:10px 14px;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#444;text-align:left}
+.p-table td{border:1px solid #1a1a1a;padding:10px 14px;font-size:12px;color:#666;vertical-align:top;line-height:1.5}
+.p-table tr:hover td{background:#0f0f0f}
+.hl{color:#FE9E17;font-weight:600}
+.hl-green{color:#00d478}
+.hl-lime{color:#d1fe17}
+/* Phase timeline */
+.timeline{display:flex;flex-direction:column;gap:0}
+.phase{display:flex;gap:20px;position:relative;padding-bottom:24px}
+.phase:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;width:1px;height:100%;background:linear-gradient(to bottom,#2a2a2a,transparent)}
+.phase-dot{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.phase-content{flex:1;padding-top:4px}
+.phase-title{font-weight:700;color:#fff;margin-bottom:4px;font-size:14px}
+.phase-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:#555;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+.phase-items{display:flex;flex-direction:column;gap:4px}
+.phase-item{font-size:12px;color:#555;display:flex;align-items:flex-start;gap:8px}
+.phase-item::before{content:'-->';color:#FE9E17;font-family:'JetBrains Mono',monospace;font-size:10px;flex-shrink:0;margin-top:2px}
+/* Higgsfield model box */
+.model-box{background:linear-gradient(135deg,#0a1a0a,#0d0d0d);border:1px solid rgba(209,254,23,.15);border-radius:14px;padding:28px;margin-bottom:24px}
+.model-box-title{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#d1fe17;margin-bottom:8px}
+.model-box-sub{font-size:13px;color:#666;line-height:1.6;margin-bottom:18px}
+.model-steps{display:flex;flex-direction:column;gap:10px}
+.model-step{display:flex;gap:12px;align-items:flex-start}
+.model-step-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:#d1fe17;width:24px;flex-shrink:0;margin-top:2px}
+.model-step-text{font-size:13px;color:#666;line-height:1.6}
+.model-step-text strong{color:#aaa}
+.doc-footer{border-top:1px solid #1e1e1e;padding-top:24px;margin-top:60px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#2a2a2a}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-eyebrow">Technical & Partnership Playbook · v0.1 · May 2026</div>
+  <div class="cover-title">HOW WE <span>BUILD</span> THIS<br>YOU AND CLAUDE</div>
+  <div class="cover-sub">Every API we need, how to connect them, how to negotiate volume deals like Higgsfield, and the exact build sequence to get Gamesfield live with zero engineering hires.</div>
+  <div class="cover-meta">Confidential · Internal use only · 2026-05-12 · v0.1</div>
+</div>
+
+<!-- TECH STACK -->
+<div class="section">
+  <div class="section-label">Architecture</div>
+  <div class="section-title">The Full Tech Stack</div>
+  <div class="section-sub">Every layer of Gamesfield — what it does, what we use, and how Claude builds it.</div>
+
+  <div class="stack">
+    <div class="stack-layer" style="background:#1a1000;border:1px solid rgba(254,158,23,.15)">
+      <div class="stack-label" style="color:#FE9E17">Frontend</div>
+      <div class="stack-items">
+        <span class="stack-chip" style="background:rgba(254,158,23,.1);color:#FE9E17">Next.js 14</span>
+        <span class="stack-chip" style="background:rgba(254,158,23,.1);color:#FE9E17">Tailwind CSS</span>
+        <span class="stack-chip" style="background:rgba(254,158,23,.1);color:#FE9E17">React</span>
+        <span class="stack-chip" style="background:rgba(254,158,23,.1);color:#FE9E17">Vercel (hosting)</span>
+      </div>
+      <div class="stack-note">Claude builds all UI</div>
+    </div>
+    <div class="stack-layer" style="background:#001a10;border:1px solid rgba(0,212,120,.1)">
+      <div class="stack-label" style="color:#00d478">Auth</div>
+      <div class="stack-items">
+        <span class="stack-chip" style="background:rgba(0,212,120,.1);color:#00d478">Clerk</span>
+        <span class="stack-chip" style="background:rgba(0,212,120,.08);color:#00d478">Google SSO</span>
+        <span class="stack-chip" style="background:rgba(0,212,120,.08);color:#00d478">Apple SSO</span>
+        <span class="stack-chip" style="background:rgba(0,212,120,.08);color:#00d478">GitHub SSO</span>
+      </div>
+      <div class="stack-note">1 session with Claude</div>
+    </div>
+    <div class="stack-layer" style="background:#0a0a1a;border:1px solid rgba(155,109,255,.1)">
+      <div class="stack-label" style="color:#9b6dff">Database</div>
+      <div class="stack-items">
+        <span class="stack-chip" style="background:rgba(155,109,255,.1);color:#9b6dff">Supabase (Postgres)</span>
+        <span class="stack-chip" style="background:rgba(155,109,255,.08);color:#9b6dff">Project Memory store</span>
+        <span class="stack-chip" style="background:rgba(155,109,255,.08);color:#9b6dff">User profiles</span>
+        <span class="stack-chip" style="background:rgba(155,109,255,.08);color:#9b6dff">Asset history</span>
+      </div>
+      <div class="stack-note">1 session with Claude</div>
+    </div>
+    <div class="stack-layer" style="background:#1a0a00;border:1px solid rgba(255,100,50,.1)">
+      <div class="stack-label" style="color:#ff6432">Billing</div>
+      <div class="stack-items">
+        <span class="stack-chip" style="background:rgba(255,100,50,.1);color:#ff6432">Stripe</span>
+        <span class="stack-chip" style="background:rgba(255,100,50,.08);color:#ff6432">Subscription plans</span>
+        <span class="stack-chip" style="background:rgba(255,100,50,.08);color:#ff6432">Credit top-ups</span>
+        <span class="stack-chip" style="background:rgba(255,100,50,.08);color:#ff6432">Usage webhooks</span>
+      </div>
+      <div class="stack-note">1 session with Claude</div>
+    </div>
+    <div class="stack-layer" style="background:#001020;border:1px solid rgba(0,212,255,.1)">
+      <div class="stack-label" style="color:#00d4ff">AI Routing</div>
+      <div class="stack-items">
+        <span class="stack-chip" style="background:rgba(0,212,255,.1);color:#00d4ff">fal.ai (model router)</span>
+        <span class="stack-chip" style="background:rgba(0,212,255,.08);color:#00d4ff">Flux Pro</span>
+        <span class="stack-chip" style="background:rgba(0,212,255,.08);color:#00d4ff">Meshy</span>
+        <span class="stack-chip" style="background:rgba(0,212,255,.08);color:#00d4ff">Inworld</span>
+        <span class="stack-chip" style="background:rgba(0,212,255,.08);color:#00d4ff">ElevenLabs</span>
+        <span class="stack-chip" style="background:rgba(0,212,255,.08);color:#00d4ff">AIVA</span>
+        <span class="stack-chip" style="background:rgba(0,212,255,.08);color:#00d4ff">Kling AI</span>
+      </div>
+      <div class="stack-note">Core product layer</div>
+    </div>
+    <div class="stack-layer" style="background:#1a1a00;border:1px solid rgba(209,254,23,.1)">
+      <div class="stack-label" style="color:#d1fe17">Storage</div>
+      <div class="stack-items">
+        <span class="stack-chip" style="background:rgba(209,254,23,.08);color:#d1fe17">Supabase Storage</span>
+        <span class="stack-chip" style="background:rgba(209,254,23,.08);color:#d1fe17">Generated assets</span>
+        <span class="stack-chip" style="background:rgba(209,254,23,.08);color:#d1fe17">User uploads</span>
+        <span class="stack-chip" style="background:rgba(209,254,23,.08);color:#d1fe17">CDN delivery</span>
+      </div>
+      <div class="stack-note">Replaces base64</div>
+    </div>
+  </div>
+</div>
+
+<!-- API CONNECTIONS -->
+<div class="section">
+  <div class="section-label">API Connections</div>
+  <div class="section-title">Every API We Need</div>
+  <div class="section-sub">What each API does, how to connect it, estimated costs, and how Claude wires it in.</div>
+
+  <div class="api-grid">
+    <div class="api-card">
+      <div class="api-header">
+        <div class="api-icon" style="background:#1a1000">⚡</div>
+        <div><div class="api-name">fal.ai</div><div class="api-category">AI Model Router</div></div>
+      </div>
+      <div class="api-desc">The backbone of Gamesfield's AI layer. Routes generation requests to the best model — Flux Pro for images, Kling for video, and more. One API key, 50+ models.</div>
+      <div class="api-details">
+        <div class="api-row"><span class="api-row-label">Sign up</span><span class="api-row-val">fal.ai — free account</span></div>
+        <div class="api-row"><span class="api-row-label">Integration</span><span class="api-row-val">REST API + Node SDK</span></div>
+        <div class="api-row"><span class="api-row-label">Cost</span><span class="api-row-val amber">~$0.04/image (Flux Pro)</span></div>
+        <div class="api-row"><span class="api-row-label">Volume deal</span><span class="api-row-val green">Yes — 20%+ off at $1K+/mo</span></div>
+        <div class="api-row"><span class="api-row-label">Claude builds</span><span class="api-row-val">API wrapper + credit calc</span></div>
+      </div>
+    </div>
+
+    <div class="api-card">
+      <div class="api-header">
+        <div class="api-icon" style="background:#001a10">◈</div>
+        <div><div class="api-name">Meshy</div><div class="api-category">3D Asset Generation</div></div>
+      </div>
+      <div class="api-desc">Text-to-3D mesh with PBR textures. The only production-quality 3D API with game-dev output formats (.glb, .fbx). Higgsfield uses Meshy under their 3D tab.</div>
+      <div class="api-details">
+        <div class="api-row"><span class="api-row-label">Sign up</span><span class="api-row-val">meshy.ai — free tier</span></div>
+        <div class="api-row"><span class="api-row-label">Integration</span><span class="api-row-val">REST API</span></div>
+        <div class="api-row"><span class="api-row-label">Cost</span><span class="api-row-val amber">$0.40–0.80/mesh</span></div>
+        <div class="api-row"><span class="api-row-label">Volume deal</span><span class="api-row-val green">Contact for 500+ meshes/mo</span></div>
+        <div class="api-row"><span class="api-row-label">Claude builds</span><span class="api-row-val">Job polling + asset download</span></div>
+      </div>
+    </div>
+
+    <div class="api-card">
+      <div class="api-header">
+        <div class="api-icon" style="background:#001020">🧠</div>
+        <div><div class="api-name">Inworld AI</div><div class="api-category">NPC Intelligence</div></div>
+      </div>
+      <div class="api-desc">Real-time NPC dialogue with persistent character memory. The leading NPC AI used by EA, Niantic, and 500+ game studios. Perfect for NPC Brain.</div>
+      <div class="api-details">
+        <div class="api-row"><span class="api-row-label">Sign up</span><span class="api-row-val">inworld.ai/studio</span></div>
+        <div class="api-row"><span class="api-row-label">Integration</span><span class="api-row-val">REST API + Unity/Unreal SDK</span></div>
+        <div class="api-row"><span class="api-row-label">Cost</span><span class="api-row-val amber">$0.001/interaction</span></div>
+        <div class="api-row"><span class="api-row-label">Volume deal</span><span class="api-row-val green">Partner program available</span></div>
+        <div class="api-row"><span class="api-row-label">Claude builds</span><span class="api-row-val">Character create + session mgmt</span></div>
+      </div>
+    </div>
+
+    <div class="api-card">
+      <div class="api-header">
+        <div class="api-icon" style="background:#1a0020">🎙</div>
+        <div><div class="api-name">ElevenLabs</div><div class="api-category">Voice Generation</div></div>
+      </div>
+      <div class="api-desc">The best AI voice generation API. Used for NPC voice lines, character voice packs, and narration. Supports voice cloning for consistent character voices.</div>
+      <div class="api-details">
+        <div class="api-row"><span class="api-row-label">Sign up</span><span class="api-row-val">elevenlabs.io</span></div>
+        <div class="api-row"><span class="api-row-label">Integration</span><span class="api-row-val">REST API + Python SDK</span></div>
+        <div class="api-row"><span class="api-row-label">Cost</span><span class="api-row-val amber">$0.30/1K chars (~$0.002/line)</span></div>
+        <div class="api-row"><span class="api-row-label">Volume deal</span><span class="api-row-val green">Creator program — 50% off</span></div>
+        <div class="api-row"><span class="api-row-label">Claude builds</span><span class="api-row-val">Voice picker + batch generation</span></div>
+      </div>
+    </div>
+
+    <div class="api-card">
+      <div class="api-header">
+        <div class="api-icon" style="background:#1a1a00">🎵</div>
+        <div><div class="api-name">AIVA</div><div class="api-category">Music Composition</div></div>
+      </div>
+      <div class="api-desc">AI music composition for game OSTs. Generates full adaptive soundtracks — combat, ambient, cutscene — in any genre. Used by Ubisoft and 1M+ creators.</div>
+      <div class="api-details">
+        <div class="api-row"><span class="api-row-label">Sign up</span><span class="api-row-val">aiva.ai</span></div>
+        <div class="api-row"><span class="api-row-label">Integration</span><span class="api-row-val">REST API (beta)</span></div>
+        <div class="api-row"><span class="api-row-label">Cost</span><span class="api-row-val amber">$33/mo Standard plan</span></div>
+        <div class="api-row"><span class="api-row-label">Volume deal</span><span class="api-row-val green">Enterprise API — contact them</span></div>
+        <div class="api-row"><span class="api-row-label">Claude builds</span><span class="api-row-val">Prompt builder + stem download</span></div>
+      </div>
+    </div>
+
+    <div class="api-card">
+      <div class="api-header">
+        <div class="api-icon" style="background:#1a000a">🎬</div>
+        <div><div class="api-name">Kling AI</div><div class="api-category">Video Generation</div></div>
+      </div>
+      <div class="api-desc">Best-in-class video generation for game trailers and cinematic scenes. Already integrated in Higgsfield. Available via fal.ai or direct API.</div>
+      <div class="api-details">
+        <div class="api-row"><span class="api-row-label">Sign up</span><span class="api-row-val">klingai.com or via fal.ai</span></div>
+        <div class="api-row"><span class="api-row-label">Integration</span><span class="api-row-val">fal.ai router (easiest)</span></div>
+        <div class="api-row"><span class="api-row-label">Cost</span><span class="api-row-val amber">$0.14/sec of video</span></div>
+        <div class="api-row"><span class="api-row-label">Volume deal</span><span class="api-row-val green">Via fal.ai volume pricing</span></div>
+        <div class="api-row"><span class="api-row-label">Claude builds</span><span class="api-row-val">Video gen + trailer assembler</span></div>
+      </div>
+    </div>
+
+    <div class="api-card">
+      <div class="api-header">
+        <div class="api-icon" style="background:#00100a">🔐</div>
+        <div><div class="api-name">Clerk</div><div class="api-category">Authentication</div></div>
+      </div>
+      <div class="api-desc">Drop-in auth with Google, Apple, GitHub, Microsoft SSO. Handles user management, sessions, and JWTs. The fastest way to wire real login in Next.js.</div>
+      <div class="api-details">
+        <div class="api-row"><span class="api-row-label">Sign up</span><span class="api-row-val">clerk.com — free to 10K users</span></div>
+        <div class="api-row"><span class="api-row-label">Integration</span><span class="api-row-val">Next.js middleware</span></div>
+        <div class="api-row"><span class="api-row-label">Cost</span><span class="api-row-val green">Free to 10K MAU</span></div>
+        <div class="api-row"><span class="api-row-label">Volume deal</span><span class="api-row-val">N/A — free tier covers MVP</span></div>
+        <div class="api-row"><span class="api-row-label">Claude builds</span><span class="api-row-val">Auth middleware + user context</span></div>
+      </div>
+    </div>
+
+    <div class="api-card">
+      <div class="api-header">
+        <div class="api-icon" style="background:#001a10">🗄</div>
+        <div><div class="api-name">Supabase</div><div class="api-category">Database + Storage</div></div>
+      </div>
+      <div class="api-desc">Postgres database for Project Memory, user profiles, credit balances, and asset history. Also handles file storage for generated assets — replaces base64 embedding.</div>
+      <div class="api-details">
+        <div class="api-row"><span class="api-row-label">Sign up</span><span class="api-row-val">supabase.com — free tier</span></div>
+        <div class="api-row"><span class="api-row-label">Integration</span><span class="api-row-val">Next.js SDK + REST API</span></div>
+        <div class="api-row"><span class="api-row-label">Cost</span><span class="api-row-val green">Free to $25/mo (Pro)</span></div>
+        <div class="api-row"><span class="api-row-label">Volume deal</span><span class="api-row-val">N/A — scales with usage</span></div>
+        <div class="api-row"><span class="api-row-label">Claude builds</span><span class="api-row-val">Schema + RLS policies + hooks</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PARTNERSHIP STRATEGY -->
+<div class="section">
+  <div class="section-label">Partnerships</div>
+  <div class="section-title">The Higgsfield Playbook</div>
+  <div class="section-sub">How Higgsfield got volume deals and deep integrations — and how Gamesfield replicates it.</div>
+
+  <div class="model-box">
+    <div class="model-box-title">How Higgsfield Did It</div>
+    <div class="model-box-sub">Higgsfield didn't build AI models. They aggregated them, got volume deals, and shared revenue with partners. Here's the exact playbook.</div>
+    <div class="model-steps">
+      <div class="model-step"><div class="model-step-num">01</div><div class="model-step-text"><strong>Built the product first, negotiated deals after.</strong> They launched with standard API pricing, grew volume, then approached providers with real usage data. No one gives volume deals to zero-revenue startups.</div></div>
+      <div class="model-step"><div class="model-step-num">02</div><div class="model-step-text"><strong>Featured providers prominently.</strong> Every Higgsfield video shows "Made with Kling" or "Powered by Flux." Partners get brand exposure to millions of creators — that's the value exchange that unlocks deals.</div></div>
+      <div class="model-step"><div class="model-step-num">03</div><div class="model-step-text"><strong>Became a distribution channel.</strong> AI model companies need users. Higgsfield brings them users at scale. At 15M users, they're a top-5 distribution partner for most of their providers.</div></div>
+      <div class="model-step"><div class="model-step-num">04</div><div class="model-step-text"><strong>Formalised as revenue-share partnerships.</strong> The mature form: Higgsfield takes 70% of each credit used for a model, pays the provider 30%. Provider gets volume + distribution, Higgsfield gets margin.</div></div>
+      <div class="model-step"><div class="model-step-num">05</div><div class="model-step-text"><strong>Used deals as a moat.</strong> Once a provider is integrated and on rev-share, they have no incentive to integrate a competitor. Gamesfield should sign these deals as early as possible.</div></div>
+    </div>
+  </div>
+
+  <table class="p-table">
+    <thead>
+      <tr><th>Partner</th><th>What they get</th><th>What we get</th><th>When to approach</th><th>Target deal</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="hl">fal.ai</td>
+        <td>Distribution to game dev vertical — untapped for them</td>
+        <td>Volume pricing, dedicated support, early model access</td>
+        <td>Now — they're startup-friendly</td>
+        <td class="hl-green">20–35% off at $500+/mo</td>
+      </tr>
+      <tr>
+        <td class="hl">Meshy</td>
+        <td>"Official game dev platform" badge — huge for their positioning</td>
+        <td>Per-mesh cost cut, co-marketing, featured in their showcase</td>
+        <td>At 100 active users</td>
+        <td class="hl-green">30–40% off + rev share</td>
+      </tr>
+      <tr>
+        <td class="hl">Inworld AI</td>
+        <td>Gamesfield becomes their primary indie dev channel</td>
+        <td>Subsidised API costs, joint PR, access to their enterprise contacts</td>
+        <td>At seed raise (gives credibility)</td>
+        <td class="hl-green">Partner program — 50% off</td>
+      </tr>
+      <tr>
+        <td class="hl">ElevenLabs</td>
+        <td>New vertical (game dev voice) they don't own yet</td>
+        <td>Creator program pricing, white-label voice cloning</td>
+        <td>Now — creator program is open</td>
+        <td class="hl-green">50% off via creator program</td>
+      </tr>
+      <tr>
+        <td class="hl">AIVA</td>
+        <td>Gamesfield as #1 game music distribution channel</td>
+        <td>API access, volume discount, co-branded "Powered by AIVA"</td>
+        <td>At 500 users</td>
+        <td class="hl-green">Enterprise API — est. 40% off</td>
+      </tr>
+      <tr>
+        <td class="hl">Kling / Kuaishou</td>
+        <td>Western game dev market (they're Chinese, want Western exposure)</td>
+        <td>Deep integration, competitive pricing, exclusive features</td>
+        <td>Post seed</td>
+        <td class="hl-green">Strategic deal — negotiate hard</td>
+      </tr>
+      <tr>
+        <td class="hl">Unity / Epic</td>
+        <td>AI tooling for their developer ecosystem</td>
+        <td>Plugin marketplace listing, co-marketing, potential acquisition interest</td>
+        <td>Post Series A</td>
+        <td class="hl-lime">Strategic — long game</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- BUILD SEQUENCE -->
+<div class="section">
+  <div class="section-label">Build Plan</div>
+  <div class="section-title">How Claude & Tim Build This</div>
+  <div class="section-sub">The exact sequence — from prototype to working product. Claude does the technical work. Tim does the business work. Zero engineers needed until Series A.</div>
+
+  <div class="timeline">
+    <div class="phase">
+      <div class="phase-dot" style="background:#FE9E17;color:#000">1</div>
+      <div class="phase-content">
+        <div class="phase-title">Next.js Conversion</div>
+        <div class="phase-date">2–3 sessions · ~4 hours</div>
+        <div class="phase-items">
+          <div class="phase-item">Claude converts all 7 HTML pages to Next.js components</div>
+          <div class="phase-item">Tailwind CSS replaces inline styles</div>
+          <div class="phase-item">Deploy to Vercel — live URL instantly</div>
+          <div class="phase-item">Tim: create Vercel account, connect GitHub repo</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot" style="background:#00d478;color:#000">2</div>
+      <div class="phase-content">
+        <div class="phase-title">Real Auth (Clerk)</div>
+        <div class="phase-date">1 session · ~2 hours</div>
+        <div class="phase-items">
+          <div class="phase-item">Claude wires Clerk into Next.js middleware</div>
+          <div class="phase-item">Google, Apple, GitHub login actually work</div>
+          <div class="phase-item">Onboarding flow saves to real user account</div>
+          <div class="phase-item">Tim: create Clerk account, add API keys to Vercel</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot" style="background:#9b6dff;color:#fff">3</div>
+      <div class="phase-content">
+        <div class="phase-title">Project Memory (Supabase)</div>
+        <div class="phase-date">1–2 sessions · ~3 hours</div>
+        <div class="phase-items">
+          <div class="phase-item">Claude builds Supabase schema — users, projects, memory objects, assets</div>
+          <div class="phase-item">Project Memory saves and loads per user</div>
+          <div class="phase-item">World name, art style, characters persist across sessions</div>
+          <div class="phase-item">Tim: create Supabase project, add keys to Vercel</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot" style="background:#FE9E17;color:#000">4</div>
+      <div class="phase-content">
+        <div class="phase-title">Real Image Generation (fal.ai)</div>
+        <div class="phase-date">1 session · ~2 hours</div>
+        <div class="phase-items">
+          <div class="phase-item">Claude wires fal.ai Flux Pro into Generate Art page</div>
+          <div class="phase-item">Generate button actually calls the API and returns images</div>
+          <div class="phase-item">Project Memory auto-prepends to every prompt</div>
+          <div class="phase-item">Tim: create fal.ai account, add API key</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot" style="background:#ff4d4d;color:#fff">5</div>
+      <div class="phase-content">
+        <div class="phase-title">Billing (Stripe)</div>
+        <div class="phase-date">1 session · ~2 hours</div>
+        <div class="phase-items">
+          <div class="phase-item">Claude wires Stripe into pricing page — real checkout</div>
+          <div class="phase-item">Subscription plans create Supabase credit balance</div>
+          <div class="phase-item">Credit top-ups work end to end</div>
+          <div class="phase-item">Tim: create Stripe account, add webhook + API keys</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot" style="background:#00d4ff;color:#000">6</div>
+      <div class="phase-content">
+        <div class="phase-title">NPC Brain + World Builder (Live)</div>
+        <div class="phase-date">2 sessions · ~4 hours</div>
+        <div class="phase-items">
+          <div class="phase-item">Claude wires Inworld AI into NPC Brain — real character creation</div>
+          <div class="phase-item">World Builder saves regions to Supabase</div>
+          <div class="phase-item">ElevenLabs voice generation wired to NPC profiles</div>
+          <div class="phase-item">Tim: create Inworld + ElevenLabs accounts</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-dot" style="background:#d1fe17;color:#000">7</div>
+      <div class="phase-content">
+        <div class="phase-title">Launch Ready</div>
+        <div class="phase-date">~10 sessions total · ~20 hours</div>
+        <div class="phase-items">
+          <div class="phase-item">Working product — real login, real generation, real billing</div>
+          <div class="phase-item">Domain pointed at Vercel — gamesfield.ai is live</div>
+          <div class="phase-item">First 50 beta users onboarded</div>
+          <div class="phase-item">Waitlist emails converted to paying users</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COST MODEL -->
+<div class="section">
+  <div class="section-label">Unit Economics</div>
+  <div class="section-title">Cost Per User</div>
+  <div class="section-sub">What it actually costs to serve one Indie plan user per month — and the margin at scale.</div>
+  <table class="p-table">
+    <thead><tr><th>Cost</th><th>Per user/mo (Indie $49)</th><th>At scale (volume deal)</th></tr></thead>
+    <tbody>
+      <tr><td>fal.ai — image generation (125 images)</td><td class="hl">$5.00</td><td>$3.25 (35% off)</td></tr>
+      <tr><td>Meshy — 3D assets (10 meshes)</td><td class="hl">$6.00</td><td>$3.60 (40% off)</td></tr>
+      <tr><td>Inworld — NPC interactions (500)</td><td class="hl">$0.50</td><td>$0.25 (50% off)</td></tr>
+      <tr><td>ElevenLabs — voice lines (50 lines)</td><td class="hl">$0.10</td><td>$0.05 (50% off)</td></tr>
+      <tr><td>Supabase + Vercel + Clerk (per user share)</td><td class="hl">$0.80</td><td>$0.80</td></tr>
+      <tr><td>Stripe fees (2.9% + $0.30)</td><td class="hl">$1.72</td><td>$1.72</td></tr>
+      <tr><td><strong>Total cost</strong></td><td class="hl">~$14.12</td><td>~$9.67</td></tr>
+      <tr><td><strong>Revenue</strong></td><td>$49</td><td>$49</td></tr>
+      <tr><td><strong>Gross margin</strong></td><td class="hl-green">71%</td><td class="hl-green">80%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="doc-footer">
+  <div>Gamesfield · Technical &amp; Partnership Playbook · v0.1 · May 2026</div>
+  <div>Confidential · 2026-05-12 · v0.1</div>
+</div>
+
+</body>
+</html>
